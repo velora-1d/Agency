@@ -10,6 +10,8 @@ use App\Http\Controllers\App\Finance\FinanceOverviewController;
 use App\Http\Controllers\App\Project\ProjectController;
 use App\Http\Controllers\App\Project\ContractController;
 use App\Http\Controllers\App\Project\ContractTemplateController;
+use App\Http\Controllers\App\Project\ProjectTemplateController;
+use App\Http\Controllers\App\Project\TaskController;
 use App\Models\Workspace;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -57,7 +59,16 @@ Route::middleware('auth')->group(function (): void {
 
             Route::prefix('projects')->name('projects.')->group(function (): void {
                 Route::get('/', [ProjectController::class, 'index'])->name('index');
-                Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
+                Route::post('/', [ProjectController::class, 'store'])->name('store');
+                Route::patch('/{project}/status', [ProjectController::class, 'updateStatus'])->name('status.update');
+                Route::patch('/{project}', [ProjectController::class, 'update'])->name('update');
+                Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
+
+                Route::prefix('templates')->name('templates.')->group(function (): void {
+                    Route::post('/', [ProjectTemplateController::class, 'store'])->name('store');
+                    Route::patch('/{template}', [ProjectTemplateController::class, 'update'])->name('update');
+                    Route::delete('/{template}', [ProjectTemplateController::class, 'destroy'])->name('destroy');
+                });
 
                 Route::prefix('contracts')->name('contracts.')->group(function (): void {
                     Route::get('/', [ContractController::class, 'index'])->name('index');
@@ -71,6 +82,24 @@ Route::middleware('auth')->group(function (): void {
                     Route::patch('/{contract}/status', [ContractController::class, 'updateStatus'])->name('status.update');
                     Route::post('/{contract}/upload-signed', [ContractController::class, 'uploadSigned'])->name('upload-signed');
                     Route::delete('/{contract}', [ContractController::class, 'destroy'])->name('destroy');
+                });
+
+                Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
+            });
+
+            Route::prefix('tasks')->name('tasks.')->group(function (): void {
+                Route::get('/', [TaskController::class, 'index'])->name('index');
+                Route::post('/', [TaskController::class, 'store'])->name('store');
+                Route::patch('/{task}', [TaskController::class, 'update'])->name('update');
+                Route::patch('/{task}/status', [TaskController::class, 'updateStatus'])->name('status.update');
+                Route::post('/{task}/time-logs', [TaskController::class, 'storeTimeLog'])->name('time-logs.store');
+                Route::post('/{task}/comments', [TaskController::class, 'storeComment'])->name('comments.store');
+                Route::delete('/{task}', [TaskController::class, 'destroy'])->name('destroy');
+
+                Route::prefix('templates')->name('templates.')->group(function (): void {
+                    Route::post('/', [TaskController::class, 'storeTemplate'])->name('store');
+                    Route::patch('/{template}', [TaskController::class, 'updateTemplate'])->name('update');
+                    Route::delete('/{template}', [TaskController::class, 'destroyTemplate'])->name('destroy');
                 });
             });
 
@@ -86,6 +115,13 @@ Route::middleware('auth')->group(function (): void {
                 Route::post('/calendar', [CalendarController::class, 'store'])->name('calendar.store');
                 Route::patch('/calendar/{calendarEvent}', [CalendarController::class, 'update'])->name('calendar.update');
                 Route::delete('/calendar/{calendarEvent}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
+
+                Route::prefix('support-tickets')->name('support-tickets.')->group(function (): void {
+                    Route::get('/', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'index'])->name('index');
+                    Route::post('/', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'store'])->name('store');
+                    Route::patch('/{supportTicket}', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'update'])->name('update');
+                    Route::delete('/{supportTicket}', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'destroy'])->name('destroy');
+                });
             });
         });
 });

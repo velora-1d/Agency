@@ -19,6 +19,7 @@ class TriggerN8nAutomation implements ShouldQueue
         // Handle Eloquent event structure
         if (!$record && isset($event->invoice)) $record = $event->invoice;
         if (!$record && isset($event->lead)) $record = $event->lead;
+        if (!$record && isset($event->ticket)) $record = $event->ticket;
 
         if (!$record) return;
 

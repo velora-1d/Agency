@@ -50,7 +50,7 @@ class NavigationService
                     [
                         'label' => 'Support Tickets',
                         'active' => $activeLabel === 'Support Tickets',
-                        'href' => '#', // To be implemented
+                        'href' => route('workspace.communication.support-tickets.index', $workspace),
                     ],
                 ],
             ],
@@ -65,7 +65,7 @@ class NavigationService
                     [
                         'label' => 'Tasks',
                         'active' => $activeLabel === 'Tasks',
-                        'href' => '#', // To be implemented
+                        'href' => route('workspace.tasks.index', $workspace),
                     ],
                     [
                         'label' => 'Meetings',

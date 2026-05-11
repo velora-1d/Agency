@@ -45,6 +45,7 @@ Sistem Manajemen Digital Agency terintegrasi untuk Velora & Maven, mencakup CRM,
 - Dashboard: KPI Stats & Revenue Charts (Real Data) Selesai.
 - Menu 2: Activity Feed (Audit Log & Social Feed) dengan fitur filtering, komentar, dan timeline premium Selesai.
 - Sistem 100% fungsional dan siap digunakan.
+- Menu 7: Support Tickets (Full CRUD, SLA Tracking, n8n Automation, & Activity Logging) Selesai.
 
 ## Last Updated
 

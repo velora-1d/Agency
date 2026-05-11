@@ -5,6 +5,7 @@ namespace App\Modules\Project\Contracts\Queries;
 use App\Models\ActivityFeed;
 use App\Models\Client;
 use App\Models\Contract;
+use App\Models\ContractTemplate;
 use App\Models\Project;
 use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Builder;

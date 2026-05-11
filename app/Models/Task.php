@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Task extends Model
 {
@@ -24,6 +25,7 @@ class Task extends Model
         'description',
         'status',
         'priority',
+        'tags',
         'due_date',
         'estimated_hours',
         'actual_hours',
@@ -37,6 +39,7 @@ class Task extends Model
 
     protected $casts = [
         'due_date' => 'datetime',
+        'tags' => 'array',
         'estimated_hours' => 'decimal:2',
         'actual_hours' => 'decimal:2',
         'is_recurring' => 'boolean',
@@ -80,6 +83,16 @@ class Task extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(TaskTemplate::class, 'template_id');
+    }
+
+    public function activityFeed(): MorphMany
+    {
+        return $this->morphMany(ActivityFeed::class, 'subject');
     }
 
     protected static function booted()

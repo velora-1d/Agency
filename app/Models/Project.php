@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Project extends Model
 {
@@ -36,6 +37,7 @@ class Project extends Model
         'end_date' => 'date',
         'budget' => 'decimal:2',
         'actual_cost' => 'decimal:2',
+        'progress' => 'integer',
     ];
 
     public function client(): BelongsTo
@@ -51,6 +53,11 @@ class Project extends Model
     public function members(): HasMany
     {
         return $this->hasMany(ProjectMember::class);
+    }
+
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(ProjectTemplate::class, 'template_id');
     }
 
     public function meetings(): HasMany
@@ -81,6 +88,11 @@ class Project extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function activityFeed(): MorphMany
+    {
+        return $this->morphMany(ActivityFeed::class, 'subject');
     }
 
     public function calculateProgress(): void
