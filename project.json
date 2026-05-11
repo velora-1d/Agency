@@ -1,0 +1,27 @@
+{
+  "name": "kantor-digital",
+  "description": "Sistem Manajemen Digital Agency untuk Velora & Maven",
+  "version": "2.0.0",
+  "lastUpdated": "2026-05-11",
+  "stack": {
+    "frontend": "Inertia.js + Vue 3 + Tailwind CSS",
+    "backend": "Laravel 13",
+    "database": "PostgreSQL",
+    "orm": "Eloquent",
+    "auth": "Laravel Sanctum + Inertia",
+    "realtime": "Laravel Reverb",
+    "mobile": null
+  },
+  "mode": "fullstack",
+  "platform": ["web"],
+  "multiTenant": true,
+  "tenantStrategy": "Single Database + Row Level Security",
+  "scale": "medium",
+  "team": "solo",
+  "hosting": {
+    "development": "local",
+    "staging": null,
+    "production": "vps"
+  },
+  "notes": "Menggunakan Inertia.js + Vue 3 + Tailwind CSS untuk fleksibilitas UI penuh."
+}
