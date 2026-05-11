@@ -27,12 +27,14 @@ class Meeting extends Model
         'scheduled_at',
         'duration_minutes',
         'status',
+        'external_attendees',
         'created_by',
     ];
 
     protected $casts = [
         'scheduled_at' => 'datetime',
         'duration_minutes' => 'integer',
+        'external_attendees' => 'array',
     ];
 
     public function project(): BelongsTo
@@ -48,5 +50,10 @@ class Meeting extends Model
     public function attendees(): HasMany
     {
         return $this->hasMany(MeetingAttendee::class);
+    }
+
+    public function actionItems(): HasMany
+    {
+        return $this->hasMany(Task::class);
     }
 }

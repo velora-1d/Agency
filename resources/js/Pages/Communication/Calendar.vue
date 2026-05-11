@@ -320,8 +320,7 @@ const openView = (event) => {
       }
       break
     case 'meeting':
-      // Link to meeting detail if available, otherwise just stay on page or link to a general page
-      url = '#' 
+      url = `/w/${workspaceSlug}/meetings?meeting=${event.id}`
       break
     case 'invoice':
       // Link to invoice detail if available

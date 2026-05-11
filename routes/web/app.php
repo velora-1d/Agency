@@ -10,6 +10,9 @@ use App\Http\Controllers\App\Finance\FinanceOverviewController;
 use App\Http\Controllers\App\Project\ProjectController;
 use App\Http\Controllers\App\Project\ContractController;
 use App\Http\Controllers\App\Project\ContractTemplateController;
+use App\Http\Controllers\App\Project\FileController;
+use App\Http\Controllers\App\Project\MeetingController;
+use App\Http\Controllers\App\Project\NoteController;
 use App\Http\Controllers\App\Project\ProjectTemplateController;
 use App\Http\Controllers\App\Project\TaskController;
 use App\Models\Workspace;
@@ -100,6 +103,41 @@ Route::middleware('auth')->group(function (): void {
                     Route::post('/', [TaskController::class, 'storeTemplate'])->name('store');
                     Route::patch('/{template}', [TaskController::class, 'updateTemplate'])->name('update');
                     Route::delete('/{template}', [TaskController::class, 'destroyTemplate'])->name('destroy');
+                });
+            });
+
+            Route::prefix('meetings')->name('meetings.')->group(function (): void {
+                Route::get('/', [MeetingController::class, 'index'])->name('index');
+                Route::post('/', [MeetingController::class, 'store'])->name('store');
+                Route::patch('/{meeting}', [MeetingController::class, 'update'])->name('update');
+                Route::delete('/{meeting}', [MeetingController::class, 'destroy'])->name('destroy');
+            });
+
+            Route::prefix('notes')->name('notes.')->group(function (): void {
+                Route::get('/', [NoteController::class, 'index'])->name('index');
+                Route::post('/', [NoteController::class, 'store'])->name('store');
+                Route::patch('/{note}', [NoteController::class, 'update'])->name('update');
+                Route::delete('/{note}', [NoteController::class, 'destroy'])->name('destroy');
+
+                Route::prefix('folders')->name('folders.')->group(function (): void {
+                    Route::post('/', [NoteController::class, 'storeFolder'])->name('store');
+                    Route::patch('/{folder}', [NoteController::class, 'updateFolder'])->name('update');
+                    Route::delete('/{folder}', [NoteController::class, 'destroyFolder'])->name('destroy');
+                });
+            });
+
+            Route::prefix('files')->name('files.')->group(function (): void {
+                Route::get('/', [FileController::class, 'index'])->name('index');
+                Route::post('/', [FileController::class, 'store'])->name('store');
+                Route::patch('/{file}', [FileController::class, 'update'])->name('update');
+                Route::delete('/{file}', [FileController::class, 'destroy'])->name('destroy');
+                Route::patch('/{file}/approval', [FileController::class, 'updateApproval'])->name('approval.update');
+                Route::patch('/{file}/share', [FileController::class, 'updateShare'])->name('share.update');
+
+                Route::prefix('folders')->name('folders.')->group(function (): void {
+                    Route::post('/', [FileController::class, 'storeFolder'])->name('store');
+                    Route::patch('/{folder}', [FileController::class, 'updateFolder'])->name('update');
+                    Route::delete('/{folder}', [FileController::class, 'destroyFolder'])->name('destroy');
                 });
             });
 

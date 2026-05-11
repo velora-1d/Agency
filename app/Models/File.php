@@ -65,4 +65,14 @@ class File extends Model
     {
         return $this->hasMany(File::class, 'parent_file_id');
     }
+
+    public function uploader(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    public function approver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }

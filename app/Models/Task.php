@@ -19,6 +19,7 @@ class Task extends Model
     protected $fillable = [
         'workspace_id',
         'project_id',
+        'meeting_id',
         'parent_task_id',
         'assigned_to',
         'title',
@@ -48,6 +49,11 @@ class Task extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function meeting(): BelongsTo
+    {
+        return $this->belongsTo(Meeting::class);
     }
 
     public function parentTask(): BelongsTo

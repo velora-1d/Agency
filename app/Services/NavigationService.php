@@ -70,17 +70,17 @@ class NavigationService
                     [
                         'label' => 'Meetings',
                         'active' => $activeLabel === 'Meetings',
-                        'href' => '#', // To be implemented
+                        'href' => route('workspace.meetings.index', $workspace),
                     ],
                     [
                         'label' => 'Notes / SOP',
                         'active' => $activeLabel === 'Notes',
-                        'href' => '#', // To be implemented
+                        'href' => route('workspace.notes.index', $workspace),
                     ],
                     [
                         'label' => 'Files',
                         'active' => $activeLabel === 'Files',
-                        'href' => '#', // To be implemented
+                        'href' => route('workspace.files.index', $workspace),
                     ],
                 ],
             ],
