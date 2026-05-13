@@ -15,6 +15,7 @@ class UpsertProjectRequest extends FormRequest
     {
         return [
             'client_id' => ['nullable', 'uuid', 'exists:clients,id'],
+            'brand' => ['required', 'string', 'max:50'],
             'template_id' => ['nullable', 'uuid', 'exists:project_templates,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],

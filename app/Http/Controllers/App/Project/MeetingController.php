@@ -24,6 +24,7 @@ class MeetingController extends Controller
             screen: 'Meetings/Index',
             title: 'Meetings',
             payload: $query->getIndexPayload($workspace, $request->all()),
+            activeLabel: 'Projects',
         );
     }
 

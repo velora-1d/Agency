@@ -48,6 +48,11 @@ class Client extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function billings(): HasMany
+    {
+        return $this->hasMany(Billing::class);
+    }
+
     public function assignedUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to');
@@ -61,6 +66,21 @@ class Client extends Model
     public function supportTickets(): HasMany
     {
         return $this->hasMany(SupportTicket::class);
+    }
+
+    public function websites(): HasMany
+    {
+        return $this->hasMany(Website::class);
+    }
+
+    public function domains(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Domain::class, Website::class, 'client_id', 'id', 'id', 'domain_id');
+    }
+
+    public function servers(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Server::class, Website::class, 'client_id', 'id', 'id', 'server_id');
     }
 
     public function activityFeed(): MorphMany

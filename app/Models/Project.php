@@ -17,6 +17,7 @@ class Project extends Model
 
     protected $fillable = [
         'workspace_id',
+        'brand',
         'client_id',
         'name',
         'description',
@@ -40,9 +41,19 @@ class Project extends Model
         'progress' => 'integer',
     ];
 
+    public function workspace(): BelongsTo
+    {
+        return $this->belongsTo(Workspace::class);
+    }
+
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(ProjectTemplate::class, 'project_template_id');
     }
 
     public function tasks(): HasMany
@@ -50,19 +61,9 @@ class Project extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function members(): HasMany
+    public function notes(): HasMany
     {
-        return $this->hasMany(ProjectMember::class);
-    }
-
-    public function template(): BelongsTo
-    {
-        return $this->belongsTo(ProjectTemplate::class, 'template_id');
-    }
-
-    public function meetings(): HasMany
-    {
-        return $this->hasMany(Meeting::class);
+        return $this->hasMany(Note::class);
     }
 
     public function files(): HasMany
@@ -70,24 +71,25 @@ class Project extends Model
         return $this->hasMany(File::class);
     }
 
-    public function notes(): HasMany
-    {
-        return $this->hasMany(Note::class);
-    }
-
-    public function financeSplit(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(ProjectFinanceSplit::class);
-    }
-
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
     }
 
-    public function creator(): BelongsTo
+    public function contracts(): HasMany
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->hasMany(Contract::class);
+    }
+
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
+    }
+
+    public function members(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'project_members')
+            ->withPivot('role', 'joined_at');
     }
 
     public function activityFeed(): MorphMany
@@ -95,12 +97,12 @@ class Project extends Model
         return $this->morphMany(ActivityFeed::class, 'subject');
     }
 
-    public function calculateProgress(): void
+    public function updateProgress(): void
     {
         $totalTasks = $this->tasks()->count();
+        
         if ($totalTasks === 0) {
-            $this->updateQuietly(['progress' => 0]);
-            return;
+           return;
         }
 
         $completedTasks = $this->tasks()->where('status', 'done')->count();

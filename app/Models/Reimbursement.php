@@ -17,17 +17,21 @@ class Reimbursement extends Model
         'user_id',
         'project_id',
         'title',
+        'department',
         'amount',
         'status',
         'receipt_path',
         'notes',
         'approved_by',
+        'paid_account_id',
         'approved_at',
+        'paid_at',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
         'approved_at' => 'datetime',
+        'paid_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -43,5 +47,10 @@ class Reimbursement extends Model
     public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function paidAccount(): BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class, 'paid_account_id');
     }
 }

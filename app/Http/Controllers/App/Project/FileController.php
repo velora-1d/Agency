@@ -28,6 +28,7 @@ class FileController extends Controller
             screen: 'Files/Index',
             title: 'Files',
             payload: $query->getIndexPayload($workspace, $request->all()),
+            activeLabel: 'Projects',
         );
     }
 

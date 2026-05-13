@@ -1,7 +1,7 @@
 <template>
   <WorkspaceLayout
-    title="Notes / SOP"
-    subtitle="Bangun knowledge base internal dengan folder, versi dokumen, template SOP, dan relasi langsung ke project atau task."
+    title="Catatan / SOP"
+    subtitle="Knowledge hub untuk mengelola SOP, catatan kerja, revisi dokumen, dan konteks project dalam satu tempat."
   >
     <template #actions>
       <div class="flex flex-wrap items-center gap-3">
@@ -11,7 +11,7 @@
           class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-stone-300 hover:text-stone-950"
         >
           <FolderPlus class="h-4 w-4" />
-          <span>New Folder</span>
+          <span>Folder Baru</span>
         </button>
         <button
           type="button"
@@ -19,97 +19,81 @@
           class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-stone-800"
         >
           <Plus class="h-4 w-4" />
-          <span>New Note</span>
+          <span>Catatan Baru</span>
         </button>
       </div>
     </template>
 
-    <div class="space-y-6">
-      <section class="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-        <article class="relative overflow-hidden rounded-[2rem] bg-stone-950 p-6 text-white shadow-[0_28px_90px_rgba(28,25,23,0.18)]">
-          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.22),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.18),transparent_36%)]"></div>
-          <div class="relative">
-            <p class="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-200/75">Menu 12 / Notes / SOP</p>
-            <div class="mt-4 flex flex-wrap items-start justify-between gap-4">
-              <div class="max-w-2xl">
-                <h2 class="text-3xl font-semibold tracking-[-0.05em] text-white">Knowledge base yang hidup: note, SOP, template, versi, dan link ke task.</h2>
-                <p class="mt-3 max-w-xl text-sm leading-6 text-stone-300">
-                  Setiap dokumen bisa masuk folder, ditautkan ke project global atau spesifik, dibuat private atau dibagikan ke tim, lalu dipakai ulang sebagai template SOP.
-                </p>
-              </div>
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">Versioning</p>
-                <p class="mt-2 text-3xl font-semibold tracking-[-0.05em] text-white">{{ noteSummary.total_notes }}</p>
-                <p class="mt-1 text-sm text-stone-300">dokumen aktif di workspace</p>
-              </div>
-            </div>
-
-            <div class="mt-6 grid gap-3 md:grid-cols-3">
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">SOP</p>
-                <p class="mt-2 text-2xl font-semibold text-white">{{ noteSummary.sop_notes }}</p>
-                <p class="mt-1 text-sm text-stone-300">dokumen operasional</p>
-              </div>
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">Templates</p>
-                <p class="mt-2 text-2xl font-semibold text-white">{{ noteSummary.template_notes }}</p>
-                <p class="mt-1 text-sm text-stone-300">template reusable</p>
-              </div>
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">Linked Tasks</p>
-                <p class="mt-2 text-2xl font-semibold text-white">{{ noteSummary.linked_tasks }}</p>
-                <p class="mt-1 text-sm text-stone-300">SOP yang sudah turun ke task</p>
-              </div>
-            </div>
+    <ProjectLayout :workspace="workspace">
+      <div class="space-y-6">
+      <section class="project-hero-shell">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">Menu 12 / Catatan / SOP</p>
+            <h2 class="project-hero-title">Pusat pengetahuan yang hidup: catatan, SOP, template, versi, dan tautan ke tugas.</h2>
+            <p class="project-hero-desc">
+              Struktur folder, visibility, dan versi dokumen tetap lengkap, tapi bagian atas dibuat lebih padat supaya library lebih cepat dipindai.
+            </p>
           </div>
-        </article>
 
-        <article class="rounded-[2rem] border border-stone-200 bg-[linear-gradient(180deg,#fffdf8_0%,#ffffff_100%)] p-6 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Library posture</p>
-          <div class="mt-5 space-y-4">
-            <div class="rounded-[1.4rem] border border-stone-200 bg-white p-4">
-              <p class="text-sm font-semibold text-stone-950">Folder-based structure</p>
-              <p class="mt-2 text-sm leading-6 text-stone-600">Susun knowledge base dengan folder agar SOP, note, dan template cepat dicari.</p>
+          <div class="compact-stat-grid min-w-full gap-3 sm:min-w-[22rem] sm:grid-cols-3 xl:w-[26rem]">
+            <div class="compact-stat-card">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Dokumen</p>
+              <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.total_notes }}</p>
             </div>
-            <div class="grid gap-3 sm:grid-cols-2">
-              <div class="rounded-[1.4rem] border border-stone-200 bg-white p-4">
-                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Private</p>
-                <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.private_notes }}</p>
-              </div>
-              <div class="rounded-[1.4rem] border border-stone-200 bg-white p-4">
-                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Global</p>
-                <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.global_notes }}</p>
-              </div>
+            <div class="compact-stat-card">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">SOP</p>
+              <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.sop_notes }}</p>
             </div>
-            <div class="rounded-[1.4rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-4 text-sm leading-6 text-stone-600">
-              Version history disimpan per update, dan SOP bisa langsung dipetakan ke task supaya eksekusi lapangan tetap konsisten.
+            <div class="compact-stat-card">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Templat</p>
+              <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.template_notes }}</p>
             </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
-        <div class="mb-5 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Filters</p>
-            <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Cari dokumen berdasarkan project, folder, type, dan visibility.</h2>
-          </div>
-          <div class="rounded-[1.3rem] border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600">
-            <span class="font-semibold text-stone-950">{{ noteItems.length }}</span> note tampil
           </div>
         </div>
 
-        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+        <div class="mt-4 grid gap-3 md:grid-cols-3">
+          <div class="compact-stat-card">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Privat</p>
+            <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.private_notes }}</p>
+          </div>
+          <div class="compact-stat-card">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Umum</p>
+            <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.global_notes }}</p>
+          </div>
+          <div class="compact-stat-card">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Tugas Terkait</p>
+            <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ noteSummary.linked_tasks }}</p>
+          </div>
+        </div>
+
+        <div class="mt-3 rounded-[1rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-3 text-sm leading-6 text-stone-500">
+          Riwayat versi disimpan per pembaruan, dan SOP bisa langsung dipetakan ke tugas supaya eksekusi lapangan tetap konsisten.
+        </div>
+      </section>
+
+      <section class="project-panel-shell">
+        <div class="filter-panel-head mb-5">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Filter</p>
+            <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Cari dokumen berdasarkan project, folder, tipe, dan visibilitas.</h2>
+          </div>
+          <div class="filter-meta-badge">
+            <span class="font-semibold text-stone-950">{{ noteItems.length }}</span> catatan tampil
+          </div>
+        </div>
+
+        <div class="filter-toolbar grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           <label class="space-y-2 text-sm xl:col-span-2">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Search</span>
-            <input v-model="filterState.search" type="text" placeholder="Cari judul, isi, folder, atau project" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white" />
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Cari</span>
+            <input v-model="filterState.search" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white" />
           </label>
 
           <label class="space-y-2 text-sm">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Project</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Proyek</span>
             <select v-model="filterState.project" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All Projects</option>
-              <option value="global">Global Only</option>
+              <option value="">Semua Proyek</option>
+              <option value="global">Hanya Umum</option>
               <option v-for="project in filterOptions.projects" :key="project.id" :value="project.id">{{ project.name }}</option>
             </select>
           </label>
@@ -117,36 +101,36 @@
           <label class="space-y-2 text-sm">
             <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Folder</span>
             <select v-model="filterState.folder" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All Folders</option>
+              <option value="">Semua Folder</option>
               <option v-for="folder in folders" :key="folder.id" :value="folder.id">{{ folder.name }}</option>
             </select>
           </label>
 
           <label class="space-y-2 text-sm">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Type</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tipe</span>
             <select v-model="filterState.type" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All Types</option>
+              <option value="">Semua Tipe</option>
               <option v-for="type in filterOptions.types" :key="type.value" :value="type.value">{{ type.label }}</option>
             </select>
           </label>
 
           <label class="space-y-2 text-sm">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Visibility</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Visibilitas</span>
             <select v-model="filterState.visibility" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All</option>
+              <option value="">Semua</option>
               <option v-for="item in filterOptions.visibility" :key="item.value" :value="item.value">{{ item.label }}</option>
             </select>
           </label>
         </div>
 
-        <div class="mt-5 flex flex-wrap items-center gap-3">
+        <div class="filter-actions mt-5 flex flex-wrap items-center gap-3">
           <button type="button" @click="applyFilters" class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-stone-800">
             <Filter class="h-4 w-4" />
-            <span>Apply Filters</span>
+            <span>Terapkan Filter</span>
           </button>
           <button type="button" @click="resetFilters" class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition-all hover:bg-stone-100 hover:text-stone-900">
             <RotateCcw class="h-4 w-4" />
-            <span>Reset</span>
+            <span>Atur Ulang</span>
           </button>
         </div>
       </section>
@@ -156,12 +140,12 @@
           <section class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
             <div class="flex items-center justify-between gap-3">
               <div>
-                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Folders</p>
-                <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Structure</h2>
+                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Folder</p>
+                <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Struktur</h2>
               </div>
               <button type="button" @click="openFolderModal()" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-700 transition hover:border-stone-300 hover:text-stone-950">
                 <FolderPlus class="h-3.5 w-3.5" />
-                <span>New</span>
+                <span>Baru</span>
               </button>
             </div>
 
@@ -171,8 +155,8 @@
                 @click="filterState.folder = ''"
                 class="w-full rounded-[1.2rem] border border-stone-200 bg-stone-50 px-4 py-3 text-left transition hover:border-stone-300 hover:bg-white"
               >
-                <p class="text-sm font-semibold text-stone-950">All Notes</p>
-                <p class="mt-1 text-xs text-stone-500">{{ noteSummary.total_notes }} items</p>
+                <p class="text-sm font-semibold text-stone-950">Semua Catatan</p>
+                <p class="mt-1 text-xs text-stone-500">{{ noteSummary.total_notes }} item</p>
               </button>
               <article
                 v-for="folder in folders"
@@ -182,7 +166,7 @@
                 <div class="flex items-start justify-between gap-3">
                   <button type="button" @click="filterState.folder = folder.id" class="text-left">
                     <p class="text-sm font-semibold text-stone-950">{{ folder.name }}</p>
-                    <p class="mt-1 text-xs text-stone-500">{{ folder.notes_count }} notes</p>
+                    <p class="mt-1 text-xs text-stone-500">{{ folder.notes_count }} catatan</p>
                   </button>
                   <div class="flex gap-2">
                     <button type="button" @click="openFolderModal(folder)" class="rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
@@ -195,20 +179,20 @@
                 </div>
               </article>
               <div v-if="folders.length === 0" class="rounded-[1.2rem] border border-dashed border-stone-200 bg-stone-50 px-4 py-8 text-center text-sm text-stone-500">
-                Belum ada folder notes.
+                Belum ada folder catatan.
               </div>
             </div>
           </section>
 
           <section class="rounded-[2rem] border border-stone-200 bg-stone-950 p-5 text-white shadow-[0_20px_60px_rgba(28,25,23,0.14)]">
-            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Templates</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Templat</p>
             <div class="mt-4 space-y-3">
               <article v-for="template in templateNotes" :key="template.id" class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4">
                 <p class="text-sm font-semibold text-white">{{ template.title }}</p>
-                <p class="mt-2 text-sm text-stone-300">{{ template.content_preview || 'Template tanpa konten.' }}</p>
+                <p class="mt-2 text-sm text-stone-300">{{ template.content_preview || 'Templat tanpa konten.' }}</p>
                 <button type="button" @click="cloneTemplate(template)" class="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs font-semibold text-white transition hover:bg-white/15">
                   <Copy class="h-3.5 w-3.5" />
-                  <span>Use Template</span>
+                  <span>Pakai Template</span>
                 </button>
               </article>
               <div v-if="templateNotes.length === 0" class="rounded-[1.2rem] border border-dashed border-white/10 bg-white/5 px-4 py-8 text-center text-sm text-stone-300">
@@ -221,11 +205,11 @@
         <article class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
           <div class="flex items-center justify-between gap-3 border-b border-stone-200 pb-5">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Note Library</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Library Catatan</p>
               <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Dokumen knowledge base workspace.</h2>
             </div>
             <span class="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-500">
-              {{ noteItems.length }} notes
+              {{ noteItems.length }} catatan
             </span>
           </div>
 
@@ -246,10 +230,10 @@
                   </div>
                   <p class="mt-3 text-sm leading-6 text-stone-600">{{ note.content_preview || 'Belum ada isi dokumen.' }}</p>
                   <div class="mt-4 flex flex-wrap gap-2 text-xs text-stone-500">
-                    <span class="rounded-full bg-white px-3 py-1.5">{{ note.folder?.name || 'No folder' }}</span>
-                    <span class="rounded-full bg-white px-3 py-1.5">{{ note.project?.name || 'Global note' }}</span>
+                    <span class="rounded-full bg-white px-3 py-1.5">{{ note.folder?.name || 'Tanpa folder' }}</span>
+                    <span class="rounded-full bg-white px-3 py-1.5">{{ note.project?.name || 'Catatan umum' }}</span>
                     <span class="rounded-full bg-white px-3 py-1.5">v{{ note.version }}</span>
-                    <span class="rounded-full bg-white px-3 py-1.5">{{ note.counts.linked_tasks }} linked tasks</span>
+                    <span class="rounded-full bg-white px-3 py-1.5">{{ note.counts.linked_tasks }} tugas terkait</span>
                   </div>
                 </div>
 
@@ -268,7 +252,7 @@
             </article>
 
             <div v-if="noteItems.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-200 bg-stone-50 px-5 py-16 text-center text-sm text-stone-500">
-              Belum ada notes atau SOP yang cocok dengan filter saat ini.
+              Belum ada catatan atau SOP yang cocok dengan filter saat ini.
             </div>
           </div>
         </article>
@@ -280,8 +264,8 @@
         <div class="w-full max-w-xl rounded-[2rem] border border-white/20 bg-white p-6 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Folder Form</p>
-              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingFolder ? 'Edit Folder' : 'Create Folder' }}</h3>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Form Folder</p>
+              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingFolder ? 'Ubah Folder' : 'Buat Folder' }}</h3>
             </div>
             <button type="button" @click="closeFolderModal" class="rounded-full p-2 text-stone-400 transition-all hover:bg-stone-100 hover:text-stone-700">
               <X class="h-5 w-5" />
@@ -290,17 +274,17 @@
 
           <form class="mt-6 space-y-5" @submit.prevent="submitFolder">
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Folder Name</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Nama Folder</span>
               <input v-model="folderForm.name" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white" />
               <p v-if="folderForm.errors.name" class="text-xs text-rose-500">{{ folderForm.errors.name }}</p>
             </label>
 
             <div class="flex justify-end gap-3">
               <button type="button" @click="closeFolderModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">
-                Cancel
+                Batal
               </button>
               <button type="submit" :disabled="folderForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">
-                {{ isEditingFolder ? 'Save Folder' : 'Create Folder' }}
+                {{ isEditingFolder ? 'Simpan Folder' : 'Buat Folder' }}
               </button>
             </div>
           </form>
@@ -313,8 +297,8 @@
         <div class="max-h-[92vh] w-full max-w-6xl overflow-y-auto rounded-[2rem] border border-white/20 bg-white p-6 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Note Form</p>
-              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingNote ? 'Edit Note' : 'Create Note' }}</h3>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Form Catatan</p>
+              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingNote ? 'Ubah Catatan' : 'Buat Catatan' }}</h3>
             </div>
             <button type="button" @click="closeNoteModal" class="rounded-full p-2 text-stone-400 transition-all hover:bg-stone-100 hover:text-stone-700">
               <X class="h-5 w-5" />
@@ -324,21 +308,21 @@
           <form class="mt-6 space-y-6" @submit.prevent="submitNote">
             <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Project</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Proyek</span>
                 <select v-model="noteForm.project_id" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-                  <option value="">Global note</option>
+                  <option value="">Catatan umum</option>
                   <option v-for="project in filterOptions.projects" :key="project.id" :value="project.id">{{ project.name }}</option>
                 </select>
               </label>
               <label class="space-y-2 text-sm">
                 <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Folder</span>
                 <select v-model="noteForm.folder_id" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-                  <option value="">No folder</option>
+                  <option value="">Tanpa folder</option>
                   <option v-for="folder in folders" :key="folder.id" :value="folder.id">{{ folder.name }}</option>
                 </select>
               </label>
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Type</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tipe</span>
                 <select v-model="noteForm.type" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
                   <option v-for="type in filterOptions.types" :key="type.value" :value="type.value">{{ type.label }}</option>
                 </select>
@@ -346,12 +330,12 @@
               <label class="space-y-2 text-sm">
                 <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Visibility</span>
                 <select v-model="noteVisibility" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-                  <option value="team">Shared to Team</option>
-                  <option value="private">Private</option>
+                  <option value="team">Dibagikan ke Tim</option>
+                  <option value="private">Privat</option>
                 </select>
               </label>
               <label class="space-y-2 text-sm md:col-span-2 xl:col-span-4">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Title</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Judul</span>
                 <input v-model="noteForm.title" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white" />
                 <p v-if="noteForm.errors.title" class="text-xs text-rose-500">{{ noteForm.errors.title }}</p>
               </label>
@@ -360,12 +344,12 @@
             <section class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
               <div class="flex items-center justify-between gap-3">
                 <div>
-                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Rich Content</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Konten Kaya</p>
                   <p class="mt-1 text-sm text-stone-500">Editor sederhana dengan toolbar untuk heading, callout, dan checklist.</p>
                 </div>
                 <div class="flex flex-wrap gap-2">
                   <button type="button" @click="wrapContent('h2')" class="rounded-full border border-stone-200 bg-white px-3 py-2 text-xs font-semibold text-stone-700">H2</button>
-                  <button type="button" @click="wrapContent('callout')" class="rounded-full border border-stone-200 bg-white px-3 py-2 text-xs font-semibold text-stone-700">Callout</button>
+                  <button type="button" @click="wrapContent('callout')" class="rounded-full border border-stone-200 bg-white px-3 py-2 text-xs font-semibold text-stone-700">Sorotan</button>
                   <button type="button" @click="insertChecklist()" class="rounded-full border border-stone-200 bg-white px-3 py-2 text-xs font-semibold text-stone-700">Checklist</button>
                 </div>
               </div>
@@ -376,10 +360,10 @@
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
               <div class="flex items-center justify-between gap-3">
                 <div>
-                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Linked Tasks</p>
-                  <p class="mt-1 text-sm text-stone-500">Pilih task yang menggunakan SOP / note ini sebagai panduan kerja.</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tugas Terkait</p>
+                  <p class="mt-1 text-sm text-stone-500">Pilih tugas yang menggunakan SOP / catatan ini sebagai panduan kerja.</p>
                 </div>
-                <span class="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-500">{{ noteForm.linked_task_ids.length }} selected</span>
+                <span class="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-500">{{ noteForm.linked_task_ids.length }} dipilih</span>
               </div>
               <select v-model="noteForm.linked_task_ids" multiple class="mt-4 min-h-[180px] w-full rounded-[1.4rem] border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
                 <option v-for="task in filterOptions.tasks" :key="task.id" :value="task.id">{{ task.title }}</option>
@@ -388,10 +372,10 @@
 
             <div class="flex flex-wrap items-center justify-end gap-3">
               <button type="button" @click="closeNoteModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">
-                Cancel
+                Batal
               </button>
               <button type="submit" :disabled="noteForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">
-                {{ isEditingNote ? 'Save Note' : 'Create Note' }}
+                {{ isEditingNote ? 'Simpan Catatan' : 'Buat Catatan' }}
               </button>
             </div>
           </form>
@@ -407,7 +391,7 @@
             <div class="relative">
               <div class="flex flex-wrap items-start justify-between gap-4">
                 <div class="max-w-3xl">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Note Detail</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Detail Catatan</p>
                   <h3 class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-white">{{ selectedNote.title }}</h3>
                   <div class="mt-4 flex flex-wrap items-center gap-2">
                     <span class="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]" :class="noteTypeClass(selectedNote.type)">{{ selectedNote.type_label }}</span>
@@ -415,15 +399,15 @@
                     <span class="rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">v{{ selectedNote.version }}</span>
                   </div>
                   <div class="mt-4 flex flex-wrap gap-3 text-sm text-stone-300">
-                    <span>{{ selectedNote.project?.name || 'Global note' }}</span>
-                    <span>{{ selectedNote.folder?.name || 'No folder' }}</span>
-                    <span>{{ selectedNote.updated_at_label || 'No updates yet' }}</span>
+                    <span>{{ selectedNote.project?.name || 'Catatan umum' }}</span>
+                    <span>{{ selectedNote.folder?.name || 'Tanpa folder' }}</span>
+                    <span>{{ selectedNote.updated_at_label || 'Belum ada pembaruan' }}</span>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
                   <button type="button" @click="openNoteModal(selectedNote)" class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15">
                     <Pencil class="h-4 w-4" />
-                    <span>Edit</span>
+                    <span>Ubah</span>
                   </button>
                   <button type="button" @click="closeDetailModal" class="rounded-full border border-white/15 bg-white/10 p-2 text-stone-200 transition hover:bg-white/15 hover:text-white">
                     <X class="h-5 w-5" />
@@ -435,24 +419,24 @@
 
           <div class="mt-6 grid gap-6 xl:grid-cols-[1fr_0.9fr]">
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Content</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Konten</p>
               <div class="mt-4 rounded-[1.4rem] border border-stone-200 bg-stone-50 p-5">
                 <div class="prose prose-stone max-w-none whitespace-pre-wrap text-sm leading-7 text-stone-700">{{ selectedNote.content || 'Belum ada konten.' }}</div>
               </div>
             </section>
 
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Version History</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Riwayat Versi</p>
               <div class="mt-4 space-y-3">
                 <article v-for="revision in selectedNote.revisions" :key="revision.id" class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
                   <div class="flex items-start justify-between gap-3">
                     <div>
                       <p class="text-sm font-semibold text-stone-950">Version {{ revision.version }}</p>
-                      <p class="mt-2 text-xs text-stone-500">{{ revision.created_at_label || '-' }} by {{ revision.creator?.name || 'System' }}</p>
+                      <p class="mt-2 text-xs text-stone-500">{{ revision.created_at_label || '-' }} oleh {{ revision.creator?.name || 'Sistem' }}</p>
                     </div>
                     <span class="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">Snapshot</span>
                   </div>
-                  <p class="mt-3 text-sm leading-6 text-stone-600">{{ revision.content_preview || 'No preview' }}</p>
+                  <p class="mt-3 text-sm leading-6 text-stone-600">{{ revision.content_preview || 'Preview belum tersedia' }}</p>
                 </article>
                 <div v-if="selectedNote.revisions.length === 0" class="rounded-[1.2rem] border border-dashed border-stone-200 bg-stone-50 px-4 py-8 text-center text-sm text-stone-500">
                   Belum ada version history.
@@ -464,12 +448,12 @@
           <section class="mt-6 rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
             <div class="flex items-center justify-between gap-3">
               <div>
-                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Linked Tasks</p>
-                <p class="mt-1 text-sm text-stone-500">Task yang memakai SOP / note ini.</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tugas Terkait</p>
+                <p class="mt-1 text-sm text-stone-500">Tugas yang memakai SOP / catatan ini.</p>
               </div>
               <a :href="`/w/${workspace.slug}/tasks?search=${encodeURIComponent(selectedNote.title)}`" class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-300 hover:text-stone-950">
                 <ArrowUpRight class="h-4 w-4" />
-                <span>Open Tasks</span>
+                <span>Buka Tugas</span>
               </a>
             </div>
 
@@ -478,7 +462,7 @@
                 <div class="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p class="text-sm font-semibold text-stone-950">{{ task.title }}</p>
-                    <p class="mt-2 text-xs text-stone-500">{{ task.assignee?.name || 'Unassigned' }} / {{ task.due_date_label || 'No due date' }}</p>
+                    <p class="mt-2 text-xs text-stone-500">{{ task.assignee?.name || 'Belum ditugaskan' }} / {{ task.due_date_label || 'Belum ada tenggat' }}</p>
                   </div>
                   <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em]" :class="taskStatusClass(task.status)">{{ statusLabel(task.status) }}</span>
                 </div>
@@ -491,6 +475,7 @@
         </div>
       </div>
     </Transition>
+    </ProjectLayout>
   </WorkspaceLayout>
 </template>
 
@@ -510,6 +495,7 @@ import {
   X,
 } from 'lucide-vue-next'
 import WorkspaceLayout from '../../Layouts/WorkspaceLayout.vue'
+import ProjectLayout from '../../Layouts/ProjectLayout.vue'
 
 const props = defineProps({
   workspace: { type: Object, required: true },
@@ -666,7 +652,7 @@ function submitNote() {
 }
 
 function deleteNote(noteId) {
-  if (!confirm('Delete this note?')) {
+  if (!confirm('Hapus catatan ini?')) {
     return
   }
 
@@ -712,7 +698,7 @@ function submitFolder() {
 }
 
 function deleteFolder(folderId) {
-  if (!confirm('Delete this folder?')) {
+  if (!confirm('Hapus folder ini?')) {
     return
   }
 
@@ -736,7 +722,7 @@ function cloneTemplate(template) {
   openNoteModal({
     ...template,
     type: 'sop',
-    title: `${template.title} Copy`,
+    title: `${template.title} Salinan`,
     content: template.content,
   })
 }
@@ -745,12 +731,12 @@ function wrapContent(kind) {
   const value = noteForm.content || ''
 
   if (kind === 'h2') {
-    noteForm.content = `## Heading\n${value}`.trim()
+    noteForm.content = `## Judul Bagian\n${value}`.trim()
     return
   }
 
   if (kind === 'callout') {
-    noteForm.content = `> Callout\n${value}`.trim()
+    noteForm.content = `> Sorotan\n${value}`.trim()
   }
 }
 
@@ -782,10 +768,10 @@ function taskStatusClass(status) {
 
 function statusLabel(status) {
   const map = {
-    todo: 'To Do',
-    in_progress: 'In Progress',
+    todo: 'Belum Dikerjakan',
+    in_progress: 'Sedang Dikerjakan',
     review: 'Review',
-    done: 'Done',
+    done: 'Selesai',
   }
 
   return map[status] || status

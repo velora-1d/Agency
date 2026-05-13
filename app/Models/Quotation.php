@@ -85,6 +85,16 @@ class Quotation extends Model
         return $this->hasMany(Quotation::class, 'parent_quotation_id');
     }
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function approver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
     public function recalculateTotals(): void
     {
         $subtotal = $this->items()->sum('subtotal');

@@ -27,6 +27,7 @@ class ContractTemplateController extends Controller
             payload: [
                 'templates' => $templates,
             ],
+            activeLabel: 'Projects',
         );
     }
 

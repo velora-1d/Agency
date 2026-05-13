@@ -1,5 +1,5 @@
 <template>
-  <WorkspaceLayout :title="project.name" subtitle="Command center untuk project: overview, timeline, team, deliverables, invoice, notes, dan activity log.">
+  <WorkspaceLayout :title="project.name" subtitle="Ringkasan operasional: pantau progres, anggota tim, deliverable, dan biaya dalam satu layar.">
     <template #actions>
       <button
         type="button"
@@ -7,48 +7,55 @@
         class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-stone-300 hover:text-stone-950"
       >
         <ArrowLeft class="h-4 w-4" />
-        <span>Back to Projects</span>
+        <span>Kembali ke Proyek</span>
       </button>
     </template>
 
-    <div class="space-y-6">
-      <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
+    <ProjectLayout :workspace="workspace">
+      <div class="space-y-6">
+      <section class="compact-stat-grid md:grid-cols-2 xl:grid-cols-5">
+        <article class="compact-stat-card">
           <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Progress</p>
           <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ project.progress }}%</p>
-          <p class="mt-2 text-sm text-stone-500">{{ project.counts.completed_tasks }} / {{ project.counts.tasks }} tasks done</p>
+          <p class="mt-2 text-sm text-stone-500">{{ project.counts.completed_tasks }} / {{ project.counts.tasks }} task selesai</p>
         </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
+        <article class="compact-stat-card">
           <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Budget</p>
           <p class="mt-3 text-lg font-semibold tracking-[-0.04em] text-stone-950">{{ project.budget_label }}</p>
-          <p class="mt-2 text-sm text-stone-500">Actual {{ project.actual_cost_label }}</p>
+          <p class="mt-2 text-sm text-stone-500">Aktual {{ project.actual_cost_label }}</p>
         </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Files</p>
+        <article class="compact-stat-card">
+          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">File</p>
           <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ project.counts.files }}</p>
-          <p class="mt-2 text-sm text-stone-500">{{ project.counts.pending_approvals }} pending approval</p>
+          <p class="mt-2 text-sm text-stone-500">{{ project.counts.pending_approvals }} menunggu approval</p>
         </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Meetings</p>
+        <article class="compact-stat-card">
+          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Rapat</p>
           <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ project.counts.meetings }}</p>
-          <p class="mt-2 text-sm text-stone-500">Invoices {{ project.counts.invoices }}</p>
+          <p class="mt-2 text-sm text-stone-500">Invoice {{ project.counts.invoices }}</p>
         </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Activity</p>
+        <article class="compact-stat-card">
+          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Aktivitas</p>
           <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ project.counts.activities }}</p>
           <p class="mt-2 text-sm text-stone-500">{{ project.created_at_label }}</p>
         </article>
       </section>
 
-      <section class="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+      <section class="project-hero-shell">
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div class="flex flex-wrap items-center gap-2">
-              <span class="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em]" :class="statusClass(project.status)">
+              <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-amber-700 border border-amber-100">
+                {{ project.brand }}
+              </span>
+              <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest" :class="project.members.length > 1 ? 'bg-sky-50 text-sky-700 border border-sky-100' : 'bg-stone-50 text-stone-600 border border-stone-100'">
+                {{ project.members.length > 1 ? 'Tim' : 'Solo' }}
+              </span>
+              <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em]" :class="statusClass(project.status)">
                 {{ project.status_label }}
               </span>
               <span v-if="project.portal_enabled" class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-700">
-                Client Portal Enabled
+                Portal Klien Aktif
               </span>
               <span v-if="project.template" class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-amber-700">
                 {{ project.template.name }}
@@ -58,7 +65,7 @@
             <p class="mt-2 max-w-4xl text-base leading-7 text-stone-500">{{ project.description || 'Belum ada deskripsi scope project.' }}</p>
           </div>
           <div class="rounded-[1.6rem] border border-stone-200 bg-stone-50 px-5 py-4">
-            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Timeline</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Linimasa</p>
             <p class="mt-2 text-sm font-semibold text-stone-950">{{ project.timeline_label }}</p>
             <p class="mt-1 text-xs" :class="timelineTextClass(project.timeline_state)">{{ timelineCaption(project.timeline_state) }}</p>
           </div>
@@ -66,39 +73,39 @@
 
         <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <div class="rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
-            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Client</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Klien</p>
             <div class="mt-3 space-y-2 text-sm text-stone-700">
-              <p>{{ project.client?.company_name || 'Belum terhubung ke client' }}</p>
-              <p>{{ project.overview.portal.enabled ? 'Portal read-only aktif' : 'Portal belum aktif' }}</p>
+              <p>{{ project.client?.company_name || 'Belum terhubung ke klien' }}</p>
+              <p>{{ project.overview.portal.enabled ? 'Portal baca aktif' : 'Portal belum aktif' }}</p>
             </div>
           </div>
           <div class="rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
-            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Finance</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Keuangan</p>
             <div class="mt-3 space-y-2 text-sm text-stone-700">
               <p>Budget {{ project.budget_label }}</p>
-              <p>Actual {{ project.actual_cost_label }}</p>
-              <p>Remaining {{ project.remaining_budget_label }}</p>
+              <p>Aktual {{ project.actual_cost_label }}</p>
+              <p>Sisa {{ project.remaining_budget_label }}</p>
             </div>
           </div>
           <div class="rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
-            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Team</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tim</p>
             <div class="mt-3 space-y-2 text-sm text-stone-700">
-              <p>{{ project.members.length ? project.members.map((member) => member.name).join(', ') : 'Belum ada team member' }}</p>
-              <p>{{ project.creator?.name || 'Unknown creator' }}</p>
+              <p>{{ project.members.length ? project.members.map((member) => member.name).join(', ') : 'Belum ada anggota tim' }}</p>
+              <p>{{ project.creator?.name || 'Pembuat belum diketahui' }}</p>
             </div>
           </div>
           <div class="rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
-            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Signals</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Sinyal</p>
             <div class="mt-3 space-y-2 text-sm text-stone-700">
               <p>{{ project.counts.pending_approvals }} deliverable menunggu approval</p>
-              <p>{{ project.counts.approved_deliverables }} deliverable approved</p>
+              <p>{{ project.counts.approved_deliverables }} deliverable disetujui</p>
             </div>
           </div>
         </div>
 
         <div class="mt-8">
           <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">
-            <span>Overall Progress</span>
+            <span>Progres Total</span>
             <span>{{ project.progress }}%</span>
           </div>
           <div class="mt-2 h-3 rounded-full bg-stone-200">
@@ -126,20 +133,20 @@
         <div v-if="activeTab === 'overview'" class="mt-6 grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
           <div class="space-y-4">
             <article class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Team Members</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Anggota Tim</p>
               <div class="mt-4 grid gap-3 md:grid-cols-2">
                 <div v-for="member in project.members" :key="member.id" class="rounded-[1.2rem] border border-white bg-white p-4">
                   <p class="text-sm font-semibold text-stone-950">{{ member.name }}</p>
-                  <p class="mt-1 text-xs uppercase tracking-[0.16em] text-stone-500">{{ member.role || 'General member' }}</p>
+                  <p class="mt-1 text-xs uppercase tracking-[0.16em] text-stone-500">{{ member.role || 'Anggota umum' }}</p>
                 </div>
                 <div v-if="project.members.length === 0" class="rounded-[1.2rem] border border-dashed border-stone-200 bg-white px-4 py-8 text-center text-sm text-stone-500">
-                  Belum ada team member.
+                  Belum ada anggota tim.
                 </div>
               </div>
             </article>
 
             <article class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tags & Scope Signals</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tag & Sinyal Scope</p>
               <div class="mt-4 flex flex-wrap gap-2">
                 <span
                   v-for="tag in project.tags"
@@ -148,19 +155,19 @@
                 >
                   {{ tag }}
                 </span>
-                <span v-if="project.tags.length === 0" class="text-sm text-stone-500">Belum ada tags.</span>
+                <span v-if="project.tags.length === 0" class="text-sm text-stone-500">Belum ada tag.</span>
               </div>
             </article>
 
             <article class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Default Task Blueprint</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Blueprint Tugas Default</p>
               <ul class="mt-4 space-y-3">
                 <li v-for="task in project.overview.default_tasks" :key="task" class="flex items-start gap-3 rounded-[1.1rem] border border-white bg-white px-4 py-3 text-sm text-stone-700">
                   <span class="mt-1.5 h-2 w-2 rounded-full bg-amber-500"></span>
                   <span>{{ task }}</span>
                 </li>
                 <li v-if="project.overview.default_tasks.length === 0" class="rounded-[1.1rem] border border-dashed border-stone-200 bg-white px-4 py-8 text-center text-sm text-stone-500">
-                  Template belum memiliki default tasks.
+                  Templat belum memiliki tugas bawaan.
                 </li>
               </ul>
             </article>
@@ -168,48 +175,48 @@
 
           <div class="space-y-4">
             <article class="rounded-[1.6rem] border border-stone-200 bg-stone-950 p-5 text-white">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-200/70">Client Portal Snapshot</p>
-              <h3 class="mt-3 text-xl font-semibold">{{ project.overview.portal.client_name || 'No client linked' }}</h3>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-200/70">Ringkasan Portal Klien</p>
+              <h3 class="mt-3 text-xl font-semibold">{{ project.overview.portal.client_name || 'Belum ada klien terkait' }}</h3>
               <p class="mt-3 text-sm leading-6 text-stone-300">
-                {{ project.overview.portal.enabled ? 'Client dapat melihat progress secara read-only, approve deliverable, dan mengunduh invoice terkait project ini.' : 'Portal client belum aktif untuk project ini. Aktifkan di data client jika workflow approval client diperlukan.' }}
+                {{ project.overview.portal.enabled ? 'Klien dapat melihat progres secara baca saja, menyetujui deliverable, dan mengunduh invoice terkait project ini.' : 'Portal klien belum aktif untuk project ini. Aktifkan di data klien jika alur approval klien diperlukan.' }}
               </p>
               <div class="mt-5 rounded-[1.2rem] border border-white/10 bg-white/5 p-4">
-                <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Invoice Downloads</p>
+                <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Unduhan Invoice</p>
                 <p class="mt-2 text-lg font-semibold text-white">{{ project.overview.portal.invoice_download_count }}</p>
               </div>
             </article>
 
             <article class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Deliverable Approvals</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Persetujuan Deliverable</p>
               <div class="mt-4 grid gap-3 md:grid-cols-2">
                 <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
-                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Pending</p>
+                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Menunggu</p>
                   <p class="mt-2 text-2xl font-semibold text-stone-950">{{ project.overview.approvals.pending }}</p>
                 </div>
                 <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
-                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Approved</p>
+                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Disetujui</p>
                   <p class="mt-2 text-2xl font-semibold text-stone-950">{{ project.overview.approvals.approved }}</p>
                 </div>
               </div>
               <p class="mt-4 text-sm leading-6 text-stone-500">
-                Approval system deliverable dibaca dari file yang terhubung ke project ini. Saat file manager nanti diisi, status pending/approved akan langsung terlihat di overview project.
+                Status persetujuan deliverable dibaca dari file yang terhubung ke project ini. Saat file manager terisi, status menunggu dan disetujui akan langsung terlihat di ringkasan project.
               </p>
             </article>
 
             <article class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Recent Delivery Snapshot</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Snapshot Delivery Terkini</p>
               <div class="mt-4 grid gap-3">
                 <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
-                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Tasks</p>
-                  <p class="mt-2 text-sm text-stone-700">{{ project.counts.tasks }} total · {{ project.counts.completed_tasks }} selesai</p>
+                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Tugas</p>
+                  <p class="mt-2 text-sm text-stone-700">{{ project.counts.tasks }} total / {{ project.counts.completed_tasks }} selesai</p>
                 </div>
                 <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
-                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Files & Notes</p>
-                  <p class="mt-2 text-sm text-stone-700">{{ project.counts.files }} files · {{ project.counts.notes }} notes/SOP</p>
+                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">File & Catatan</p>
+                  <p class="mt-2 text-sm text-stone-700">{{ project.counts.files }} file / {{ project.counts.notes }} catatan/SOP</p>
                 </div>
                 <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
-                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Meetings & Invoices</p>
-                  <p class="mt-2 text-sm text-stone-700">{{ project.counts.meetings }} meetings · {{ project.counts.invoices }} invoices</p>
+                  <p class="text-xs uppercase tracking-[0.18em] text-stone-400">Rapat & Invoice</p>
+                  <p class="mt-2 text-sm text-stone-700">{{ project.counts.meetings }} meeting / {{ project.counts.invoices }} invoice</p>
                 </div>
               </div>
             </article>
@@ -222,22 +229,22 @@
               <div>
                 <h3 class="text-sm font-semibold text-stone-950">{{ task.title }}</h3>
                 <p class="mt-2 text-xs text-stone-500">
-                  {{ task.assignee?.name || 'Unassigned' }} · {{ task.priority }} · {{ task.subtask_count }} subtasks
+                  {{ task.assignee?.name || 'Belum ditugaskan' }} / {{ task.priority }} / {{ task.subtask_count }} subtask
                 </p>
               </div>
               <div class="text-right">
                 <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="taskStatusClass(task.status)">
                   {{ task.status }}
                 </span>
-                <p class="mt-2 text-xs text-stone-500">{{ task.due_date_label || 'No due date' }}</p>
+                <p class="mt-2 text-xs text-stone-500">{{ task.due_date_label || 'Belum ada due date' }}</p>
               </div>
             </div>
             <div class="mt-4 grid gap-3 md:grid-cols-2">
               <div class="rounded-[1.2rem] border border-white bg-white p-4 text-sm text-stone-700">
-                Estimated {{ task.estimated_hours ?? 0 }}h
+                Estimasi {{ task.estimated_hours ?? 0 }}h
               </div>
               <div class="rounded-[1.2rem] border border-white bg-white p-4 text-sm text-stone-700">
-                Actual {{ task.actual_hours ?? 0 }}h
+                Aktual {{ task.actual_hours ?? 0 }}h
               </div>
             </div>
           </article>
@@ -251,7 +258,7 @@
             <div class="flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-sm font-semibold text-stone-950">{{ file.original_name || file.name }}</h3>
-                <p class="mt-2 text-xs text-stone-500">{{ file.mime_type || 'Unknown type' }} · {{ file.size_label }}</p>
+                <p class="mt-2 text-xs text-stone-500">{{ file.mime_type || 'Tipe tidak diketahui' }} / {{ file.size_label }}</p>
               </div>
               <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="approvalClass(file.approval_status)">
                 {{ file.approval_status || 'draft' }}
@@ -259,7 +266,7 @@
             </div>
             <div class="mt-4 grid gap-3 md:grid-cols-2">
               <div class="rounded-[1.2rem] border border-white bg-white p-4 text-sm text-stone-700">
-                Version {{ file.version }}
+                Versi {{ file.version }}
               </div>
               <div class="rounded-[1.2rem] border border-white bg-white p-4 text-sm text-stone-700">
                 {{ file.created_at_label || 'Baru diunggah' }}
@@ -276,11 +283,11 @@
             <div class="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h3 class="text-sm font-semibold text-stone-950">{{ note.title }}</h3>
-                <p class="mt-2 text-xs text-stone-500">Type {{ note.type }} · Version {{ note.version }}</p>
+                <p class="mt-2 text-xs text-stone-500">Tipe {{ note.type }} / Versi {{ note.version }}</p>
               </div>
               <div class="text-right text-xs text-stone-500">
-                <p>{{ note.updated_at_label || 'No updates yet' }}</p>
-                <p class="mt-2">{{ note.is_private ? 'Private' : 'Shared' }}</p>
+                <p>{{ note.updated_at_label || 'Belum ada update' }}</p>
+                <p class="mt-2">{{ note.is_private ? 'Privat' : 'Dibagikan' }}</p>
               </div>
             </div>
           </article>
@@ -295,13 +302,13 @@
               <div>
                 <h3 class="text-sm font-semibold text-stone-950">{{ meeting.title }}</h3>
                 <p class="mt-2 text-xs text-stone-500">{{ meeting.scheduled_at_label || 'Belum dijadwalkan' }}</p>
-                <p class="mt-2 text-xs text-stone-500">{{ meeting.meeting_url || 'Meeting link belum diisi' }}</p>
+                <p class="mt-2 text-xs text-stone-500">{{ meeting.meeting_url || 'Link meeting belum diisi' }}</p>
               </div>
               <div class="text-right">
                 <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="meetingStatusClass(meeting.status)">
                   {{ meeting.status }}
                 </span>
-                <p class="mt-2 text-xs text-stone-500">{{ meeting.duration_minutes || 0 }} minutes</p>
+                <p class="mt-2 text-xs text-stone-500">{{ meeting.duration_minutes || 0 }} menit</p>
               </div>
             </div>
           </article>
@@ -314,12 +321,12 @@
           <table class="min-w-full divide-y divide-stone-200 text-sm">
             <thead class="bg-stone-50 text-left text-[11px] font-bold uppercase tracking-[0.22em] text-stone-400">
               <tr>
-                <th class="px-4 py-3">Number</th>
-                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Nomor</th>
+                <th class="px-4 py-3">Tipe</th>
                 <th class="px-4 py-3">Status</th>
                 <th class="px-4 py-3">Total</th>
-                <th class="px-4 py-3">Paid</th>
-                <th class="px-4 py-3">Due Date</th>
+                <th class="px-4 py-3">Terbayar</th>
+                <th class="px-4 py-3">Jatuh Tempo</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-stone-100 bg-white">
@@ -343,7 +350,7 @@
             <div class="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p class="text-sm font-semibold text-stone-900">{{ activity.description }}</p>
-                <p class="mt-2 text-xs text-stone-500">{{ activity.user?.name || 'System' }} · {{ activity.created_at || '-' }}</p>
+                <p class="mt-2 text-xs text-stone-500">{{ activity.user?.name || 'Sistem' }} / {{ activity.created_at || '-' }}</p>
               </div>
               <span class="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]" :class="activityBadgeClass(activity.metadata?.action)">
                 {{ activity.metadata?.action || activity.type }}
@@ -351,11 +358,12 @@
             </div>
           </article>
           <div v-if="activities.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-200 bg-stone-50 px-5 py-14 text-center text-sm text-stone-500">
-            Belum ada activity log untuk project ini.
+            Belum ada log aktivitas untuk project ini.
           </div>
         </div>
       </section>
     </div>
+    </ProjectLayout>
   </WorkspaceLayout>
 </template>
 
@@ -364,6 +372,7 @@ import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
 import WorkspaceLayout from '../../../Layouts/WorkspaceLayout.vue'
+import ProjectLayout from '../../../Layouts/ProjectLayout.vue'
 
 const props = defineProps({
   workspace: {
@@ -392,13 +401,13 @@ const activities = props.activities
 const activeTab = ref('overview')
 
 const tabItems = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'tasks', label: `Tasks (${tabs.tasks.length})` },
-  { id: 'files', label: `Files (${tabs.files.length})` },
-  { id: 'notes', label: `Notes / SOP (${tabs.notes.length})` },
-  { id: 'meetings', label: `Meetings (${tabs.meetings.length})` },
-  { id: 'invoices', label: `Invoices (${tabs.invoices.length})` },
-  { id: 'activity', label: `Activity (${activities.length})` },
+  { id: 'overview', label: 'Ringkasan' },
+  { id: 'tasks', label: `Tugas (${tabs.tasks.length})` },
+  { id: 'files', label: `File (${tabs.files.length})` },
+  { id: 'notes', label: `Catatan / SOP (${tabs.notes.length})` },
+  { id: 'meetings', label: `Rapat (${tabs.meetings.length})` },
+  { id: 'invoices', label: `Invoice (${tabs.invoices.length})` },
+  { id: 'activity', label: `Aktivitas (${activities.length})` },
 ]
 
 function goBack() {

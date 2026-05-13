@@ -17,6 +17,7 @@ class Subscription extends Model
     protected $fillable = [
         'workspace_id',
         'vendor_id',
+        'transaction_id',
         'name',
         'description',
         'amount',
@@ -35,5 +36,10 @@ class Subscription extends Model
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
+    }
+
+    public function transaction(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class);
     }
 }

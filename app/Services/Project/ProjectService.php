@@ -20,6 +20,7 @@ class ProjectService
 
         $project = Project::query()->create([
             'workspace_id' => $workspace->getKey(),
+            'brand' => $data['brand'] ?? 'Kantor Digital',
             'client_id' => $clientId,
             'template_id' => $template?->getKey(),
             'name' => $data['name'],
@@ -50,6 +51,7 @@ class ProjectService
         $template = $this->resolveTemplate($workspace, $data['template_id'] ?? null);
 
         $project->update([
+            'brand' => $data['brand'] ?? $project->brand,
             'client_id' => $clientId,
             'template_id' => $template?->getKey(),
             'name' => $data['name'],

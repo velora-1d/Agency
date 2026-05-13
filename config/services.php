@@ -41,4 +41,23 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'pakasir' => [
+        'api_key' => env('PAKASIR_API_KEY'),
+        'base_url' => env('PAKASIR_BASE_URL', 'https://app.pakasir.com'),
+        'project' => env('PAKASIR_PROJECT', env('PAKASIR_SLUG')),
+        'webhook_url' => env('PAKASIR_WEBHOOK_URL', env('PAKASIR_WEBHOOK_SECRET')),
+        'payment_methods' => [
+            'pakasir_qris',
+            'pakasir_bni_va',
+            'pakasir_bri_va',
+            'pakasir_bnc_va',
+            'pakasir_cimb_niaga_va',
+            'pakasir_maybank_va',
+            'pakasir_permata_va',
+            'pakasir_atm_bersama_va',
+            'pakasir_artha_graha_va',
+            'pakasir_sampoerna_va',
+        ],
+    ],
+
 ];

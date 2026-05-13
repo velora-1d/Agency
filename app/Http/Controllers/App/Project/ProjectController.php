@@ -25,6 +25,7 @@ class ProjectController extends Controller
             screen: 'Projects/Index',
             title: 'Projects',
             payload: $query->getIndexPayload($workspace, $request->all()),
+            activeLabel: 'Projects',
         );
     }
 
@@ -71,6 +72,7 @@ class ProjectController extends Controller
             screen: 'Projects/Show/Overview',
             title: 'Projects',
             payload: $query->getShowPayload($workspace, $project),
+            activeLabel: 'Projects',
         );
     }
 }

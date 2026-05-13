@@ -1,5 +1,5 @@
 <template>
-  <WorkspaceLayout title="Contract Templates" subtitle="Kelola template kontrak standar untuk mempercepat pembuatan dokumen hukum.">
+  <WorkspaceLayout title="Template Kontrak" subtitle="Pustaka template kontrak untuk mempercepat pembuatan dokumen legal yang konsisten.">
     <template #actions>
       <div class="flex gap-3">
         <button
@@ -8,7 +8,7 @@
           class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:border-stone-300 hover:text-stone-950"
         >
           <ArrowLeft class="h-4 w-4" />
-          <span>Back to Contracts</span>
+          <span>Kembali ke Kontrak</span>
         </button>
         <button
           type="button"
@@ -16,11 +16,12 @@
           class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-stone-800"
         >
           <Plus class="h-4 w-4" />
-          <span>Add Template</span>
+          <span>Tambah Template</span>
         </button>
       </div>
     </template>
 
+    <ProjectLayout :workspace="workspace">
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <article 
         v-for="template in templates" 
@@ -40,7 +41,7 @@
         </div>
 
         <div class="mt-8 flex items-center justify-between border-t border-stone-100 pt-5">
-          <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Reusable Template</span>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Template Siap Pakai</span>
           <div class="flex gap-2">
             <button 
               @click="openEditModal(template)"
@@ -64,7 +65,7 @@
         </div>
         <h3 class="mt-4 text-lg font-semibold text-stone-900">Belum ada template.</h3>
         <p class="mt-1 text-sm text-stone-500">Buat template pertama Anda untuk menghemat waktu pembuatan kontrak.</p>
-        <button @click="openCreateModal" class="mt-6 font-bold text-stone-950 underline underline-offset-4">Create Template Now</button>
+        <button @click="openCreateModal" class="mt-6 font-bold text-stone-950 underline underline-offset-4">Buat Template Sekarang</button>
       </div>
     </div>
 
@@ -74,8 +75,8 @@
         <div class="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-[2.5rem] border border-white/20 bg-white p-8 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Settings</p>
-              <h3 class="mt-2 text-3xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditing ? 'Edit Template' : 'Create Template' }}</h3>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Pengaturan</p>
+              <h3 class="mt-2 text-3xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditing ? 'Ubah Template' : 'Buat Template' }}</h3>
             </div>
             <button type="button" @click="closeModal" class="rounded-full p-2 text-stone-400 transition-all hover:bg-stone-100 hover:text-stone-700">
               <X class="h-6 w-6" />
@@ -85,22 +86,22 @@
           <form class="mt-8 space-y-6" @submit.prevent="submitForm">
             <div class="space-y-4">
               <label class="block space-y-2">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">Template Name</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">Nama Template</span>
                 <input 
                   v-model="form.name" 
                   type="text" 
-                  placeholder="e.g., Software Development Agreement V1" 
+                  
                   class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 text-sm text-stone-950 outline-none transition-all focus:border-stone-400 focus:bg-white" 
                 />
                 <p v-if="form.errors.name" class="text-xs text-rose-500">{{ form.errors.name }}</p>
               </label>
 
               <label class="block space-y-2">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">Standard Content</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">Konten Standar</span>
                 <textarea 
                   v-model="form.content" 
                   rows="12" 
-                  placeholder="Ketik isi standar kontrak di sini..."
+                 
                   class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 text-sm text-stone-950 outline-none transition-all focus:border-stone-400 focus:bg-white"
                 ></textarea>
                 <p v-if="form.errors.content" class="text-xs text-rose-500">{{ form.errors.content }}</p>
@@ -109,20 +110,21 @@
 
             <div class="flex flex-wrap items-center justify-end gap-3 pt-4">
               <button type="button" @click="closeModal" class="rounded-2xl border border-stone-200 bg-white px-6 py-4 text-sm font-semibold text-stone-600 transition-all hover:bg-stone-100 hover:text-stone-900">
-                Cancel
+                Batal
               </button>
               <button 
                 type="submit" 
                 :disabled="form.processing" 
                 class="rounded-2xl bg-stone-950 px-8 py-4 text-sm font-bold text-white transition-all hover:bg-stone-800 disabled:opacity-50"
               >
-                {{ isEditing ? (form.processing ? 'Saving...' : 'Save Template') : (form.processing ? 'Creating...' : 'Create Template') }}
+                {{ isEditing ? (form.processing ? 'Menyimpan...' : 'Simpan Template') : (form.processing ? 'Membuat...' : 'Buat Template') }}
               </button>
             </div>
           </form>
         </div>
       </div>
     </Transition>
+    </ProjectLayout>
   </WorkspaceLayout>
 </template>
 
@@ -131,6 +133,7 @@ import { ref, computed } from 'vue'
 import { router, useForm } from '@inertiajs/vue3'
 import { Plus, ArrowLeft, FileText, Pencil, Trash2, X } from 'lucide-vue-next'
 import WorkspaceLayout from '../../../Layouts/WorkspaceLayout.vue'
+import ProjectLayout from '../../../Layouts/ProjectLayout.vue'
 
 const props = defineProps({
   workspace: Object,
@@ -187,7 +190,7 @@ function submitForm() {
 }
 
 function deleteTemplate(template) {
-  if (!confirm(`Hapus template "${template.name}"? Action ini tidak bisa dibatalkan.`)) return
+  if (!confirm(`Hapus template "${template.name}"? Tindakan ini tidak bisa dibatalkan.`)) return
   
   router.delete(`${templatesBaseUrl}/${encodeURIComponent(template.id)}`, {
     preserveScroll: true,

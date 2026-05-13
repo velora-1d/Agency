@@ -10,117 +10,194 @@ class NavigationService
     {
         return [
             [
-                'section' => 'Main',
+                'section' => 'Utama',
+                'layout' => 'tabs',
                 'items' => [
                     [
                         'label' => 'Dashboard',
+                        'nav_label' => 'Dashboard',
+                        'description' => 'Ringkasan workspace',
+                        'icon' => 'dashboard',
                         'active' => $activeLabel === 'Dashboard',
                         'href' => route('workspace.dashboard', $workspace),
                     ],
                     [
-                        'label' => 'Activity Feed',
+                        'label' => 'Alur Aktivitas',
+                        'nav_label' => 'Aktivitas',
+                        'description' => 'Jejak aktivitas workspace',
+                        'icon' => 'activity',
                         'active' => $activeLabel === 'Activity Feed',
                         'href' => route('workspace.communication.activity-feed', $workspace),
                     ],
                     [
-                        'label' => 'Calendar',
+                        'label' => 'Kalender',
+                        'nav_label' => 'Kalender',
+                        'description' => 'Agenda dan jadwal workspace',
+                        'icon' => 'calendar',
                         'active' => $activeLabel === 'Calendar',
                         'href' => route('workspace.communication.calendar', $workspace),
                     ],
                 ],
             ],
             [
-                'section' => 'CRM & Client',
+                'section' => 'CRM & Klien',
+                'layout' => 'tabs',
                 'items' => [
                     [
-                        'label' => 'Leads / CRM',
+                        'label' => 'Prospek / CRM',
+                        'nav_label' => 'Prospek',
+                        'description' => 'Pipeline dan sumber prospek',
+                        'icon' => 'leads',
                         'active' => $activeLabel === 'Leads',
                         'href' => route('workspace.crm.leads.index', $workspace),
                     ],
                     [
-                        'label' => 'Clients',
+                        'label' => 'Klien',
+                        'nav_label' => 'Klien',
+                        'description' => 'Data akun klien',
+                        'icon' => 'clients',
                         'active' => $activeLabel === 'Clients',
                         'href' => route('workspace.crm.clients.index', $workspace),
                     ],
-                    [
-                        'label' => 'Contracts',
-                        'active' => $activeLabel === 'Contracts',
-                        'href' => route('workspace.projects.contracts.index', $workspace),
-                    ],
-                    [
-                        'label' => 'Support Tickets',
-                        'active' => $activeLabel === 'Support Tickets',
-                        'href' => route('workspace.communication.support-tickets.index', $workspace),
-                    ],
                 ],
             ],
             [
-                'section' => 'Project Management',
+                'section' => 'Manajemen Kerja',
+                'layout' => 'tabs',
                 'items' => [
                     [
-                        'label' => 'Projects',
+                        'label' => 'Operasional',
+                        'nav_label' => 'Operasional',
+                        'description' => 'Pusat eksekusi proyek, tugas, rapat, SOP, dan berkas kerja',
+                        'icon' => 'projects',
                         'active' => $activeLabel === 'Projects',
                         'href' => route('workspace.projects.index', $workspace),
                     ],
-                    [
-                        'label' => 'Tasks',
-                        'active' => $activeLabel === 'Tasks',
-                        'href' => route('workspace.tasks.index', $workspace),
-                    ],
-                    [
-                        'label' => 'Meetings',
-                        'active' => $activeLabel === 'Meetings',
-                        'href' => route('workspace.meetings.index', $workspace),
-                    ],
-                    [
-                        'label' => 'Notes / SOP',
-                        'active' => $activeLabel === 'Notes',
-                        'href' => route('workspace.notes.index', $workspace),
-                    ],
-                    [
-                        'label' => 'Files',
-                        'active' => $activeLabel === 'Files',
-                        'href' => route('workspace.files.index', $workspace),
-                    ],
                 ],
             ],
             [
-                'section' => 'Finance',
+                'section' => 'Keuangan',
+                'layout' => 'tabs',
                 'items' => [
                     [
-                        'label' => 'Finance Overview',
-                        'active' => $activeLabel === 'Finance Overview',
+                        'label' => 'Keuangan',
+                        'nav_label' => 'Keuangan',
+                        'description' => 'Ringkasan dan buku besar',
+                        'icon' => 'finance',
+                        'active' => in_array($activeLabel, [
+                            'Finance', 
+                            'Finance Overview', 
+                            'Quotation', 
+                            'Invoices', 
+                            'Transactions', 
+                            'Subscriptions', 
+                            'Billing', 
+                            'Payroll & Fee', 
+                            'Kas & Bank', 
+                            'Expense & Reimbursement', 
+                            'Laporan Keuangan'
+                        ]),
                         'href' => route('workspace.finance.overview', $workspace),
                     ],
+                ],
+            ],
+            [
+                'section' => 'Komunikasi',
+                'layout' => 'tabs',
+                'items' => [
                     [
-                        'label' => 'Quotation',
-                        'active' => $activeLabel === 'Quotation',
-                        'href' => '#', // To be implemented
-                    ],
-                    [
-                        'label' => 'Invoices',
-                        'active' => $activeLabel === 'Invoices',
-                        'href' => '#', // To be implemented
-                    ],
-                    [
-                        'label' => 'Transactions',
-                        'active' => $activeLabel === 'Transactions',
-                        'href' => '#', // To be implemented
+                        'label' => 'Komunikasi',
+                        'nav_label' => 'Komunikasi',
+                        'description' => 'Kotak masuk, dukungan, dan peringatan',
+                        'icon' => 'inbox',
+                        'active' => in_array($activeLabel, [
+                            'Inbox',
+                            'Support Tickets',
+                            'Notifications',
+                            'Communication',
+                        ], true),
+                        'href' => route('workspace.communication.inbox', $workspace),
                     ],
                 ],
             ],
             [
-                'section' => 'Communication',
+                'section' => 'Otomasi',
+                'layout' => 'tabs',
                 'items' => [
                     [
-                        'label' => 'Inbox',
-                        'active' => $activeLabel === 'Inbox',
-                        'href' => route('workspace.communication.inbox', $workspace),
+                        'label' => 'Otomasi',
+                        'nav_label' => 'Otomasi',
+                        'description' => 'Alur kerja otomatis',
+                        'icon' => 'automation',
+                        'active' => in_array($activeLabel, [
+                            'Automation',
+                            'AI Tools',
+                            'Integrations',
+                            'API Keys',
+                        ], true),
+                        'href' => route('workspace.automation.index', $workspace),
                     ],
+                ],
+            ],
+            [
+                'section' => 'Infrastruktur Digital',
+                'layout' => 'tabs',
+                'items' => [
                     [
-                        'label' => 'Notifications',
-                        'active' => $activeLabel === 'Notifications',
-                        'href' => '#', // To be implemented
+                        'label' => 'Aset Digital',
+                        'nav_label' => 'Infrastruktur',
+                        'description' => 'Manajemen situs web, domain, server/VPS, dan formulir otomatis',
+                        'icon' => 'websites',
+                        'active' => in_array($activeLabel, [
+                            'Digital Services',
+                            'Website Manager',
+                            'Deployments',
+                            'Domains',
+                            'Hosting / VPS',
+                            'Forms',
+                        ], true),
+                        'href' => route('workspace.digital-services.index', $workspace),
+                    ],
+                ],
+            ],
+            [
+                'section' => 'Pemasaran',
+                'layout' => 'tabs',
+                'items' => [
+                    [
+                        'label' => 'Pemasaran',
+                        'nav_label' => 'Pemasaran',
+                        'description' => 'Kampanye, perencana sosial, email, dan analitik',
+                        'icon' => 'marketing',
+                        'active' => in_array($activeLabel, [
+                            'Marketing',
+                            'Marketing Overview',
+                            'Social Media Planner',
+                            'Email Campaigns',
+                            'Analytics',
+                        ], true),
+                        'href' => route('workspace.marketing.index', $workspace),
+                    ],
+                ],
+            ],
+            [
+                'section' => 'Sistem',
+                'layout' => 'tabs',
+                'items' => [
+                    [
+                        'label' => 'Sistem',
+                        'nav_label' => 'Sistem',
+                        'description' => 'Peran, pengaturan, audit, keamanan, dan pusat bantuan',
+                        'icon' => 'system',
+                        'active' => in_array($activeLabel, [
+                            'System',
+                            'Role & Permissions',
+                            'Workspace Settings',
+                            'Audit Logs',
+                            'Security',
+                            'Help Center',
+                        ], true),
+                        'href' => route('workspace.system.index', $workspace),
                     ],
                 ],
             ],

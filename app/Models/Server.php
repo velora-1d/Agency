@@ -17,11 +17,18 @@ class Server extends Model
         'workspace_id',
         'name',
         'ip_address',
+        'ssh_port',
+        'ssh_user',
+        'ssh_password',
         'provider',
         'type',
         'location',
         'specs',
         'os',
+        'control_panel_url',
+        'dokploy_email',
+        'dokploy_username',
+        'dokploy_password',
         'status',
         'last_checked_at',
     ];
@@ -29,6 +36,8 @@ class Server extends Model
     protected $casts = [
         'specs' => 'array',
         'last_checked_at' => 'datetime',
+        'ssh_password' => 'encrypted',
+        'dokploy_password' => 'encrypted',
     ];
 
     public function websites(): HasMany

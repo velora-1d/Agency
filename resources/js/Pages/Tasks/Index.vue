@@ -1,7 +1,7 @@
 <template>
   <WorkspaceLayout
-    title="Tasks"
-    subtitle="Kelola eksekusi task lintas project dengan nested task, dependency, time tracking, recurring rule, comments, dan empat mode tampilan kerja."
+    title="Tugas"
+    subtitle="Pusat eksekusi kerja tim untuk memantau task, dependency, progress, dan waktu kerja lintas project."
   >
     <template #actions>
       <div class="flex flex-wrap items-center gap-3">
@@ -11,7 +11,7 @@
           class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-stone-300 hover:text-stone-950"
         >
           <LayoutTemplate class="h-4 w-4" />
-          <span>Task Templates</span>
+          <span>Templat Tugas</span>
         </button>
         <button
           type="button"
@@ -19,135 +19,128 @@
           class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-stone-800"
         >
           <Plus class="h-4 w-4" />
-          <span>Create Task</span>
+          <span>Buat Tugas</span>
         </button>
       </div>
     </template>
 
-    <div class="space-y-6">
-      <section class="grid gap-4 xl:grid-cols-[1.3fr_0.7fr]">
-        <article class="relative overflow-hidden rounded-[2rem] bg-stone-950 p-6 text-white shadow-[0_28px_90px_rgba(28,25,23,0.18)]">
-          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.28),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.1),transparent_35%)]"></div>
-          <div class="relative">
-            <p class="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-200/75">Menu 9 / Tasks</p>
-            <div class="mt-4 flex flex-wrap items-start justify-between gap-4">
-              <div class="max-w-2xl">
-                <h2 class="text-3xl font-semibold tracking-[-0.05em] text-white">Workspace execution board yang lebih rapi, detail, dan enak dipakai harian.</h2>
-                <p class="mt-3 max-w-xl text-sm leading-6 text-stone-300">
-                  Semua mode kerja task sekarang kebaca lebih jelas: list untuk kontrol detail, kanban untuk flow, calendar untuk deadline, dan gantt untuk sequencing.
-                </p>
-              </div>
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 px-4 py-3 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">Delivery posture</p>
-                <p class="mt-2 text-3xl font-semibold tracking-[-0.05em] text-white">{{ completionRate }}%</p>
-                <p class="mt-1 text-sm text-stone-300">task selesai dari hasil filter aktif</p>
-              </div>
-            </div>
+    <ProjectLayout :workspace="workspace">
+      <div class="space-y-6">
+      <section class="project-hero-shell">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div class="project-hero-copy">
+            <p class="project-hero-kicker">Menu 9 / Tugas</p>
+            <h2 class="project-hero-title">Workspace task board yang lebih ringkas dan gampang dibaca harian.</h2>
+            <p class="project-hero-desc">
+              Daftar, kanban, kalender, dan gantt tetap ada, tapi header sekarang dibuat padat supaya halaman lebih lega dan fokus ke kerjaan utama.
+            </p>
+          </div>
 
-            <div class="mt-6 grid gap-3 md:grid-cols-3">
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">Open Queue</p>
-                <p class="mt-2 text-2xl font-semibold text-white">{{ openQueueCount }}</p>
-                <p class="mt-1 text-sm text-stone-300">task belum selesai di workspace ini</p>
-              </div>
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">Due Soon</p>
-                <p class="mt-2 text-2xl font-semibold text-white">{{ dueSoonCount }}</p>
-                <p class="mt-1 text-sm text-stone-300">deadline dalam 7 hari ke depan</p>
-              </div>
-              <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
-                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-300">Discussion Traffic</p>
-                <p class="mt-2 text-2xl font-semibold text-white">{{ commentTrafficCount }}</p>
-                <p class="mt-1 text-sm text-stone-300">komentar dan mention tercatat</p>
-              </div>
+          <div class="compact-stat-grid min-w-full gap-3 sm:min-w-[22rem] sm:grid-cols-3 xl:w-[26rem]">
+            <div class="compact-stat-card">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Penyelesaian</p>
+              <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ completionRate }}%</p>
+            </div>
+            <div class="compact-stat-card">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Antrean Terbuka</p>
+              <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ openQueueCount }}</p>
+            </div>
+            <div class="compact-stat-card">
+              <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Segera Jatuh Tempo</p>
+              <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ dueSoonCount }}</p>
             </div>
           </div>
+        </div>
+
+        <div class="mt-4 grid gap-3 md:grid-cols-3">
+          <div class="compact-stat-card">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">View aktif</p>
+            <p class="mt-2 text-sm leading-6 text-stone-600">{{ currentViewDescription }}</p>
+          </div>
+          <div class="compact-stat-card">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Tersaring</p>
+            <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ filteredTaskCount }}</p>
+          </div>
+          <div class="compact-stat-card">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Templat</p>
+            <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ taskTemplates.length }}</p>
+          </div>
+        </div>
+
+        <div class="mt-3 rounded-[1rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-3 text-sm leading-6 text-stone-500">
+          Nested task, dependency, recurring rule, comment, dan time log tetap satu halaman, tapi tampilan atasnya dibuat lebih ringan.
+        </div>
+      </section>
+
+      <section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <article class="rounded-[1.4rem] border border-stone-200 bg-white p-4 shadow-[0_14px_40px_rgba(28,25,23,0.04)]">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400">Total Tugas</p>
+          <div class="mt-2 flex items-end justify-between gap-3">
+            <p class="text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ taskSummary.total_tasks }}</p>
+            <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">Semua</span>
+          </div>
+          <p class="mt-2 text-xs leading-5 text-stone-500">Semua task dan subtask pada workspace ini.</p>
         </article>
-
-        <article class="rounded-[2rem] border border-stone-200 bg-[linear-gradient(180deg,#fffdf8_0%,#ffffff_100%)] p-6 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Operational posture</p>
-          <div class="mt-5 space-y-4">
-            <div class="rounded-[1.4rem] border border-stone-200 bg-white p-4">
-              <p class="text-sm font-semibold text-stone-950">View aktif</p>
-              <p class="mt-2 text-sm leading-6 text-stone-600">{{ currentViewDescription }}</p>
-            </div>
-            <div class="grid gap-3 sm:grid-cols-2">
-              <div class="rounded-[1.4rem] border border-stone-200 bg-white p-4">
-                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Filtered tasks</p>
-                <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ filteredTaskCount }}</p>
-              </div>
-              <div class="rounded-[1.4rem] border border-stone-200 bg-white p-4">
-                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Templates</p>
-                <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ taskTemplates.length }}</p>
-              </div>
-            </div>
-            <div class="rounded-[1.4rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-4 text-sm leading-6 text-stone-600">
-              Nested task, dependency, recurring rule, comment, dan time log sudah dipusatkan di satu halaman supaya kontrol eksekusi project lebih cepat.
-            </div>
+        <article class="rounded-[1.4rem] border border-stone-200 bg-white p-4 shadow-[0_14px_40px_rgba(28,25,23,0.04)]">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400">Belum Dikerjakan</p>
+          <div class="mt-2 flex items-end justify-between gap-3">
+            <p class="text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ taskSummary.todo_tasks }}</p>
+            <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">Queue</span>
           </div>
+          <p class="mt-2 text-xs leading-5 text-stone-500">Tugas belum mulai dikerjakan.</p>
+        </article>
+        <article class="rounded-[1.4rem] border border-stone-200 bg-white p-4 shadow-[0_14px_40px_rgba(28,25,23,0.04)]">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400">Sedang Dikerjakan</p>
+          <div class="mt-2 flex items-end justify-between gap-3">
+            <p class="text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ taskSummary.in_progress_tasks }}</p>
+            <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">Live</span>
+          </div>
+          <p class="mt-2 text-xs leading-5 text-stone-500">Tugas yang sedang aktif dikerjakan.</p>
+        </article>
+        <article class="rounded-[1.4rem] border border-stone-200 bg-white p-4 shadow-[0_14px_40px_rgba(28,25,23,0.04)]">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400">Tinjau</p>
+          <div class="mt-2 flex items-end justify-between gap-3">
+            <p class="text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ taskSummary.review_tasks }}</p>
+            <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">Check</span>
+          </div>
+          <p class="mt-2 text-xs leading-5 text-stone-500">Tugas menunggu pengecekan atau approval.</p>
+        </article>
+        <article class="rounded-[1.4rem] border border-stone-200 bg-white p-4 shadow-[0_14px_40px_rgba(28,25,23,0.04)]">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400">Selesai</p>
+          <div class="mt-2 flex items-end justify-between gap-3">
+            <p class="text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ taskSummary.done_tasks }}</p>
+            <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-500">Selesai</span>
+          </div>
+          <p class="mt-2 text-xs leading-5 text-stone-500">Tugas selesai dan tercatat di progres project.</p>
         </article>
       </section>
 
-      <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Total Tasks</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ taskSummary.total_tasks }}</p>
-          <p class="mt-2 text-sm text-stone-500">Semua task dan subtask pada workspace ini.</p>
-        </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">To Do</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ taskSummary.todo_tasks }}</p>
-          <p class="mt-2 text-sm text-stone-500">Task belum mulai dikerjakan.</p>
-        </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">In Progress</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ taskSummary.in_progress_tasks }}</p>
-          <p class="mt-2 text-sm text-stone-500">Task yang sedang aktif dikerjakan.</p>
-        </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Review</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ taskSummary.review_tasks }}</p>
-          <p class="mt-2 text-sm text-stone-500">Task menunggu pengecekan atau approval.</p>
-        </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Done</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ taskSummary.done_tasks }}</p>
-          <p class="mt-2 text-sm text-stone-500">Task selesai dan tercatat di progress project.</p>
-        </article>
-        <article class="rounded-[1.8rem] border border-stone-200 bg-white p-5 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
-          <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Tracked Hours</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ taskSummary.tracked_hours }}</p>
-          <p class="mt-2 text-sm text-stone-500">{{ taskSummary.overdue_tasks }} overdue tasks</p>
-        </article>
-      </section>
-
-      <section class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
-        <div class="mb-5 flex flex-wrap items-start justify-between gap-4">
+      <section class="project-panel-shell">
+        <div class="filter-panel-head mb-5">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Task Filters</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Filter Tugas</p>
             <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Cari bottleneck, assignee, dan prioritas tanpa pindah halaman.</h2>
           </div>
-          <div class="rounded-[1.3rem] border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600">
-            <span class="font-semibold text-stone-950">{{ filteredTaskCount }}</span> task tampil dengan
+          <div class="filter-meta-badge">
+            <span class="font-semibold text-stone-950">{{ filteredTaskCount }}</span> tugas tampil dengan
             <span class="font-semibold text-stone-950"> {{ activeFilterChips.length }}</span> filter aktif
           </div>
         </div>
 
-        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+        <div class="filter-toolbar grid gap-4 md:grid-cols-2 xl:grid-cols-6">
           <label class="space-y-2 text-sm xl:col-span-2">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Search</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Cari</span>
             <input
               v-model="filterState.search"
               type="text"
-              placeholder="Cari task, project, atau konteks kerja"
               class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white"
             />
           </label>
 
           <label class="space-y-2 text-sm">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Project</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Proyek</span>
             <select v-model="filterState.project" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All Projects</option>
+              <option value="">Semua Proyek</option>
               <option v-for="project in filterOptions.projects" :key="project.id" :value="project.id">{{ project.name }}</option>
             </select>
           </label>
@@ -155,38 +148,38 @@
           <label class="space-y-2 text-sm">
             <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Status</span>
             <select v-model="filterState.status" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All Status</option>
+              <option value="">Semua Status</option>
               <option v-for="status in filterOptions.statuses" :key="status.value" :value="status.value">{{ status.label }}</option>
             </select>
           </label>
 
           <label class="space-y-2 text-sm">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Assignee</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Penanggung Jawab</span>
             <select v-model="filterState.assignee" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All Assignees</option>
+              <option value="">Semua Penanggung Jawab</option>
               <option v-for="assignee in filterOptions.assignees" :key="assignee.id" :value="assignee.id">{{ assignee.name }}</option>
             </select>
           </label>
 
           <label class="space-y-2 text-sm">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Priority</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Prioritas</span>
             <select v-model="filterState.priority" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All Priorities</option>
+              <option value="">Semua Prioritas</option>
               <option v-for="priority in filterOptions.priorities" :key="priority.value" :value="priority.value">{{ priority.label }}</option>
             </select>
           </label>
 
           <label class="space-y-2 text-sm">
-            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Recurring</span>
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Berulang</span>
             <select v-model="filterState.recurring" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-              <option value="">All</option>
-              <option value="yes">Recurring</option>
-              <option value="no">One-time</option>
+              <option value="">Semua</option>
+              <option value="yes">Berulang</option>
+              <option value="no">Sekali</option>
             </select>
           </label>
         </div>
 
-        <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+        <div class="filter-actions mt-5 flex flex-wrap items-center justify-between gap-3">
           <div class="flex flex-wrap items-center gap-3">
             <button
               type="button"
@@ -194,7 +187,7 @@
               class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-stone-800"
             >
               <Filter class="h-4 w-4" />
-              <span>Apply Filters</span>
+              <span>Terapkan Filter</span>
             </button>
             <button
               type="button"
@@ -202,11 +195,11 @@
               class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition-all hover:bg-stone-100 hover:text-stone-900"
             >
               <RotateCcw class="h-4 w-4" />
-              <span>Reset</span>
+              <span>Atur Ulang</span>
             </button>
           </div>
 
-          <div class="inline-flex rounded-full border border-stone-200 bg-stone-50 p-1">
+          <div class="segmented-control">
             <button
               v-for="view in viewModes"
               :key="view.id"
@@ -223,7 +216,7 @@
           </div>
         </div>
 
-        <div v-if="activeFilterChips.length" class="mt-5 flex flex-wrap gap-2">
+        <div v-if="activeFilterChips.length" class="filter-chip-row mt-5">
           <button
             v-for="chip in activeFilterChips"
             :key="chip.key"
@@ -241,12 +234,12 @@
         <article class="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
           <div class="flex items-center justify-between border-b border-stone-200 px-6 py-5">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Task View</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Tampilan Tugas</p>
               <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ currentViewTitle }}</h2>
               <p class="mt-2 text-sm text-stone-500">{{ currentViewDescription }}</p>
             </div>
             <span class="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-500">
-              {{ taskItems.length }} tasks
+              {{ taskItems.length }} tugas
             </span>
           </div>
 
@@ -254,11 +247,11 @@
             <table class="min-w-full divide-y divide-stone-200 text-sm">
               <thead class="bg-stone-50 text-left text-[11px] font-bold uppercase tracking-[0.22em] text-stone-400">
                 <tr>
-                  <th class="px-5 py-4">Task</th>
-                  <th class="px-5 py-4">Project</th>
-                  <th class="px-5 py-4">Assignee</th>
-                  <th class="px-5 py-4">Due Date</th>
-                  <th class="px-5 py-4">Progress Signals</th>
+                  <th class="px-5 py-4">Tugas</th>
+                  <th class="px-5 py-4">Proyek</th>
+                  <th class="px-5 py-4">Penanggung Jawab</th>
+                  <th class="px-5 py-4">Tanggal Jatuh Tempo</th>
+                  <th class="px-5 py-4">Sinyal Progres</th>
                   <th class="px-5 py-4"></th>
                 </tr>
               </thead>
@@ -294,7 +287,7 @@
                       </div>
                     </td>
                     <td class="px-5 py-4 align-top text-stone-700">
-                      <p>{{ task.project?.name || 'No project' }}</p>
+                      <p>{{ task.project?.name || 'Tanpa project' }}</p>
                       <p v-if="task.parent_task" class="mt-2 text-xs text-stone-500">Subtask dari {{ task.parent_task.title }}</p>
                     </td>
                     <td class="px-5 py-4 align-top text-stone-700">
@@ -303,18 +296,18 @@
                           {{ task.assignee?.initials || 'NA' }}
                         </div>
                         <div>
-                          <p>{{ task.assignee?.name || 'Unassigned' }}</p>
-                          <p class="mt-1 text-xs text-stone-500">{{ task.template?.title || 'Manual task' }}</p>
+                          <p>{{ task.assignee?.name || 'Belum ditugaskan' }}</p>
+                          <p class="mt-1 text-xs text-stone-500">{{ task.template?.title || 'Tugas manual' }}</p>
                         </div>
                       </div>
                     </td>
                     <td class="px-5 py-4 align-top">
-                      <p class="text-stone-700">{{ task.due_date_label || 'No due date' }}</p>
+                      <p class="text-stone-700">{{ task.due_date_label || 'Belum ada tenggat' }}</p>
                       <p class="mt-2 text-xs" :class="dueToneClass(task)">{{ dueTone(task) }}</p>
                     </td>
                     <td class="px-5 py-4 align-top text-stone-700">
-                      <p>{{ task.counts.subtasks }} subtasks / {{ task.counts.dependencies }} dependencies</p>
-                      <p class="mt-2 text-xs text-stone-500">{{ trackedHoursLabel(task) }} / {{ task.counts.comments }} comments</p>
+                      <p>{{ task.counts.subtasks }} subtugas / {{ task.counts.dependencies }} dependensi</p>
+                      <p class="mt-2 text-xs text-stone-500">{{ trackedHoursLabel(task) }} / {{ task.counts.comments }} komentar</p>
                       <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-stone-100">
                         <div class="h-full rounded-full bg-stone-900" :style="{ width: taskEffortWidth(task) }"></div>
                       </div>
@@ -356,11 +349,11 @@
                         </div>
                       </div>
                     </td>
-                    <td class="px-5 py-4 align-top text-stone-700">{{ subtask.project?.name || 'No project' }}</td>
-                    <td class="px-5 py-4 align-top text-stone-700">{{ subtask.assignee?.name || 'Unassigned' }}</td>
-                    <td class="px-5 py-4 align-top text-stone-700">{{ subtask.due_date_label || 'No due date' }}</td>
+                    <td class="px-5 py-4 align-top text-stone-700">{{ subtask.project?.name || 'Tanpa project' }}</td>
+                    <td class="px-5 py-4 align-top text-stone-700">{{ subtask.assignee?.name || 'Belum ditugaskan' }}</td>
+                    <td class="px-5 py-4 align-top text-stone-700">{{ subtask.due_date_label || 'Belum ada tenggat' }}</td>
                     <td class="px-5 py-4 align-top text-stone-700">
-                      <p>{{ subtask.counts.dependencies }} dependencies</p>
+                      <p>{{ subtask.counts.dependencies }} dependensi</p>
                     </td>
                     <td class="px-5 py-4 align-top text-right">
                       <div class="flex justify-end gap-2">
@@ -392,7 +385,7 @@
               <div class="flex items-center justify-between">
                 <div>
                   <p class="text-sm font-semibold text-stone-950">{{ column.label }}</p>
-                  <p class="mt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">{{ column.items.length }} cards</p>
+                  <p class="mt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">{{ column.items.length }} kartu</p>
                 </div>
                 <span class="h-2.5 w-2.5 rounded-full" :class="column.dotClass"></span>
               </div>
@@ -401,7 +394,7 @@
                 v-if="dragOverColumn === column.id && draggingTaskId"
                 class="mt-4 rounded-[1.2rem] border border-dashed border-amber-300 bg-amber-50 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-amber-700"
               >
-                Drop here to move task
+                Seret ke sini untuk memindahkan tugas
               </div>
 
               <div class="mt-4 space-y-3">
@@ -424,11 +417,11 @@
                       <div class="flex items-center gap-2 text-stone-400">
                         <GripVertical class="h-4 w-4" />
                         <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">
-                          {{ task.project?.name || 'No project' }}
+                          {{ task.project?.name || 'Tanpa project' }}
                         </span>
                       </div>
                       <h3 class="mt-3 text-sm font-semibold text-stone-950">{{ task.title }}</h3>
-                      <p class="mt-2 text-xs text-stone-500">{{ task.assignee?.name || 'Unassigned' }}</p>
+                      <p class="mt-2 text-xs text-stone-500">{{ task.assignee?.name || 'Belum ditugaskan' }}</p>
                     </div>
                     <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="priorityClass(task.priority)">
                       {{ task.priority_label }}
@@ -437,18 +430,18 @@
                   <p class="mt-3 line-clamp-2 text-sm text-stone-600">{{ task.description || 'Belum ada deskripsi task.' }}</p>
                   <div class="mt-4 flex flex-wrap gap-2">
                     <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">
-                      {{ task.counts.subtasks }} subtasks
+                      {{ task.counts.subtasks }} subtugas
                     </span>
                     <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">
-                      {{ task.counts.dependencies }} dependencies
+                      {{ task.counts.dependencies }} dependensi
                     </span>
                     <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">
-                      {{ task.counts.comments }} comments
+                      {{ task.counts.comments }} komentar
                     </span>
                   </div>
                   <div class="mt-4 flex items-center justify-between text-xs text-stone-500">
                     <span>{{ trackedHoursLabel(task) }}</span>
-                    <span :class="dueToneClass(task)">{{ task.due_date_label || 'No due date' }}</span>
+                    <span :class="dueToneClass(task)">{{ task.due_date_label || 'Belum ada tenggat' }}</span>
                   </div>
                 </button>
 
@@ -468,11 +461,11 @@
                 Prev
               </button>
               <div class="text-center">
-                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Task Calendar</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Kalender Tugas</p>
                 <h3 class="mt-1 text-lg font-semibold text-stone-950">{{ currentMonth.format('MMMM YYYY') }}</h3>
               </div>
               <button type="button" @click="currentMonth = currentMonth.add(1, 'month')" class="rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:bg-stone-50">
-                Next
+                Berikutnya
               </button>
             </div>
 
@@ -504,7 +497,7 @@
                     :class="task.is_overdue ? 'bg-rose-50 text-rose-700' : 'bg-stone-50 text-stone-700'"
                   >
                     <p class="font-semibold">{{ task.title }}</p>
-                    <p class="mt-1">{{ task.project?.name || 'No project' }}</p>
+                    <p class="mt-1">{{ task.project?.name || 'Tanpa project' }}</p>
                   </button>
                 </div>
               </article>
@@ -514,15 +507,15 @@
           <div v-else class="p-4">
             <div class="mb-4 flex items-center justify-between gap-3">
               <div>
-                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Gantt View</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Tampilan Gantt</p>
                 <h3 class="mt-1 text-lg font-semibold text-stone-950">{{ currentMonth.format('MMMM YYYY') }}</h3>
               </div>
               <div class="flex gap-2">
                 <button type="button" @click="currentMonth = currentMonth.subtract(1, 'month')" class="rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:bg-stone-50">
-                  Prev
+                  Sebelumnya
                 </button>
                 <button type="button" @click="currentMonth = currentMonth.add(1, 'month')" class="rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:bg-stone-50">
-                  Next
+                  Berikutnya
                 </button>
               </div>
             </div>
@@ -530,7 +523,7 @@
             <div class="overflow-x-auto">
               <div class="min-w-[960px]">
                 <div class="grid grid-cols-[260px_repeat(31,minmax(0,1fr))] gap-2 border-b border-stone-200 pb-3 text-[11px] font-bold uppercase tracking-[0.16em] text-stone-400">
-                  <div>Task</div>
+                  <div>Tugas</div>
                   <div v-for="day in ganttDays" :key="day">{{ day }}</div>
                 </div>
 
@@ -542,7 +535,7 @@
                   >
                     <button type="button" @click="openTaskDetail(task.id)" class="rounded-[1rem] border border-stone-200 bg-stone-50 px-4 py-3 text-left transition hover:border-stone-300">
                       <p class="text-sm font-semibold text-stone-950">{{ task.title }}</p>
-                      <p class="mt-1 text-xs text-stone-500">{{ task.project?.name || 'No project' }}</p>
+                      <p class="mt-1 text-xs text-stone-500">{{ task.project?.name || 'Tanpa project' }}</p>
                     </button>
 
                     <div class="relative col-span-31 h-12 rounded-[1rem] bg-stone-50">
@@ -573,12 +566,12 @@
           <section class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
             <div class="flex items-center justify-between gap-4">
               <div>
-                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Task Templates</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Templat Tugas</p>
                 <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Reusable execution blocks</h2>
               </div>
               <button type="button" @click="openTemplateModal()" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-700 transition-all hover:border-stone-300 hover:text-stone-950">
                 <Plus class="h-3.5 w-3.5" />
-                <span>New</span>
+                <span>Baru</span>
               </button>
             </div>
 
@@ -591,7 +584,7 @@
                 <div class="flex items-start justify-between gap-3">
                   <div>
                     <h3 class="text-sm font-semibold text-stone-950">{{ template.title }}</h3>
-                    <p class="mt-2 text-sm text-stone-600">{{ template.description || 'Template tanpa deskripsi.' }}</p>
+                    <p class="mt-2 text-sm text-stone-600">{{ template.description || 'Templat tanpa deskripsi.' }}</p>
                   </div>
                   <div class="flex gap-2">
                     <button type="button" @click="openTemplateModal(template)" class="rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
@@ -611,18 +604,18 @@
           </section>
 
           <section class="rounded-[2rem] border border-stone-200 bg-stone-950 p-5 text-white shadow-[0_20px_60px_rgba(28,25,23,0.14)]">
-            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Task Signals</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Sinyal Tugas</p>
             <div class="mt-5 space-y-4">
               <div class="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
-                <p class="text-sm font-semibold text-white">Recurring schedule</p>
+                <p class="text-sm font-semibold text-white">Jadwal Berulang</p>
                 <p class="mt-2 text-sm text-stone-300">
-                  {{ recurringTasksCount }} task sedang memakai recurrence rule harian, mingguan, atau bulanan.
+                  {{ recurringTasksCount }} tugas sedang memakai aturan berulang harian, mingguan, atau bulanan.
                 </p>
               </div>
               <div class="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
                 <p class="text-sm font-semibold text-white">Dependency web</p>
                 <p class="mt-2 text-sm text-stone-300">
-                  {{ dependentTasksCount }} task memiliki dependency aktif, jadi urutan pengerjaan lebih terjaga.
+                  {{ dependentTasksCount }} tugas memiliki dependency aktif, jadi urutan pengerjaan lebih terjaga.
                 </p>
               </div>
               <div class="rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
@@ -642,8 +635,8 @@
         <div class="max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-[2rem] border border-white/20 bg-white p-6 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Task Form</p>
-              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingTask ? 'Edit Task' : 'Create Task' }}</h3>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Form Tugas</p>
+              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingTask ? 'Ubah Tugas' : 'Buat Tugas' }}</h3>
             </div>
             <button type="button" @click="closeTaskModal" class="rounded-full p-2 text-stone-400 transition-all hover:bg-stone-100 hover:text-stone-700">
               <X class="h-5 w-5" />
@@ -653,7 +646,7 @@
           <form class="mt-6 space-y-5" @submit.prevent="submitTask">
             <div class="grid gap-4 md:grid-cols-2">
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Project</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Proyek</span>
                 <select v-model="taskForm.project_id" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
                   <option value="">Select project</option>
                   <option v-for="project in filterOptions.projects" :key="project.id" :value="project.id">{{ project.name }}</option>
@@ -662,9 +655,9 @@
               </label>
 
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Template</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Templat</span>
                 <select v-model="taskForm.template_id" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-                  <option value="">No Template</option>
+                  <option value="">Tanpa Templat</option>
                   <option v-for="template in taskTemplates" :key="template.id" :value="template.id">{{ template.title }}</option>
                 </select>
               </label>
@@ -676,12 +669,12 @@
               </label>
 
               <label class="space-y-2 text-sm md:col-span-2">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Description</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Deskripsi</span>
                 <textarea v-model="taskForm.description" rows="4" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white"></textarea>
               </label>
 
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Parent Task</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tugas Induk</span>
                 <select v-model="taskForm.parent_task_id" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
                   <option value="">Top-level task</option>
                   <option v-for="task in filterOptions.parentTasks" :key="task.id" :value="task.id">{{ task.title }}</option>
@@ -689,9 +682,9 @@
               </label>
 
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Assignee</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Penanggung Jawab</span>
                 <select v-model="taskForm.assigned_to" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-                  <option value="">Unassigned</option>
+                  <option value="">Belum ditugaskan</option>
                   <option v-for="assignee in filterOptions.assignees" :key="assignee.id" :value="assignee.id">{{ assignee.name }}</option>
                 </select>
               </label>
@@ -704,7 +697,7 @@
               </label>
 
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Priority</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Prioritas</span>
                 <select v-model="taskForm.priority" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
                   <option v-for="priority in filterOptions.priorities" :key="priority.value" :value="priority.value">{{ priority.label }}</option>
                 </select>
@@ -712,11 +705,12 @@
 
               <label class="space-y-2 text-sm">
                 <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tags</span>
-                <input v-model="taskTagsInput" type="text" placeholder="frontend, urgent, qa" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white" />
+                <input v-model="taskTagsInput" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white" />
+                <p class="text-xs text-stone-500">Pisahkan tag dengan koma.</p>
               </label>
 
               <label class="space-y-2 text-sm">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Due Date</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tanggal Jatuh Tempo</span>
                 <input v-model="taskForm.due_date" type="datetime-local" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white" />
               </label>
 
@@ -739,11 +733,11 @@
               </label>
 
               <label class="space-y-2 text-sm md:col-span-2">
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Recurring</span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Berulang</span>
                 <div class="grid gap-3 md:grid-cols-[auto_1fr]">
                   <label class="flex items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700">
                     <input v-model="taskForm.is_recurring" type="checkbox" class="h-4 w-4 rounded border-stone-300 text-stone-950 focus:ring-stone-400" />
-                    <span>Recurring task</span>
+                    <span>Tugas berulang</span>
                   </label>
                   <select v-model="taskForm.recurrence_rule" :disabled="!taskForm.is_recurring" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all disabled:cursor-not-allowed disabled:opacity-60 focus:border-stone-400 focus:bg-white">
                     <option value="">Select recurrence</option>
@@ -755,10 +749,10 @@
 
             <div class="flex flex-wrap items-center justify-end gap-3">
               <button type="button" @click="closeTaskModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition-all hover:bg-stone-100 hover:text-stone-900">
-                Cancel
+                Batal
               </button>
               <button type="submit" :disabled="taskForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60">
-                {{ isEditingTask ? (taskForm.processing ? 'Saving...' : 'Save Task') : (taskForm.processing ? 'Creating...' : 'Create Task') }}
+                {{ isEditingTask ? (taskForm.processing ? 'Menyimpan...' : 'Simpan Tugas') : (taskForm.processing ? 'Membuat...' : 'Buat Tugas') }}
               </button>
             </div>
           </form>
@@ -771,8 +765,8 @@
         <div class="w-full max-w-2xl rounded-[2rem] border border-white/20 bg-white p-6 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Task Template</p>
-              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingTemplate ? 'Edit Template' : 'Create Template' }}</h3>
+              <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Templat Tugas</p>
+              <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingTemplate ? 'Ubah Templat' : 'Buat Templat' }}</h3>
             </div>
             <button type="button" @click="closeTemplateModal" class="rounded-full p-2 text-stone-400 transition-all hover:bg-stone-100 hover:text-stone-700">
               <X class="h-5 w-5" />
@@ -787,16 +781,16 @@
             </label>
 
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Description</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Deskripsi</span>
               <textarea v-model="templateForm.description" rows="4" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white"></textarea>
             </label>
 
             <div class="flex flex-wrap items-center justify-end gap-3">
               <button type="button" @click="closeTemplateModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition-all hover:bg-stone-100 hover:text-stone-900">
-                Cancel
+                Batal
               </button>
               <button type="submit" :disabled="templateForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60">
-                {{ isEditingTemplate ? (templateForm.processing ? 'Saving...' : 'Save Template') : (templateForm.processing ? 'Creating...' : 'Create Template') }}
+                {{ isEditingTemplate ? (templateForm.processing ? 'Menyimpan...' : 'Simpan Templat') : (templateForm.processing ? 'Membuat...' : 'Buat Templat') }}
               </button>
             </div>
           </form>
@@ -812,7 +806,7 @@
             <div class="relative">
               <div class="flex flex-wrap items-start justify-between gap-4">
                 <div class="max-w-3xl">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Task Detail</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-200/70">Rincian Tugas</p>
                   <h3 class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-white">{{ selectedTask.title }}</h3>
                   <div class="mt-4 flex flex-wrap items-center gap-2">
                     <span class="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]" :class="taskStatusClass(selectedTask.status)">
@@ -826,8 +820,8 @@
                     </span>
                   </div>
                   <div class="mt-4 flex flex-wrap gap-3 text-sm text-stone-300">
-                    <span>{{ selectedTask.project?.name || 'No project' }}</span>
-                    <span>{{ selectedTask.assignee?.name || 'Unassigned' }}</span>
+                    <span>{{ selectedTask.project?.name || 'Tanpa proyek' }}</span>
+                    <span>{{ selectedTask.assignee?.name || 'Belum ditugaskan' }}</span>
                     <span :class="dueToneClass(selectedTask)">{{ dueTone(selectedTask) }}</span>
                   </div>
                 </div>
@@ -835,7 +829,7 @@
                 <div class="flex items-center gap-2">
                   <button type="button" @click="editSelectedTask" class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15">
                     <Pencil class="h-4 w-4" />
-                    <span>Edit Task</span>
+                    <span>Ubah Tugas</span>
                   </button>
                   <button type="button" @click="closeDetailModal" class="rounded-full border border-white/15 bg-white/10 p-2 text-stone-200 transition hover:bg-white/15 hover:text-white">
                     <X class="h-5 w-5" />
@@ -847,15 +841,15 @@
                 <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
                   <div class="flex items-center gap-2 text-amber-100">
                     <AlarmClock class="h-4 w-4" />
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Due Signal</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Sinyal Tenggat</p>
                   </div>
-                  <p class="mt-3 text-sm font-semibold text-white">{{ selectedTask.due_date_label || 'No due date' }}</p>
+                  <p class="mt-3 text-sm font-semibold text-white">{{ selectedTask.due_date_label || 'Belum ada tenggat' }}</p>
                   <p class="mt-1 text-sm text-stone-300">{{ dueTone(selectedTask) }}</p>
                 </div>
                 <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
                   <div class="flex items-center gap-2 text-amber-100">
                     <Clock3 class="h-4 w-4" />
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Time Footprint</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Jejak Waktu</p>
                   </div>
                   <p class="mt-3 text-sm font-semibold text-white">{{ taskEffortSummary(selectedTask) }}</p>
                   <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-white/10">
@@ -865,18 +859,18 @@
                 <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
                   <div class="flex items-center gap-2 text-amber-100">
                     <Layers3 class="h-4 w-4" />
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Structure</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Struktur</p>
                   </div>
-                  <p class="mt-3 text-sm font-semibold text-white">{{ selectedTask.subtasks.length }} subtasks</p>
+                  <p class="mt-3 text-sm font-semibold text-white">{{ selectedTask.subtasks.length }} subtugas</p>
                   <p class="mt-1 text-sm text-stone-300">{{ selectedTask.dependencies.length }} dependency aktif</p>
                 </div>
                 <div class="rounded-[1.4rem] border border-white/10 bg-white/10 p-4 backdrop-blur">
                   <div class="flex items-center gap-2 text-amber-100">
                     <Sparkles class="h-4 w-4" />
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Discussion</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Diskusi</p>
                   </div>
-                  <p class="mt-3 text-sm font-semibold text-white">{{ selectedTask.comments.length }} comments</p>
-                  <p class="mt-1 text-sm text-stone-300">{{ selectedTask.time_logs.length }} time logs sudah tercatat</p>
+                  <p class="mt-3 text-sm font-semibold text-white">{{ selectedTask.comments.length }} komentar</p>
+                  <p class="mt-1 text-sm text-stone-300">{{ selectedTask.time_logs.length }} log waktu sudah tercatat</p>
                 </div>
               </div>
             </div>
@@ -902,7 +896,7 @@
               <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
                 <div class="flex items-center gap-2">
                   <Workflow class="h-4 w-4 text-stone-400" />
-                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Overview</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Ringkasan</p>
                 </div>
                 <p class="mt-4 text-sm leading-7 text-stone-600">
                   {{ selectedTask.description || 'Belum ada deskripsi task. Gunakan area ini untuk menjelaskan konteks, output, dan handoff task.' }}
@@ -912,30 +906,30 @@
                   <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
                     <div class="flex items-center gap-2 text-stone-500">
                       <KanbanSquare class="h-4 w-4" />
-                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Project</p>
+                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Proyek</p>
                     </div>
-                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.project?.name || 'No project' }}</p>
+                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.project?.name || 'Tanpa project' }}</p>
                   </div>
                   <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
                     <div class="flex items-center gap-2 text-stone-500">
                       <UserRound class="h-4 w-4" />
-                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Assignee</p>
+                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Penanggung Jawab</p>
                     </div>
-                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.assignee?.name || 'Unassigned' }}</p>
+                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.assignee?.name || 'Belum ditugaskan' }}</p>
                   </div>
                   <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
                     <div class="flex items-center gap-2 text-stone-500">
                       <Layers3 class="h-4 w-4" />
-                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Parent Task</p>
+                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Tugas Induk</p>
                     </div>
-                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.parent_task?.title || 'Top-level task' }}</p>
+                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.parent_task?.title || 'Tugas utama' }}</p>
                   </div>
                   <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
                     <div class="flex items-center gap-2 text-stone-500">
                       <LayoutTemplate class="h-4 w-4" />
-                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Template</p>
+                      <p class="text-[11px] font-bold uppercase tracking-[0.18em]">Templat</p>
                     </div>
-                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.template?.title || 'No template' }}</p>
+                    <p class="mt-3 text-sm font-semibold text-stone-950">{{ selectedTask.template?.title || 'Tanpa template' }}</p>
                   </div>
                 </div>
               </section>
@@ -943,7 +937,7 @@
               <section class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
                 <div class="flex items-center gap-2">
                   <Repeat2 class="h-4 w-4 text-stone-400" />
-                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Signals</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Sinyal</p>
                 </div>
                 <div class="mt-4 flex flex-wrap gap-2">
                   <span
@@ -959,8 +953,8 @@
                 </div>
                 <div class="mt-5 grid gap-3 md:grid-cols-3">
                   <div class="rounded-[1.2rem] border border-stone-200 bg-white p-4">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Recurring</p>
-                    <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedTask.is_recurring ? selectedTask.recurrence_rule : 'One-time task' }}</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Berulang</p>
+                    <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedTask.is_recurring ? selectedTask.recurrence_rule : 'Tugas sekali' }}</p>
                   </div>
                   <div class="rounded-[1.2rem] border border-stone-200 bg-white p-4">
                     <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Estimate</p>
@@ -1032,10 +1026,14 @@
               </div>
 
               <form class="mt-5 space-y-3" @submit.prevent="submitComment">
-                <textarea v-model="commentForm.content" rows="6" placeholder="Contoh: Tolong cek final copy @rani sebelum review." class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400"></textarea>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Comment Draft</p>
+                  <p class="text-xs text-stone-500">Gunakan format mention seperti <span class="font-semibold text-stone-700">@nama</span> bila perlu.</p>
+                </div>
+                <textarea v-model="commentForm.content" rows="6" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400"></textarea>
                 <div class="flex justify-end">
                   <button type="submit" :disabled="commentForm.processing" class="rounded-2xl bg-stone-950 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-stone-800 disabled:opacity-60">
-                    {{ commentForm.processing ? 'Saving...' : 'Add Comment' }}
+                    {{ commentForm.processing ? 'Menyimpan...' : 'Tambah Komentar' }}
                   </button>
                 </div>
               </form>
@@ -1044,7 +1042,7 @@
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
               <div class="flex items-center gap-2">
                 <Sparkles class="h-4 w-4 text-stone-400" />
-                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Discussion Log</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Log Diskusi</p>
               </div>
               <div class="mt-5 space-y-3">
                 <article v-for="comment in selectedTask.comments" :key="comment.id" class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
@@ -1112,12 +1110,12 @@
                   <input v-model="timeLogForm.hours" type="number" min="0" step="0.25" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400" />
                 </label>
                 <label class="space-y-2 text-sm md:col-span-2">
-                  <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Notes</span>
+                  <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Catatan</span>
                   <textarea v-model="timeLogForm.notes" rows="3" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400"></textarea>
                 </label>
                 <div class="md:col-span-2 flex justify-end">
                   <button type="submit" :disabled="timeLogForm.processing" class="rounded-2xl bg-stone-950 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-stone-800 disabled:opacity-60">
-                    {{ timeLogForm.processing ? 'Saving...' : 'Add Time Log' }}
+                    {{ timeLogForm.processing ? 'Menyimpan...' : 'Tambah Log Waktu' }}
                   </button>
                 </div>
               </form>
@@ -1150,16 +1148,16 @@
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
               <div class="flex items-center gap-2">
                 <Layers3 class="h-4 w-4 text-stone-400" />
-                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Parent Context</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Konteks Induk</p>
               </div>
-              <p class="mt-4 text-sm font-semibold text-stone-950">{{ selectedTask.parent_task?.title || 'Top-level task tanpa parent.' }}</p>
+              <p class="mt-4 text-sm font-semibold text-stone-950">{{ selectedTask.parent_task?.title || 'Tugas utama tanpa induk.' }}</p>
               <p class="mt-2 text-sm leading-6 text-stone-500">Gunakan parent task untuk membentuk nested task yang lebih mudah dikelola per milestone.</p>
             </section>
 
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
               <div class="flex items-center gap-2">
                 <GitBranch class="h-4 w-4 text-stone-400" />
-                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Dependency Map</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Peta Dependency</p>
               </div>
               <div class="mt-4 space-y-3">
                 <article v-for="dependency in selectedTask.dependencies" :key="`structure-${dependency.id}`" class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">
@@ -1174,7 +1172,7 @@
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
               <div class="flex items-center gap-2">
                 <CheckCircle2 class="h-4 w-4 text-stone-400" />
-                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Subtask Breakdown</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Rincian Subtugas</p>
               </div>
               <div class="mt-4 space-y-3">
                 <article v-for="subtask in selectedTask.subtasks" :key="`structure-subtask-${subtask.id}`" class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
@@ -1194,15 +1192,15 @@
             <section class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
               <div class="flex items-center gap-2">
                 <Repeat2 class="h-4 w-4 text-stone-400" />
-                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Rules & Template</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Aturan & Templat</p>
               </div>
               <div class="mt-4 grid gap-3">
                 <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Recurring Rule</p>
-                  <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedTask.is_recurring ? selectedTask.recurrence_rule : 'One-time task' }}</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Aturan Berulang</p>
+                  <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedTask.is_recurring ? selectedTask.recurrence_rule : 'Tugas sekali' }}</p>
                 </div>
                 <div class="rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Template Source</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Sumber Templat</p>
                   <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedTask.template?.title || 'Tidak memakai template' }}</p>
                 </div>
               </div>
@@ -1211,6 +1209,7 @@
         </div>
       </div>
     </Transition>
+    </ProjectLayout>
   </WorkspaceLayout>
 </template>
 
@@ -1243,6 +1242,7 @@ import {
   X,
 } from 'lucide-vue-next'
 import WorkspaceLayout from '../../Layouts/WorkspaceLayout.vue'
+import ProjectLayout from '../../Layouts/ProjectLayout.vue'
 
 const props = defineProps({
   workspace: { type: Object, required: true },
@@ -1257,9 +1257,9 @@ const tasksBaseUrl = `${workspaceBaseUrl}/tasks`
 const templatesBaseUrl = `${tasksBaseUrl}/templates`
 
 const viewModes = [
-  { id: 'list', label: 'List', icon: LayoutList },
+  { id: 'list', label: 'Daftar', icon: LayoutList },
   { id: 'kanban', label: 'Kanban', icon: KanbanSquare },
-  { id: 'calendar', label: 'Calendar', icon: CalendarDays },
+  { id: 'calendar', label: 'Kalender', icon: CalendarDays },
   { id: 'gantt', label: 'Gantt', icon: GanttChartSquare },
 ]
 
@@ -1283,10 +1283,10 @@ const movingTaskId = ref(null)
 const taskTagsInput = ref('')
 
 const detailTabs = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'discussion', label: 'Discussion' },
-  { id: 'time', label: 'Time Log' },
-  { id: 'structure', label: 'Structure' },
+  { id: 'overview', label: 'Ringkasan' },
+  { id: 'discussion', label: 'Diskusi' },
+  { id: 'time', label: 'Log Waktu' },
+  { id: 'structure', label: 'Struktur' },
 ]
 
 const taskForm = useForm({
@@ -1386,18 +1386,18 @@ const kanbanColumns = computed(() => {
   })
 
   return [
-    { id: 'todo', label: 'To Do', items: groups.todo, dotClass: 'bg-slate-400' },
-    { id: 'in_progress', label: 'In Progress', items: groups.in_progress, dotClass: 'bg-blue-500' },
-    { id: 'review', label: 'Review', items: groups.review, dotClass: 'bg-amber-500' },
-    { id: 'done', label: 'Done', items: groups.done, dotClass: 'bg-emerald-500' },
+    { id: 'todo', label: 'Belum Dikerjakan', items: groups.todo, dotClass: 'bg-slate-400' },
+    { id: 'in_progress', label: 'Sedang Dikerjakan', items: groups.in_progress, dotClass: 'bg-blue-500' },
+    { id: 'review', label: 'Tinjau', items: groups.review, dotClass: 'bg-amber-500' },
+    { id: 'done', label: 'Selesai', items: groups.done, dotClass: 'bg-emerald-500' },
   ]
 })
 
 const currentViewTitle = computed(() => {
-  if (viewMode.value === 'kanban') return 'Execution flow board'
-  if (viewMode.value === 'calendar') return 'Due date calendar'
-  if (viewMode.value === 'gantt') return 'Timeline sequencing map'
-  return 'Structured task register'
+  if (viewMode.value === 'kanban') return 'Papan alur eksekusi'
+  if (viewMode.value === 'calendar') return 'Kalender tenggat'
+  if (viewMode.value === 'gantt') return 'Peta urutan timeline'
+  return 'Daftar tugas terstruktur'
 })
 
 const currentViewDescription = computed(() => {
@@ -1424,13 +1424,13 @@ const activeFilterChips = computed(() => {
   const chips = []
 
   if (filterState.value.search) {
-    chips.push({ key: 'search', label: `Search: ${filterState.value.search}` })
+    chips.push({ key: 'search', label: `Cari: ${filterState.value.search}` })
   }
 
   if (filterState.value.project) {
     const project = props.filterOptions.projects.find((item) => String(item.id) === String(filterState.value.project))
     if (project) {
-      chips.push({ key: 'project', label: `Project: ${project.name}` })
+      chips.push({ key: 'project', label: `Proyek: ${project.name}` })
     }
   }
 
@@ -1444,19 +1444,19 @@ const activeFilterChips = computed(() => {
   if (filterState.value.assignee) {
     const assignee = props.filterOptions.assignees.find((item) => String(item.id) === String(filterState.value.assignee))
     if (assignee) {
-      chips.push({ key: 'assignee', label: `Assignee: ${assignee.name}` })
+      chips.push({ key: 'assignee', label: `Penanggung jawab: ${assignee.name}` })
     }
   }
 
   if (filterState.value.priority) {
     const priority = props.filterOptions.priorities.find((item) => item.value === filterState.value.priority)
     if (priority) {
-      chips.push({ key: 'priority', label: `Priority: ${priority.label}` })
+      chips.push({ key: 'priority', label: `Prioritas: ${priority.label}` })
     }
   }
 
   if (filterState.value.recurring) {
-    chips.push({ key: 'recurring', label: filterState.value.recurring === 'yes' ? 'Recurring only' : 'One-time only' })
+    chips.push({ key: 'recurring', label: filterState.value.recurring === 'yes' ? 'Hanya berulang' : 'Hanya sekali' })
   }
 
   return chips
@@ -1465,7 +1465,7 @@ const activeFilterChips = computed(() => {
 const dependencyOptions = computed(() =>
   taskItems.value
     .filter((task) => task.id !== editingTaskId.value)
-    .map((task) => ({ id: task.id, title: `${task.project?.name || 'No project'} / ${task.title}` })),
+    .map((task) => ({ id: task.id, title: `${task.project?.name || 'Tanpa project'} / ${task.title}` })),
 )
 
 const calendarDays = computed(() => {
@@ -1629,7 +1629,7 @@ function submitTask() {
 }
 
 function deleteTask(taskId) {
-  if (!confirm('Delete this task?')) {
+  if (!confirm('Hapus tugas ini?')) {
     return
   }
 
@@ -1669,7 +1669,7 @@ function submitTemplate() {
 }
 
 function deleteTemplate(templateId) {
-  if (!confirm('Delete this task template?')) {
+  if (!confirm('Hapus template tugas ini?')) {
     return
   }
 
@@ -1859,11 +1859,11 @@ function taskEffortWidth(task) {
 
 function dueTone(task) {
   if (!task?.due_date) {
-    return 'No due date set'
+    return 'Tenggat belum diatur'
   }
 
   if (task.is_overdue) {
-    return `Overdue ${task.due_date_human || ''}`.trim()
+    return `Terlambat ${task.due_date_human || ''}`.trim()
   }
 
   return task.due_date_human || 'Due date scheduled'
@@ -1915,10 +1915,10 @@ function toDateTimeLocal(value) {
 
 function statusLabel(status) {
   const map = {
-    todo: 'To Do',
-    in_progress: 'In Progress',
-    review: 'Review',
-    done: 'Done',
+    todo: 'Belum Dikerjakan',
+    in_progress: 'Sedang Dikerjakan',
+    review: 'Tinjau',
+    done: 'Selesai',
   }
 
   return map[status] || status

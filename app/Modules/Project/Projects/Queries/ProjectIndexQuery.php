@@ -198,16 +198,16 @@ class ProjectIndexQuery
             'clients' => $clients,
             'assignees' => $assignees,
             'statuses' => [
-                ['value' => 'planning', 'label' => 'Planning'],
-                ['value' => 'active', 'label' => 'Active'],
-                ['value' => 'on_hold', 'label' => 'On Hold'],
-                ['value' => 'completed', 'label' => 'Completed'],
+                ['value' => 'planning', 'label' => 'Perencanaan'],
+                ['value' => 'active', 'label' => 'Aktif'],
+                ['value' => 'on_hold', 'label' => 'Ditunda'],
+                ['value' => 'completed', 'label' => 'Selesai'],
             ],
             'deadlines' => [
-                ['value' => 'overdue', 'label' => 'Overdue'],
-                ['value' => 'next_7_days', 'label' => 'Next 7 Days'],
-                ['value' => 'next_30_days', 'label' => 'Next 30 Days'],
-                ['value' => 'no_deadline', 'label' => 'No Deadline'],
+                ['value' => 'overdue', 'label' => 'Terlambat'],
+                ['value' => 'next_7_days', 'label' => '7 Hari Ke Depan'],
+                ['value' => 'next_30_days', 'label' => '30 Hari Ke Depan'],
+                ['value' => 'no_deadline', 'label' => 'Tanpa Deadline'],
             ],
             'budgets' => [
                 ['value' => 'under_10m', 'label' => '< Rp 10 juta'],
@@ -236,6 +236,7 @@ class ProjectIndexQuery
 
         return [
             'id' => $project->getKey(),
+            'brand' => $project->brand,
             'name' => $project->name,
             'description' => $project->description,
             'status' => $project->status,
@@ -414,10 +415,10 @@ class ProjectIndexQuery
     protected function statusLabel(string $status): string
     {
         return match ($status) {
-            'planning' => 'Planning',
-            'active' => 'Active',
-            'on_hold' => 'On Hold',
-            'completed' => 'Completed',
+            'planning' => 'Perencanaan',
+            'active' => 'Aktif',
+            'on_hold' => 'Ditunda',
+            'completed' => 'Selesai',
             default => ucfirst(str_replace('_', ' ', $status)),
         };
     }

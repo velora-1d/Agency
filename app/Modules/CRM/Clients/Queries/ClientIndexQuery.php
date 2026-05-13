@@ -5,10 +5,13 @@ namespace App\Modules\CRM\Clients\Queries;
 use App\Models\ActivityFeed;
 use App\Models\Client;
 use App\Models\Contract;
+use App\Models\Domain;
 use App\Models\Invoice;
 use App\Models\Project;
+use App\Models\Server;
 use App\Models\SupportTicket;
 use App\Models\User;
+use App\Models\Website;
 use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -41,6 +44,8 @@ class ClientIndexQuery
             'invoices' => fn ($query) => $query->latest('created_at'),
             'contracts' => fn ($query) => $query->latest('created_at'),
             'supportTickets.assignee:id,name',
+            'websites.domain',
+            'websites.server',
         ])->loadCount(['projects', 'invoices', 'contracts', 'supportTickets']);
 
         $activities = ActivityFeed::query()
@@ -58,6 +63,7 @@ class ClientIndexQuery
                 'invoices' => $client->invoices->map(fn (Invoice $invoice): array => $this->transformInvoice($invoice, $workspace))->values()->all(),
                 'contracts' => $client->contracts->map(fn (Contract $contract): array => $this->transformContract($contract, $workspace))->values()->all(),
                 'tickets' => $client->supportTickets->map(fn (SupportTicket $ticket): array => $this->transformTicket($ticket))->values()->all(),
+                'digital_services' => $client->websites->map(fn (Website $website): array => $this->transformWebsite($website))->values()->all(),
             ],
             'activities' => \App\Http\Resources\LeadActivityResource::collection($activities)->resolve(),
         ];
@@ -144,17 +150,17 @@ class ClientIndexQuery
 
         return [
             'statuses' => [
-                ['value' => 'active', 'label' => 'Active'],
-                ['value' => 'inactive', 'label' => 'Inactive'],
-                ['value' => 'on_hold', 'label' => 'On Hold'],
+                ['value' => 'active', 'label' => 'Aktif'],
+                ['value' => 'inactive', 'label' => 'Nonaktif'],
+                ['value' => 'on_hold', 'label' => 'Ditahan'],
             ],
             'industries' => $industries,
             'assignees' => $assignees,
             'date_ranges' => [
-                ['value' => '7d', 'label' => 'Last 7 days'],
-                ['value' => '30d', 'label' => 'Last 30 days'],
-                ['value' => '90d', 'label' => 'Last 90 days'],
-                ['value' => 'this_month', 'label' => 'This month'],
+                ['value' => '7d', 'label' => '7 Hari Terakhir'],
+                ['value' => '30d', 'label' => '30 Hari Terakhir'],
+                ['value' => '90d', 'label' => '90 Hari Terakhir'],
+                ['value' => 'this_month', 'label' => 'Bulan Ini'],
             ],
         ];
     }
@@ -255,6 +261,29 @@ class ClientIndexQuery
             ] : null,
             'sla_due_at_label' => $ticket->sla_due_at ? \Illuminate\Support\Carbon::parse($ticket->sla_due_at)->diffForHumans() : null,
             'resolved_at_label' => $ticket->resolved_at ? \Illuminate\Support\Carbon::parse($ticket->resolved_at)->diffForHumans() : null,
+        ];
+    }
+
+    protected function transformWebsite(Website $website): array
+    {
+        return [
+            'id' => $website->getKey(),
+            'name' => $website->name,
+            'url' => $website->url,
+            'cms' => $website->cms,
+            'status' => $website->status,
+            'domain' => $website->domain ? [
+                'id' => $website->domain->id,
+                'name' => $website->domain->domain_name,
+                'registrar' => $website->domain->registrar,
+                'expiry_date' => $website->domain->expiry_date?->format('d M Y'),
+            ] : null,
+            'server' => $website->server ? [
+                'id' => $website->server->id,
+                'name' => $website->server->name,
+                'provider' => $website->server->provider,
+                'ip_address' => $website->server->ip_address,
+            ] : null,
         ];
     }
 

@@ -8,6 +8,7 @@ use App\Models\Contract;
 use App\Models\Workspace;
 use App\Modules\Project\Contracts\Queries\ContractIndexQuery;
 use App\Services\Project\ContractService;
+use App\Services\Communication\EvolutionApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -23,6 +24,7 @@ class ContractController extends Controller
             screen: 'Projects/Contracts/Index',
             title: 'Contracts',
             payload: $query->getIndexPayload($workspace, $request->all()),
+            activeLabel: 'Projects',
         );
     }
 
@@ -99,6 +101,28 @@ class ContractController extends Controller
             screen: 'Projects/Contracts/Show',
             title: 'Contract Detail',
             payload: $query->getShowPayload($workspace, $contract),
+            activeLabel: 'Projects',
         );
+    }
+
+    public function sendWhatsApp(Workspace $workspace, Contract $contract, EvolutionApiService $wa): RedirectResponse
+    {
+        abort_unless($contract->workspace_id === $workspace->id, 404);
+        
+        $client = $contract->client;
+        if (!$client || !$client->phone) {
+            return back()->with('error', 'Nomor WhatsApp klien tidak ditemukan.');
+        }
+
+        $message = "Halo *{$client->pic_name}*,\n\nBerikut draf kontrak untuk proyek *{$contract->title}*.\nSilakan tinjau dan informasikan jika ada perubahan.\n\nSalam,\n*{$workspace->name}*";
+        
+        $success = $wa->sendMessage('default', $client->phone, $message);
+
+        if ($success) {
+            $contract->update(['status' => 'sent']);
+            return back()->with('success', 'Kontrak berhasil dikirim via WhatsApp.');
+        }
+
+        return back()->with('error', 'Gagal mengirim pesan via WhatsApp.');
     }
 }

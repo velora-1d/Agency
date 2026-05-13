@@ -19,12 +19,14 @@ class Newsletter extends Model
         'status',
         'scheduled_at',
         'sent_at',
+        'metrics',
         'created_by',
     ];
 
     protected $casts = [
         'scheduled_at' => 'datetime',
         'sent_at' => 'datetime',
+        'metrics' => 'array',
     ];
 
     public function creator(): BelongsTo

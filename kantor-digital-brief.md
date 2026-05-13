@@ -531,7 +531,7 @@ Total Nilai Project
 
 ### 26. INTEGRATIONS
 
-- WhatsApp Business API
+- WhatsApp ( evolution )
 - Google (Calendar, Drive, Gmail)
 - Pakasir (payment)
 - Mailchimp / SendGrid (email)
@@ -541,7 +541,7 @@ Total Nilai Project
 - Zapier / n8n webhook
 - Slack / Discord notifikasi
 - Cloudflare (domain & hosting)
-- S3 / Backblaze (storage)
+- Cloudfare R2 Storage
 - Status: Connected / Disconnected + health check ping
 
 -----Wajib ada fitur CRUD

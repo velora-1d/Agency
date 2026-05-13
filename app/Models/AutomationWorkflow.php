@@ -6,6 +6,7 @@ use App\Models\Concerns\BelongsToWorkspace;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AutomationWorkflow extends Model
 {
@@ -25,4 +26,9 @@ class AutomationWorkflow extends Model
         'config' => 'array',
         'is_active' => 'boolean',
     ];
+
+    public function runLogs(): HasMany
+    {
+        return $this->hasMany(AutomationRunLog::class, 'automation_workflow_id');
+    }
 }

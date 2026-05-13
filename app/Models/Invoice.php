@@ -20,6 +20,7 @@ class Invoice extends Model
         'project_id',
         'quotation_id',
         'contract_id',
+        'billing_id',
         'number',
         'type',
         'status',
@@ -70,6 +71,31 @@ class Invoice extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function quotation(): BelongsTo
+    {
+        return $this->belongsTo(Quotation::class);
+    }
+
+    public function contract(): BelongsTo
+    {
+        return $this->belongsTo(Contract::class);
+    }
+
+    public function billing(): BelongsTo
+    {
+        return $this->belongsTo(Billing::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function internalApprover(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'internal_approved_by');
     }
 
     public function items(): HasMany

@@ -26,6 +26,7 @@ class NoteController extends Controller
             screen: 'Notes/Index',
             title: 'Notes',
             payload: $query->getIndexPayload($workspace, $request->all()),
+            activeLabel: 'Projects',
         );
     }
 

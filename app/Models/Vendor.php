@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToWorkspace;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Vendor extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, BelongsToWorkspace;
 
     public $timestamps = false;
 
@@ -20,6 +21,7 @@ class Vendor extends Model
         'contact_name',
         'email',
         'phone',
+        'contract',
         'payment_terms',
         'notes',
     ];

@@ -29,6 +29,7 @@ class TaskController extends Controller
             screen: 'Tasks/Index',
             title: 'Tasks',
             payload: $query->getIndexPayload($workspace, $request->all()),
+            activeLabel: 'Projects',
         );
     }
 

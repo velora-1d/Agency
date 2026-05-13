@@ -23,11 +23,14 @@ class BankAccount extends Model
         'type',
         'balance',
         'is_active',
+        'last_reconciled_at',
+        'reconciliation_notes',
     ];
 
     protected $casts = [
         'balance' => 'decimal:2',
         'is_active' => 'boolean',
+        'last_reconciled_at' => 'datetime',
     ];
 
     public function transactions(): HasMany

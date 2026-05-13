@@ -16,6 +16,7 @@ class ProjectFinanceSplitItem extends Model
     protected $fillable = [
         'split_id',
         'type',
+        'component_type',
         'label',
         'user_id',
         'calculation_type',

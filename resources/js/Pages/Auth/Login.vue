@@ -1,102 +1,85 @@
 <template>
-  <Head title="Login" />
+  <Head title="Masuk" />
 
-  <section class="relative min-h-screen overflow-hidden bg-[#f6ecdf] text-stone-950">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(185,102,34,0.22),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(32,84,92,0.18),_transparent_24%),linear-gradient(180deg,_#fbf4eb_0%,_#f1e3d0_100%)]" />
-    <div class="absolute -left-20 top-24 h-72 w-72 rounded-full bg-[#d09d57]/20 blur-3xl" />
-    <div class="absolute bottom-10 right-0 h-96 w-96 rounded-full bg-[#3a6a6d]/12 blur-3xl" />
+  <section class="flex h-screen w-full items-stretch overflow-hidden bg-[#f7f1e8]">
+    <!-- Left: Branding Area -->
+    <div class="relative hidden w-[45%] flex-col justify-between overflow-hidden bg-[#1f1a17] p-12 text-stone-50 lg:flex">
+      <div class="absolute inset-0 opacity-20 [background-image:radial-gradient(#5a4632_1.5px,transparent_1.5px)] [background-size:28px_28px]"></div>
 
-    <div class="relative mx-auto grid min-h-screen max-w-[1480px] gap-8 px-4 py-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] lg:px-8">
-      <section class="hidden rounded-[2.4rem] border border-white/40 bg-[#1d1714] p-8 text-stone-50 shadow-[0_30px_90px_rgba(28,20,16,0.24)] lg:flex lg:flex-col lg:justify-between">
-        <div>
-          <div class="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.32em] text-amber-200/90">
-            Kantor Digital
-          </div>
-          <p class="mt-8 text-xs uppercase tracking-[0.36em] text-amber-200/70">Agency Control Room</p>
-          <h1 class="mt-5 max-w-3xl text-6xl font-semibold leading-[0.94] tracking-[-0.06em]" style="font-family: var(--font-display)">
-            Masuk ke workspace tanpa distraksi, cukup email dan password.
+      <div class="relative z-10">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-2xl bg-amber-200"></div>
+          <p class="text-lg font-bold uppercase tracking-[0.4em] text-amber-300">Kantor Digital</p>
+        </div>
+
+        <div class="mt-28 max-w-lg">
+          <h1 class="text-5xl font-semibold leading-[1.05] tracking-tighter lg:text-6xl">
+            Masuk ke workspace tanpa distraksi, cukup email dan kata sandi.
           </h1>
-          <p class="mt-6 max-w-2xl text-base leading-8 text-stone-300">
-            Satu pintu masuk untuk operasional Velora dan Maven. Fokusnya cepat, bersih, dan langsung ke dashboard kerja begitu sesi valid.
-          </p>
         </div>
+      </div>
 
-        <div class="grid gap-4 xl:grid-cols-3">
-          <article class="rounded-[1.8rem] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-            <p class="text-[11px] uppercase tracking-[0.24em] text-stone-400">Workspace</p>
-            <p class="mt-3 text-2xl font-semibold tracking-[-0.04em]">2 Agency</p>
-            <p class="mt-2 text-sm leading-6 text-stone-300">Velora dan Maven tetap terisolasi per akses user.</p>
-          </article>
-          <article class="rounded-[1.8rem] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-            <p class="text-[11px] uppercase tracking-[0.24em] text-stone-400">Masuk</p>
-            <p class="mt-3 text-2xl font-semibold tracking-[-0.04em]">Email + PW</p>
-            <p class="mt-2 text-sm leading-6 text-stone-300">Tanpa social login. Flow auth dibuat ringkas dan jelas.</p>
-          </article>
-          <article class="rounded-[1.8rem] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-            <p class="text-[11px] uppercase tracking-[0.24em] text-stone-400">Output</p>
-            <p class="mt-3 text-2xl font-semibold tracking-[-0.04em]">Direct Access</p>
-            <p class="mt-2 text-sm leading-6 text-stone-300">Setelah valid, user langsung diarahkan ke workspace yang bisa diakses.</p>
-          </article>
+      <div class="relative z-10 flex flex-wrap gap-4">
+        <div class="w-[200px] rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Metode</p>
+          <p class="mt-3 text-2xl font-semibold tracking-[-0.04em]">Email + PW</p>
+          <p class="mt-2 text-sm leading-6 text-stone-300">Tanpa login sosial. Alur autentikasi dibuat ringkas dan jelas.</p>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <section class="flex items-center justify-center">
-        <div class="w-full max-w-[520px] rounded-[2.2rem] border border-stone-200/80 bg-white/90 p-6 shadow-[0_24px_80px_rgba(86,58,32,0.16)] backdrop-blur xl:p-8">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <p class="text-xs uppercase tracking-[0.32em] text-[#8f5724]">Secure Login</p>
-              <h2 class="mt-3 text-4xl font-semibold tracking-[-0.05em] text-stone-950" style="font-family: var(--font-display)">
-                Welcome back.
-              </h2>
-              <p class="mt-3 max-w-md text-sm leading-7 text-stone-600">
-                Masuk dengan akun internal yang sudah diizinkan. Tidak ada login Google di halaman ini.
-              </p>
-            </div>
+    <!-- Right: Auth Form -->
+    <main class="flex flex-1 flex-col items-center justify-center p-6 lg:p-12">
+      <div class="w-full max-w-[440px]">
+        <header class="mb-10 text-center lg:hidden">
+          <p class="text-sm font-bold uppercase tracking-[0.4em] text-[#8f5724]">Kantor Digital</p>
+        </header>
 
-            <div class="hidden rounded-full border border-stone-200 bg-stone-50 px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-stone-500 sm:block">
-              Internal Access
-            </div>
+        <div class="rounded-[2.5rem] border border-stone-200/60 bg-white/80 p-8 shadow-[0_24px_60px_rgba(40,30,20,0.06)] backdrop-blur-xl lg:p-10">
+          <div class="mb-10">
+            <p class="text-xs uppercase tracking-[0.32em] text-[#8f5724]">Masuk Aman</p>
+            <h2 class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">Selamat Datang</h2>
+            <p class="mt-3 text-sm leading-relaxed text-stone-500">
+              Masuk dengan akun internal yang sudah diizinkan. Tidak ada login Google di halaman ini.
+            </p>
           </div>
 
-          <div class="mt-8 rounded-[1.8rem] border border-[#e8d9c5] bg-[#fbf7f1] p-4">
-            <p class="text-[11px] uppercase tracking-[0.22em] text-stone-500">Demo Accounts</p>
-            <div class="mt-4 grid gap-3 sm:grid-cols-2">
-              <button
-                v-for="account in demoAccounts"
-                :key="account.email"
-                type="button"
-                class="rounded-[1.2rem] border border-stone-200 bg-white px-4 py-3 text-left transition hover:-translate-y-0.5 hover:border-[#d6ae78]"
-                @click="fillDemo(account.email)"
-              >
-                <p class="text-sm font-semibold text-stone-950">{{ account.label }}</p>
-                <p class="mt-1 truncate text-xs uppercase tracking-[0.18em] text-stone-500">{{ account.email }}</p>
-              </button>
-            </div>
-          </div>
+          <form @submit.prevent="submit" class="space-y-6">
+            <div class="space-y-1">
+              <div v-if="demoAccounts.length" class="mb-6 grid gap-2 sm:grid-cols-2">
+                <button
+                  v-for="account in demoAccounts"
+                  :key="account.email"
+                  type="button"
+                  class="rounded-2xl border border-stone-100 bg-stone-50 p-3 text-left transition hover:border-amber-300 hover:bg-white"
+                  @click="fillDemo(account.email)"
+                >
+                  <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-amber-700">{{ account.role }}</p>
+                  <p class="mt-1 truncate text-xs uppercase tracking-[0.18em] text-stone-500">{{ account.email }}</p>
+                </button>
+              </div>
 
-          <form class="mt-8 space-y-5" @submit.prevent="submit">
-            <div>
               <label for="email" class="text-xs uppercase tracking-[0.22em] text-stone-500">Email</label>
               <input
                 id="email"
                 v-model="form.email"
                 type="email"
                 autocomplete="email"
-                class="mt-2 w-full rounded-[1.35rem] border border-stone-200 bg-[#fffdfa] px-4 py-4 text-base text-stone-950 outline-none transition placeholder:text-stone-400 focus:border-[#c9802a] focus:ring-4 focus:ring-[#e8bb84]/30"
-                placeholder="owner@kantordigital.test"
+                required
+                class="w-full rounded-2xl border border-stone-200 bg-stone-50/50 px-5 py-4 text-stone-900 outline-none transition-all focus:border-stone-400 focus:bg-white focus:ring-4 focus:ring-stone-100"
               />
               <p v-if="form.errors.email" class="mt-2 text-sm text-rose-700">{{ form.errors.email }}</p>
             </div>
 
-            <div>
-              <div class="flex items-center justify-between gap-4">
-                <label for="password" class="text-xs uppercase tracking-[0.22em] text-stone-500">Password</label>
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <label for="password" class="text-xs uppercase tracking-[0.22em] text-stone-500">Kata Sandi</label>
                 <button
                   type="button"
-                  class="text-xs uppercase tracking-[0.18em] text-stone-500 transition hover:text-stone-950"
+                  class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400 transition hover:text-stone-950"
                   @click="showPassword = !showPassword"
                 >
-                  {{ showPassword ? 'Hide' : 'Show' }}
+                  {{ showPassword ? 'Sembunyikan' : 'Tampilkan' }}
                 </button>
               </div>
               <input
@@ -104,59 +87,52 @@
                 v-model="form.password"
                 :type="showPassword ? 'text' : 'password'"
                 autocomplete="current-password"
-                class="mt-2 w-full rounded-[1.35rem] border border-stone-200 bg-[#fffdfa] px-4 py-4 text-base text-stone-950 outline-none transition placeholder:text-stone-400 focus:border-[#c9802a] focus:ring-4 focus:ring-[#e8bb84]/30"
-                placeholder="Masukkan password"
+                required
+                class="w-full rounded-2xl border border-stone-200 bg-stone-50/50 px-5 py-4 text-stone-900 outline-none transition-all focus:border-stone-400 focus:bg-white focus:ring-4 focus:ring-stone-100"
               />
               <p v-if="form.errors.password" class="mt-2 text-sm text-rose-700">{{ form.errors.password }}</p>
             </div>
 
-            <label class="flex items-center gap-3 rounded-[1.2rem] border border-stone-200 bg-stone-50 px-4 py-3">
-              <input v-model="form.remember" type="checkbox" class="h-4 w-4 rounded border-stone-300 text-stone-950 focus:ring-[#d39c57]" />
-              <span class="text-sm text-stone-700">Tetap masuk di device ini</span>
-            </label>
-
-            <button
-              type="submit"
-              class="group inline-flex w-full items-center justify-between rounded-[1.45rem] bg-stone-950 px-5 py-4 text-left text-stone-50 transition hover:bg-[#2a211d] disabled:cursor-not-allowed disabled:opacity-70"
-              :disabled="form.processing"
-            >
-              <span>
-                <span class="block text-[11px] uppercase tracking-[0.26em] text-amber-200/80">Authentication</span>
-                <span class="mt-1 block text-lg font-semibold tracking-[-0.03em]">
-                  {{ form.processing ? 'Memvalidasi akses...' : 'Masuk ke workspace' }}
-                </span>
-              </span>
-              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-[11px] uppercase tracking-[0.22em] text-amber-100">
-                Go
-              </span>
-            </button>
+            <div class="pt-4">
+              <button
+                type="submit"
+                :disabled="form.processing"
+                class="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-stone-950 px-8 py-5 text-sm font-bold tracking-[0.24em] text-white transition-all active:scale-[0.98] disabled:opacity-50"
+              >
+                <div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%)] [background-size:250%_250%] transition-all duration-1000 group-hover:[background-position:100%_100%]"></div>
+                <span class="uppercase">Masuk Sekarang</span>
+                <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
           </form>
 
-          <div class="mt-8 grid gap-3 sm:grid-cols-3">
-            <article class="rounded-[1.35rem] border border-stone-200 bg-stone-50 px-4 py-4">
-              <p class="text-[11px] uppercase tracking-[0.2em] text-stone-500">Method</p>
-              <p class="mt-2 text-sm font-semibold text-stone-950">Email & Password</p>
-            </article>
-            <article class="rounded-[1.35rem] border border-stone-200 bg-stone-50 px-4 py-4">
-              <p class="text-[11px] uppercase tracking-[0.2em] text-stone-500">Routing</p>
-              <p class="mt-2 text-sm font-semibold text-stone-950">Session Laravel</p>
-            </article>
-            <article class="rounded-[1.35rem] border border-stone-200 bg-stone-50 px-4 py-4">
-              <p class="text-[11px] uppercase tracking-[0.2em] text-stone-500">Access</p>
-              <p class="mt-2 text-sm font-semibold text-stone-950">Workspace Scoped</p>
-            </article>
+          <div class="mt-10 border-t border-stone-100 pt-10 text-center">
+            <div class="inline-flex flex-col items-center">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
+                <ShieldCheck class="h-5 w-5" />
+              </div>
+              <p class="mt-2 text-sm font-semibold text-stone-950">Email & Kata Sandi</p>
+              <p class="mt-1 text-[11px] leading-relaxed text-stone-400">
+                Akses dibatasi hanya untuk personel yang terdaftar.
+              </p>
+            </div>
           </div>
         </div>
-      </section>
-    </div>
+
+        <p class="mt-12 text-center text-xs tracking-[0.18em] text-stone-400">
+          © 2026 KANTOR DIGITAL
+        </p>
+      </div>
+    </main>
   </section>
 </template>
 
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import { ArrowRight, ShieldCheck } from 'lucide-vue-next'
 
-const props = defineProps({
+defineProps({
   demoAccounts: {
     type: Array,
     default: () => [],
@@ -168,7 +144,6 @@ const showPassword = ref(false)
 const form = useForm({
   email: '',
   password: '',
-  remember: true,
 })
 
 function fillDemo(email) {
