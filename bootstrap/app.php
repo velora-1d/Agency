@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'setWorkspace' => \App\Http\Middleware\SetWorkspaceContext::class,
             'ensureWorkspaceAccess' => \App\Http\Middleware\EnsureWorkspaceAccess::class,
+            'setMailConfig' => \App\Http\Middleware\SetDynamicMailConfiguration::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

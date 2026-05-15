@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/app/verification/pin', [SecurityVerificationController::class, 'updatePin'])->name('app.verification.pin.update');
 
     Route::prefix('w/{workspace:slug}')
-        ->middleware(['setWorkspace', 'ensureWorkspaceAccess'])
+        ->middleware(['setWorkspace', 'ensureWorkspaceAccess', 'setMailConfig'])
         ->name('workspace.')
         ->group(function (): void {
             Route::get('/', function (Workspace $workspace) {
