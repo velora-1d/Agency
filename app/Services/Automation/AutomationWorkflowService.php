@@ -50,14 +50,40 @@ class AutomationWorkflowService
     {
         abort_unless($workflow->workspace_id === $workspace->getKey(), 404);
 
+        $startedAt = now();
+        $message = 'Uji eksekusi manual dicatat dari menu Otomasi.';
+        $status = 'success';
+
+        if ($workflow->n8n_webhook_url) {
+            try {
+                \Illuminate\Support\Facades\Http::post($workflow->n8n_webhook_url, [
+                    'event' => 'manual_test',
+                    'timestamp' => now()->toIso8601String(),
+                    'data' => [
+                        'message' => 'Ini adalah uji eksekusi manual dari Kantor Digital.',
+                        'workspace' => $workspace->name,
+                    ],
+                ]);
+                $message = 'Uji eksekusi berhasil dikirim ke n8n.';
+            } catch (\Exception $e) {
+                $status = 'failed';
+                $message = 'Gagal mengirim uji eksekusi ke n8n: ' . $e->getMessage();
+            }
+        }
+
         return $this->recordRun($workflow, [
-            'status' => 'success',
+            'status' => $status,
             'trigger_event' => $workflow->trigger_event,
-            'message' => 'Manual test run dicatat dari menu automation.',
+            'message' => $message,
             'payload' => [
                 'source' => 'manual_test',
                 'config' => $workflow->config,
+                'test_data' => [
+                    'workspace' => $workspace->name,
+                ],
             ],
+            'started_at' => $startedAt,
+            'finished_at' => now(),
         ]);
     }
 

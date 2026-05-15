@@ -64,10 +64,10 @@ function systemUrl(tab) {
 
 const items = computed(() => [
   {
-    key: 'roles',
-    label: 'Peran',
+    key: 'team',
+    label: 'Tim & Akses',
     icon: UsersRound,
-    href: systemUrl('roles'),
+    href: systemUrl('team'),
     description: 'Pembangun peran, matriks izin, dan penugasan keanggotaan per workspace.',
     pills: ['Peran', 'Izin', 'Anggota', 'Peran Sementara'],
   },
@@ -107,7 +107,7 @@ const items = computed(() => [
 
 const activeItem = computed(() => {
   const query = new URLSearchParams(page.url.split('?')[1] ?? '')
-  return query.get('tab') || 'roles'
+  return query.get('tab') || 'team'
 })
 
 const activeMeta = computed(() => items.value.find((item) => item.key === activeItem.value) ?? items.value[0])

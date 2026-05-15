@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
     'email',
     'google_id',
     'password',
+    'pin',
     'phone',
     'avatar',
     'is_active',
@@ -32,6 +33,7 @@ use Illuminate\Support\Arr;
 ])]
 #[Hidden([
     'password',
+    'pin',
     'remember_token',
     'two_factor_secret',
     'app_authentication_recovery_codes',

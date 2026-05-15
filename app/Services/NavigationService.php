@@ -6,9 +6,9 @@ use App\Models\Workspace;
 
 class NavigationService
 {
-    public function getNavigation(Workspace $workspace, string $activeLabel = ''): array
+    public function getNavigation(\App\Models\Workspace $workspace, string $activeLabel = '', ?\App\Models\User $user = null): array
     {
-        return [
+        $nav = [
             [
                 'section' => 'Utama',
                 'layout' => 'tabs',
@@ -21,24 +21,44 @@ class NavigationService
                         'active' => $activeLabel === 'Dashboard',
                         'href' => route('workspace.dashboard', $workspace),
                     ],
-                    [
-                        'label' => 'Alur Aktivitas',
-                        'nav_label' => 'Aktivitas',
-                        'description' => 'Jejak aktivitas workspace',
-                        'icon' => 'activity',
-                        'active' => $activeLabel === 'Activity Feed',
-                        'href' => route('workspace.communication.activity-feed', $workspace),
-                    ],
-                    [
-                        'label' => 'Kalender',
-                        'nav_label' => 'Kalender',
-                        'description' => 'Agenda dan jadwal workspace',
-                        'icon' => 'calendar',
-                        'active' => $activeLabel === 'Calendar',
-                        'href' => route('workspace.communication.calendar', $workspace),
-                    ],
                 ],
             ],
+        ];
+
+        // Tambahkan Pusat Kendali khusus Owner
+        if ($user) {
+            $membership = $user->workspaceMemberships()->where('workspace_id', $workspace->id)->first();
+            if ($membership?->is_owner) {
+                $nav[0]['items'][] = [
+                    'label' => 'Pusat Kendali',
+                    'nav_label' => 'Pusat Kendali',
+                    'description' => 'Agregasi data lintas brand (Velora & Maven)',
+                    'icon' => 'dashboard', // We can use a different icon
+                    'active' => $activeLabel === 'Executive Hub',
+                    'href' => route('workspace.system.executive-hub', $workspace),
+                ];
+            }
+        }
+
+        $nav[0]['items'][] = [
+            'label' => 'Alur Aktivitas',
+            'nav_label' => 'Aktivitas',
+            'description' => 'Jejak aktivitas workspace',
+            'icon' => 'activity',
+            'active' => $activeLabel === 'Activity Feed',
+            'href' => route('workspace.communication.activity-feed', $workspace),
+        ];
+
+        $nav[0]['items'][] = [
+            'label' => 'Kalender',
+            'nav_label' => 'Kalender',
+            'description' => 'Agenda dan jadwal workspace',
+            'icon' => 'calendar',
+            'active' => $activeLabel === 'Calendar',
+            'href' => route('workspace.communication.calendar', $workspace),
+        ];
+
+        return array_merge($nav, [
             [
                 'section' => 'CRM & Klien',
                 'layout' => 'tabs',
@@ -108,7 +128,7 @@ class NavigationService
                     [
                         'label' => 'Komunikasi',
                         'nav_label' => 'Komunikasi',
-                        'description' => 'Kotak masuk, dukungan, dan peringatan',
+                        'description' => 'Kotak masuk, tiket dukungan terintegrasi n8n, dan notifikasi otomatis WhatsApp',
                         'icon' => 'inbox',
                         'active' => in_array($activeLabel, [
                             'Inbox',
@@ -201,6 +221,6 @@ class NavigationService
                     ],
                 ],
             ],
-        ];
+        ]);
     }
 }

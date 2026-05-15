@@ -146,12 +146,19 @@
                     <div class="flex flex-wrap items-center gap-2">
                       <h3 class="text-base font-semibold text-stone-950">{{ ticket.title }}</h3>
                       <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="getStatusClass(ticket.status)">
-                        {{ formatOption(ticket.status) }}
+                        {{ translateStatus(ticket.status) }}
                       </span>
                       <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="getPriorityClass(ticket.priority)">
                         <span class="h-1.5 w-1.5 rounded-full" :class="getPriorityDotClass(ticket.priority)"></span>
-                        {{ formatOption(ticket.priority) }}
+                        {{ translatePriority(ticket.priority) }}
                       </span>
+                      <button 
+                        @click="router.post(route('workspace.communication.support-tickets.send-wa', { workspace: workspace.slug, supportTicket: ticket.id }))"
+                        class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-sky-600 hover:text-sky-700 transition-colors"
+                      >
+                        <Send class="h-3 w-3" />
+                        <span>Update WA</span>
+                      </button>
                       <span v-if="ticket.isOverdue" class="rounded-full bg-rose-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-rose-700">
                         Terlambat
                       </span>
@@ -407,7 +414,7 @@
 
 <script setup>
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -452,6 +459,19 @@ const form = useForm({
   priority: 'medium',
   source: 'portal',
   status: 'open',
+})
+
+onMounted(() => {
+  const query = new URLSearchParams(window.location.search)
+  const openModal = query.get('open_modal')
+  const clientId = query.get('client_id')
+
+  if (openModal === 'ticket') {
+    openCreateModal()
+    if (clientId) {
+      form.client_id = clientId
+    }
+  }
 })
 
 const visibleTickets = computed(() => props.tickets?.data || [])
@@ -633,6 +653,24 @@ function getPriorityDotClass(priority) {
     'bg-amber-400': priority === 'high',
     'bg-rose-500': priority === 'urgent',
   }
+}
+
+function translateStatus(status) {
+  return {
+    'open': 'Terbuka',
+    'in_progress': 'Diproses',
+    'resolved': 'Selesai',
+    'closed': 'Ditutup',
+  }[status] || status
+}
+
+function translatePriority(priority) {
+  return {
+    'low': 'Rendah',
+    'medium': 'Sedang',
+    'high': 'Tinggi',
+    'urgent': 'Darurat',
+  }[priority] || priority
 }
 
 function getSlaClass(date, status) {

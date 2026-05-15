@@ -300,61 +300,115 @@ class SystemController extends Controller
         );
     }
 
+    private function authorizeAdminOrOwner(Request $request, Workspace $workspace): void
+    {
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+        $membership = $user->workspaceMemberships()->where('workspace_id', $workspace->id)->first();
+        
+        abort_unless($membership && ($membership->is_owner || optional($membership->role)->slug === 'admin'), 403, 'Akses ditolak. Hanya Owner dan Admin yang dapat mengatur Tim & Akses.');
+    }
+
     public function storeRole(Request $request, Workspace $workspace): RedirectResponse
     {
+        $this->authorizeAdminOrOwner($request, $workspace);
         $validated = $this->validateRole($request, $workspace);
 
         $role = Role::create($validated);
         $role->permissions()->sync($request->input('permission_ids', []));
 
-        return back()->with('success', 'Role created successfully.');
+        return back()->with('success', 'Peran baru berhasil ditambahkan.');
     }
 
     public function updateRole(Request $request, Workspace $workspace, Role $role): RedirectResponse
     {
+        $this->authorizeAdminOrOwner($request, $workspace);
         abort_unless($role->workspace_id === $workspace->id, 404);
 
         $validated = $this->validateRole($request, $workspace, $role);
         $role->update($validated);
         $role->permissions()->sync($request->input('permission_ids', []));
 
-        return back()->with('success', 'Role updated successfully.');
+        return back()->with('success', 'Peran berhasil diperbarui.');
     }
 
-    public function destroyRole(Workspace $workspace, Role $role): RedirectResponse
+    public function destroyRole(Request $request, Workspace $workspace, Role $role): RedirectResponse
     {
+        $this->authorizeAdminOrOwner($request, $workspace);
         abort_unless($role->workspace_id === $workspace->id, 404);
 
         if (WorkspaceUser::query()->where('role_id', $role->id)->exists()) {
-            return back()->with('error', 'Role still has active workspace members.');
+            return back()->with('error', 'Peran ini masih digunakan oleh anggota tim.');
         }
 
         $role->delete();
 
-        return back()->with('success', 'Role deleted successfully.');
+        return back()->with('success', 'Peran berhasil dihapus.');
     }
 
     public function storeMembership(Request $request, Workspace $workspace): RedirectResponse
     {
-        WorkspaceUser::create($this->validateMembership($request, $workspace));
+        $this->authorizeAdminOrOwner($request, $workspace);
 
-        return back()->with('success', 'Workspace member assigned successfully.');
+        $user = null;
+        if ($request->filled('email')) {
+            // Cek apakah user sudah terdaftar di sistem
+            $user = User::where('email', $request->email)->first();
+            
+            if (!$user) {
+                // Buat user baru jika belum ada akun dengan email tersebut
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'email', 'unique:users,email'],
+                    'password' => ['required', 'string', 'min:8'],
+                ]);
+                
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'is_active' => true,
+                ]);
+            }
+        } elseif ($request->filled('user_id')) {
+            $user = User::findOrFail($request->user_id);
+        } else {
+            return back()->with('error', 'Silakan pilih pengguna atau masukkan detail akun baru.');
+        }
+
+        // Cek apakah user sudah menjadi anggota di workspace ini
+        if ($workspace->users()->where('user_id', $user->id)->exists()) {
+            return back()->with('error', 'Pengguna ini sudah terdaftar sebagai anggota di workspace ini.');
+        }
+
+        // Tambahkan ke workspace
+        $workspace->users()->attach($user->id, [
+            'id' => Str::uuid(),
+            'role_id' => $request->role_id,
+            'is_owner' => $request->boolean('is_owner'),
+            'joined_at' => now(),
+            'expires_at' => $request->filled('expires_at') ? $request->expires_at : null,
+        ]);
+
+        return back()->with('success', 'Anggota tim baru berhasil ditambahkan.');
     }
 
     public function updateMembership(Request $request, Workspace $workspace, WorkspaceUser $membership): RedirectResponse
     {
+        $this->authorizeAdminOrOwner($request, $workspace);
         abort_unless($membership->workspace_id === $workspace->id, 404);
         $membership->update($this->validateMembership($request, $workspace, $membership));
 
-        return back()->with('success', 'Workspace membership updated successfully.');
+        return back()->with('success', 'Informasi anggota tim berhasil diperbarui.');
     }
 
-    public function destroyMembership(Workspace $workspace, WorkspaceUser $membership): RedirectResponse
+    public function destroyMembership(Request $request, Workspace $workspace, WorkspaceUser $membership): RedirectResponse
     {
+        $this->authorizeAdminOrOwner($request, $workspace);
         abort_unless($membership->workspace_id === $workspace->id, 404);
         $membership->delete();
 
-        return back()->with('success', 'Workspace membership deleted successfully.');
+        return back()->with('success', 'Anggota tim berhasil dihapus dari workspace.');
     }
 
     public function updateSettings(Request $request, Workspace $workspace): RedirectResponse
@@ -667,16 +721,53 @@ class SystemController extends Controller
 
     protected function buildAuditSummary(AuditLog $log): string
     {
+        $userName = $log->user?->name ?? 'Sistem';
+        
+        $moduleMap = [
+            'projects' => 'Proyek',
+            'clients' => 'Klien',
+            'leads' => 'Prospek',
+            'invoices' => 'Tagihan',
+            'contracts' => 'Kontrak',
+            'tasks' => 'Tugas',
+            'support_tickets' => 'Tiket Dukungan',
+            'marketing_campaigns' => 'Kampanye',
+            'social_posts' => 'Post Sosial',
+            'newsletters' => 'Newsletter',
+            'users' => 'Pengguna',
+            'roles' => 'Peran',
+        ];
+
+        $actionMap = [
+            'create' => 'membuat',
+            'update' => 'memperbarui',
+            'delete' => 'menghapus',
+            'login' => 'masuk ke sistem',
+            'logout' => 'keluar dari sistem',
+            'upload' => 'mengunggah',
+            'approve' => 'menyetujui',
+        ];
+
+        $moduleLabel = $moduleMap[$log->module] ?? ucfirst($log->module);
+        $actionLabel = $actionMap[$log->action] ?? $log->action;
+
         $changes = collect($log->new_values ?? [])
             ->keys()
-            ->take(3)
+            ->filter(fn($key) => !in_array($key, ['updated_at', 'created_at', 'id']))
+            ->take(2)
+            ->map(fn($key) => str_replace('_', ' ', $key))
             ->implode(', ');
 
+        if ($log->action === 'login' || $log->action === 'logout') {
+            return sprintf('%s %s.', $userName, $actionLabel);
+        }
+
         return trim(sprintf(
-            '%s / %s%s',
-            $log->module,
-            $log->action,
-            filled($changes) ? " / {$changes}" : ''
+            '%s %s %s%s',
+            $userName,
+            $actionLabel,
+            $moduleLabel,
+            filled($changes) ? " (bidang: {$changes})" : ''
         ));
     }
 }

@@ -4,8 +4,61 @@
       <!-- Sidebar: Mentok Kiri (Flush Left) -->
       <aside class="flex h-full w-[296px] flex-col bg-[#1f1a17] text-stone-50 shadow-[4px_0_24px_rgba(0,0,0,0.1)]">
         <div class="border-b border-white/10 px-6 py-8">
-          <p class="text-sm font-medium uppercase tracking-[0.4em] text-amber-300">Kantor Digital</p>
-          <!-- Branded workspace name removed as per request -->
+          <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-stone-500 mb-2">Kantor Digital</p>
+          
+          <!-- Workspace Switcher in Sidebar -->
+          <div class="relative">
+            <button 
+                v-if="page.props.auth.workspaces.length > 1"
+                @click="showWorkspaceDropdown = !showWorkspaceDropdown"
+                class="group flex w-full items-center justify-between rounded-2xl bg-white/5 border border-white/10 px-4 py-3 text-left transition-all hover:bg-white/10 hover:border-amber-500/30"
+            >
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-stone-950 shadow-lg shadow-amber-500/20">
+                        <ShieldCheck class="h-4 w-4" />
+                    </div>
+                    <div class="min-w-0">
+                        <p class="truncate text-sm font-bold text-white">{{ workspaceName }}</p>
+                        <p class="text-[9px] font-bold uppercase tracking-widest text-amber-500/60">Owner / Master</p>
+                    </div>
+                </div>
+                <ChevronDown class="h-4 w-4 text-stone-500 transition-transform duration-300" :class="{ 'rotate-180': showWorkspaceDropdown }" />
+            </button>
+            <div v-else class="flex items-center gap-3 px-1">
+                <div class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-amber-400">
+                    <AppWindowMac class="h-5 w-5" />
+                </div>
+                <p class="text-sm font-bold text-white">{{ workspaceName }}</p>
+            </div>
+
+            <!-- Sidebar Workspace Dropdown -->
+            <Transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="transform scale-95 opacity-0 -translate-y-2"
+                enter-to-class="transform scale-100 opacity-100 translate-y-0"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="transform scale-100 opacity-100 translate-y-0"
+                leave-to-class="transform scale-95 opacity-0 -translate-y-2"
+            >
+                <div v-if="showWorkspaceDropdown" class="absolute left-0 top-full mt-2 w-full origin-top rounded-2xl border border-stone-800 bg-[#2a2420] p-2 shadow-2xl z-[100]">
+                    <div class="px-3 py-2 border-b border-white/5 mb-1">
+                        <p class="text-[9px] font-bold uppercase tracking-widest text-stone-500">Pindah Kantor</p>
+                    </div>
+                    <div class="space-y-1">
+                        <button
+                            v-for="w in page.props.auth.workspaces"
+                            :key="w.id"
+                            @click="switchWorkspace(w)"
+                            class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-between group"
+                            :class="w.slug === workspaceSlug ? 'bg-amber-500 text-stone-950' : 'text-stone-400 hover:bg-white/5 hover:text-white'"
+                        >
+                            <span class="truncate">{{ w.name }}</span>
+                            <div v-if="w.slug === workspaceSlug" class="h-1.5 w-1.5 rounded-full bg-stone-950"></div>
+                        </button>
+                    </div>
+                </div>
+            </Transition>
+          </div>
         </div>
 
         <div class="scrollbar-none space-y-4 px-4 py-8 lg:flex-1 lg:overflow-y-auto">
@@ -60,15 +113,12 @@
 
       <!-- Main Content Area -->
       <div class="flex flex-1 flex-col gap-4 overflow-hidden">
-        <header class="relative z-50 border-b border-stone-200/60 bg-white/50 px-8 py-3 backdrop-blur-md">
+        <header class="relative z-50 border-b border-stone-200/60 bg-white/50 px-8 py-4 backdrop-blur-md">
           <div class="mx-auto max-w-full">
-            <div class="flex flex-col gap-2 xl:flex-row xl:items-end xl:justify-between">
-              <div class="space-y-1">
-                <p class="text-[9px] font-bold uppercase tracking-[0.32em] text-amber-700">{{ workspaceName }} / Dasbor</p>
-                <div>
-                  <h1 class="text-xl font-bold tracking-tight text-stone-950 lg:text-2xl">{{ title }}</h1>
-                  <p class="mt-0.5 max-w-3xl text-[10px] leading-relaxed text-stone-500">{{ subtitle }}</p>
-                </div>
+            <div class="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
+              <div>
+                <h1 class="text-xl font-bold tracking-tight text-stone-950 lg:text-2xl">{{ title }}</h1>
+                <p class="mt-0.5 max-w-3xl text-[10px] leading-relaxed text-stone-500 uppercase tracking-widest font-semibold">{{ subtitle }}</p>
               </div>
 
               <div class="flex flex-wrap gap-2">
@@ -85,11 +135,21 @@
         </main>
       </div>
     </div>
+
+    <!-- Modal Verifikasi Keamanan -->
+    <SecurityVerificationModal 
+      :show="showVerificationModal"
+      :target-workspace-slug="pendingWorkspace?.slug"
+      :target-workspace-name="pendingWorkspace?.name"
+      :workspace-slug="workspaceSlug"
+      @close="showVerificationModal = false"
+      @success="handleVerificationSuccess"
+    />
   </section>
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 import {
   Activity,
   AppWindowMac,
@@ -107,7 +167,15 @@ import {
   Users,
   WalletCards,
   Workflow,
+  ChevronDown,
 } from 'lucide-vue-next'
+import { ref, onMounted } from 'vue'
+import SecurityVerificationModal from '../Components/domain/system/SecurityVerificationModal.vue'
+
+const page = usePage()
+const showWorkspaceDropdown = ref(false)
+const showVerificationModal = ref(false)
+const pendingWorkspace = ref(null)
 
 const navIcons = {
   activity: Activity,
@@ -156,5 +224,35 @@ defineProps({
 
 function resolveNavIcon(key) {
   return navIcons[key] || LayoutDashboard
+}
+
+async function switchWorkspace(workspace) {
+  showWorkspaceDropdown.value = false
+  
+  // Cek apakah butuh verifikasi (30 menit)
+  try {
+    const response = await fetch(`/app/verification/check`, {
+      credentials: 'include',
+      headers: { 'Accept': 'application/json' }
+    })
+    const data = await response.json()
+    
+    if (data.is_valid) {
+      window.location.href = `/w/${workspace.slug}/dashboard`
+    } else {
+      pendingWorkspace.value = workspace
+      showVerificationModal.value = true
+    }
+  } catch (error) {
+    // Fallback ke verifikasi jika api error
+    pendingWorkspace.value = workspace
+    showVerificationModal.value = true
+  }
+}
+
+function handleVerificationSuccess() {
+  if (pendingWorkspace.value) {
+    window.location.href = `/w/${pendingWorkspace.value.slug}/dashboard`
+  }
 }
 </script>

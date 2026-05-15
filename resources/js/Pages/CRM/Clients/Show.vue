@@ -93,6 +93,7 @@
 
             <!-- Tab Content -->
             <div class="mt-6">
+                <!-- Tab 1: Ringkasan -->
                 <div v-if="activeTab === 'overview'" class="space-y-6">
                     <div class="grid gap-4 md:grid-cols-2">
                         <div class="rounded-[1.6rem] border border-stone-200 p-5">
@@ -111,6 +112,7 @@
                     </div>
                 </div>
 
+                <!-- Tab 2: Proyek -->
                 <div v-else-if="activeTab === 'projects'" class="space-y-6">
                     <div class="flex justify-end">
                         <button
@@ -123,21 +125,22 @@
                     </div>
                     <div class="space-y-4">
                         <article v-for="project in tabs.projects" :key="project.id" class="flex items-center justify-between rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5 hover:border-stone-400 transition-colors">
-                        <div>
-                        <p class="font-bold text-stone-950">{{ project.name }}</p>
-                        <p class="mt-1 text-xs text-stone-500">Mulai {{ project.start_date_label || '-' }} / Anggaran {{ project.budget_label }}</p>
+                            <div>
+                                <p class="font-bold text-stone-950">{{ project.name }}</p>
+                                <p class="mt-1 text-xs text-stone-500">Mulai {{ project.start_date_label || '-' }} / Anggaran {{ project.budget_label }}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="rounded-full bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-stone-600 border border-stone-100 shadow-sm">{{ translateProjectStatus(project.status) }}</span>
+                                <p class="mt-2 text-xs font-bold text-stone-900">{{ project.progress }}% Selesai</p>
+                            </div>
+                        </article>
+                        <div v-if="tabs.projects.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-200 bg-stone-50 px-5 py-14 text-center text-sm text-stone-500">
+                            Belum ada proyek aktif untuk klien ini.
                         </div>
-                        <div class="text-right">
-                        <span class="rounded-full bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-stone-600 border border-stone-100 shadow-sm">{{ translateProjectStatus(project.status) }}</span>
-                        <p class="mt-2 text-xs font-bold text-stone-900">{{ project.progress }}% Selesai</p>
-                        </div>
-                    </article>
-                    <div v-if="tabs.projects.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-200 bg-stone-50 px-5 py-14 text-center text-sm text-stone-500">
-                        Belum ada proyek aktif untuk klien ini.
-                    </div>
                     </div>
                 </div>
 
+                <!-- Tab 3: Infrastruktur -->
                 <div v-else-if="activeTab === 'digital_services'" class="space-y-6">
                     <div v-for="site in tabs.digital_services" :key="site.id" class="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm">
                         <div class="flex items-start justify-between gap-4">
@@ -151,24 +154,24 @@
                         </div>
 
                         <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                        <div class="rounded-2xl bg-stone-50 p-4 border border-stone-100">
-                            <p class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Domain & SSL</p>
-                            <div v-if="site.domain" class="space-y-1 text-sm text-stone-700">
-                            <p class="font-bold">{{ site.domain.name }}</p>
-                            <p class="text-xs text-stone-500">Registrar: {{ site.domain.registrar }}</p>
-                            <p class="text-xs text-stone-500">Kedaluwarsa: {{ site.domain.expiry_date || '-' }}</p>
+                            <div class="rounded-2xl bg-stone-50 p-4 border border-stone-100">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Domain & SSL</p>
+                                <div v-if="site.domain" class="space-y-1 text-sm text-stone-700">
+                                    <p class="font-bold">{{ site.domain.name }}</p>
+                                    <p class="text-xs text-stone-500">Registrar: {{ site.domain.registrar }}</p>
+                                    <p class="text-xs text-stone-500">Kedaluwarsa: {{ site.domain.expiry_date || '-' }}</p>
+                                </div>
+                                <p v-else class="text-sm text-stone-400 italic">Data domain tidak terhubung.</p>
                             </div>
-                            <p v-else class="text-sm text-stone-400 italic">Data domain tidak terhubung.</p>
-                        </div>
-                        <div class="rounded-2xl bg-stone-50 p-4 border border-stone-100">
-                            <p class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Hosting / VPS</p>
-                            <div v-if="site.server" class="space-y-1 text-sm text-stone-700">
-                            <p class="font-bold">{{ site.server.name }}</p>
-                            <p class="text-xs text-stone-500">Provider: {{ site.server.provider }}</p>
-                            <p class="text-xs text-stone-500">IP: {{ site.server.ip_address }}</p>
+                            <div class="rounded-2xl bg-stone-50 p-4 border border-stone-100">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Hosting / VPS</p>
+                                <div v-if="site.server" class="space-y-1 text-sm text-stone-700">
+                                    <p class="font-bold">{{ site.server.name }}</p>
+                                    <p class="text-xs text-stone-500">Provider: {{ site.server.provider }}</p>
+                                    <p class="text-xs text-stone-500">IP: {{ site.server.ip_address }}</p>
+                                </div>
+                                <p v-else class="text-sm text-stone-400 italic">Data server tidak terhubung.</p>
                             </div>
-                            <p v-else class="text-sm text-stone-400 italic">Data server tidak terhubung.</p>
-                        </div>
                         </div>
                     </div>
                     <div v-if="tabs.digital_services.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-200 bg-stone-50 px-5 py-14 text-center text-sm text-stone-500">
@@ -176,6 +179,7 @@
                     </div>
                 </div>
 
+                <!-- Tab 4: Keuangan -->
                 <div v-else-if="activeTab === 'invoices'" class="space-y-6">
                     <div class="flex justify-end">
                         <button
@@ -187,34 +191,35 @@
                         </button>
                     </div>
                     <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
-                        <tr>
-                            <th class="px-4 py-3">Nomor Tagihan</th>
-                            <th class="px-4 py-3">Jatuh Tempo</th>
-                            <th class="px-4 py-3">Total</th>
-                            <th class="px-4 py-3 text-right">Status Pakasir</th>
-                        </tr>
-                        </thead>
-                        <tbody class="divide-y divide-stone-100">
-                        <tr v-for="invoice in tabs.invoices" :key="invoice.id" class="hover:bg-stone-50 transition-colors">
-                            <td class="px-4 py-4 font-bold text-stone-900">{{ invoice.number }}</td>
-                            <td class="px-4 py-4 text-stone-600">{{ invoice.due_date_label || '-' }}</td>
-                            <td class="px-4 py-4 font-bold text-stone-900">{{ invoice.total_label }}</td>
-                            <td class="px-4 py-4 text-right">
-                            <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em]" :class="invoiceStatusClass(invoice.status)">
-                                {{ translateInvoiceStatus(invoice.status) }}
-                            </span>
-                            </td>
-                        </tr>
-                        <tr v-if="tabs.invoices.length === 0">
-                            <td colspan="4" class="px-4 py-14 text-center text-stone-500 italic">Belum ada riwayat tagihan.</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <table class="w-full text-left text-sm">
+                            <thead class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
+                                <tr>
+                                    <th class="px-4 py-3">Nomor Tagihan</th>
+                                    <th class="px-4 py-3">Jatuh Tempo</th>
+                                    <th class="px-4 py-3">Total</th>
+                                    <th class="px-4 py-3 text-right">Status Pakasir</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-stone-100">
+                                <tr v-for="invoice in tabs.invoices" :key="invoice.id" class="hover:bg-stone-50 transition-colors">
+                                    <td class="px-4 py-4 font-bold text-stone-900">{{ invoice.number }}</td>
+                                    <td class="px-4 py-4 text-stone-600">{{ invoice.due_date_label || '-' }}</td>
+                                    <td class="px-4 py-4 font-bold text-stone-900">{{ invoice.total_label }}</td>
+                                    <td class="px-4 py-4 text-right">
+                                    <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em]" :class="invoiceStatusClass(invoice.status)">
+                                        {{ translateInvoiceStatus(invoice.status) }}
+                                    </span>
+                                    </td>
+                                </tr>
+                                <tr v-if="tabs.invoices.length === 0">
+                                    <td colspan="4" class="px-4 py-14 text-center text-stone-500 italic">Belum ada riwayat tagihan.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
+                <!-- Tab 5: Kontrak -->
                 <div v-else-if="activeTab === 'contracts'" class="space-y-6">
                     <div class="flex justify-end">
                         <button
@@ -227,43 +232,83 @@
                     </div>
 
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <table class="w-full text-left text-sm border-collapse">
                             <thead class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
-                            <tr>
-                                <th class="px-4 py-3">Judul Kontrak</th>
-                                <th class="px-4 py-3">Masa Berlaku</th>
-                                <th class="px-4 py-3">Nilai Deal</th>
-                                <th class="px-4 py-3 text-right">Status Legal</th>
-                                <th class="px-4 py-3 text-right w-[180px]">Aksi</th>
-                            </tr>
+                                <tr>
+                                    <th class="px-4 py-3 border-b border-stone-100">Judul Kontrak</th>
+                                    <th class="px-4 py-3 border-b border-stone-100">Masa Berlaku</th>
+                                    <th class="px-4 py-3 border-b border-stone-100">Nilai Deal</th>
+                                    <th class="px-4 py-3 border-b border-stone-100 text-right">Status Legal</th>
+                                    <th class="px-4 py-3 border-b border-stone-100 text-right w-[180px]">Aksi</th>
+                                </tr>
                             </thead>
                             <tbody class="divide-y divide-stone-100">
-                            <tr v-for="contract in tabs.contracts" :key="contract.id" class="hover:bg-stone-50 transition-colors group/row">
-                                <td class="px-4 py-4 font-bold text-stone-900">{{ contract.title }}</td>
-                                <td class="px-4 py-4 text-stone-600">{{ contract.start_date_label || '-' }} - {{ contract.end_date_label || '-' }}</td>
-                                <td class="px-4 py-4 font-bold text-stone-900">{{ contract.value_label }}</td>
-                                <td class="px-4 py-4 text-right">
-                                <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em]" :class="contractStatusClass(contract.status)">
-                                    {{ translateContractStatus(contract.status) }}
-                                </span>
-                                </td>
-                                <td class="px-4 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-                                        <button @click="viewContract(contract)" class="p-2 text-stone-400 hover:text-stone-900 transition-colors" title="Lihat Detail"><ExternalLink class="h-4 w-4" /></button>
-                                        <button @click="editContract(contract)" class="p-2 text-stone-400 hover:text-amber-600 transition-colors" title="Ubah"><Pencil class="h-4 w-4" /></button>
-                                        <button @click="sendContractWA(contract)" class="p-2 text-stone-400 hover:text-sky-600 transition-colors" title="Kirim WA"><Send class="h-4 w-4" /></button>
-                                        <button @click="downloadContractPdf(contract)" class="p-2 text-stone-400 hover:text-stone-900 transition-colors" title="Unduh PDF"><Download class="h-4 w-4" /></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr v-if="tabs.contracts.length === 0">
-                                <td colspan="4" class="px-4 py-14 text-center text-stone-500 italic">Belum ada dokumen kontrak.</td>
-                            </tr>
+                                <tr v-for="contract in tabs.contracts" :key="contract.id" class="hover:bg-stone-50 transition-colors group/row">
+                                    <td class="px-4 py-4 font-bold text-stone-900">{{ contract.title }}</td>
+                                    <td class="px-4 py-4 text-stone-600">{{ contract.start_date_label || '-' }} - {{ contract.end_date_label || '-' }}</td>
+                                    <td class="px-4 py-4 font-bold text-stone-900">{{ contract.value_label }}</td>
+                                    <td class="px-4 py-4 text-right">
+                                        <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em]" :class="contractStatusClass(contract.status)">
+                                            {{ translateContractStatus(contract.status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4 text-right">
+                                        <div class="flex items-center justify-end gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                            <button @click="viewContract(contract)" class="p-2 text-stone-400 hover:text-stone-900 transition-colors" title="Lihat Detail"><ExternalLink class="h-4 w-4" /></button>
+                                            <button @click="editContract(contract)" class="p-2 text-stone-400 hover:text-amber-600 transition-colors" title="Ubah"><Pencil class="h-4 w-4" /></button>
+                                            <button @click="sendContractWA(contract)" class="p-2 text-stone-400 hover:text-sky-600 transition-colors" title="Kirim WA"><Send class="h-4 w-4" /></button>
+                                            <button @click="downloadContractPdf(contract)" class="p-2 text-stone-400 hover:text-stone-900 transition-colors" title="Unduh PDF"><Download class="h-4 w-4" /></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr v-if="tabs.contracts.length === 0">
+                                    <td colspan="5" class="px-4 py-14 text-center text-stone-500 italic">Belum ada dokumen kontrak.</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
+                <!-- Tab 6: Tiket -->
+                <div v-else-if="activeTab === 'tickets'" class="space-y-6">
+                    <div class="flex justify-end">
+                        <button
+                        @click="router.get(ticketsBaseUrl, { client_id: client.id, open_modal: 'ticket' })"
+                        class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-stone-900/10 transition hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                        <Ticket class="h-4 w-4" />
+                        <span>Buat Tiket Baru</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <article v-for="ticket in tabs.tickets" :key="ticket.id" class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5 hover:border-stone-400 transition-colors">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <p class="font-bold text-stone-900">#{{ ticket.id.substring(0, 8) }} - {{ ticket.title }}</p>
+                                        <span class="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider" :class="priorityClass(ticket.priority)">{{ translatePriority(ticket.priority) }}</span>
+                                    </div>
+                                    <p class="mt-1 text-sm text-stone-600 line-clamp-1">{{ ticket.description }}</p>
+                                    <p class="mt-2 text-xs text-stone-500">Dibuat: {{ ticket.created_at_label || '-' }} / SLA: {{ ticket.sla_due_at_label || '-' }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider" :class="ticketStatusClass(ticket.status)">
+                                        {{ translateTicketStatus(ticket.status) }}
+                                    </span>
+                                    <div class="mt-3 flex justify-end gap-2">
+                                        <button @click="router.get(ticketsBaseUrl)" class="text-xs font-bold text-stone-900 underline decoration-amber-400 underline-offset-4">Balas</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <div v-if="!tabs.tickets || tabs.tickets.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-200 bg-stone-50 px-5 py-14 text-center text-sm text-stone-500">
+                            Belum ada tiket dukungan untuk klien ini.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 7: Aktivitas -->
                 <div v-else-if="activeTab === 'activity'" class="space-y-6">
                     <form class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5" @submit.prevent="submitActivity">
                         <textarea
@@ -274,13 +319,13 @@
                         ></textarea>
                         <div v-if="activityForm.errors.content" class="mt-2 text-xs text-rose-500">{{ activityForm.errors.content }}</div>
                         <div class="mt-3 flex justify-end">
-                        <button
-                            type="submit"
-                            :disabled="activityForm.processing"
-                            class="rounded-xl bg-stone-950 px-5 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-stone-800 disabled:opacity-50"
-                        >
-                            {{ activityForm.processing ? 'Menyimpan...' : 'Simpan Aktivitas' }}
-                        </button>
+                            <button
+                                type="submit"
+                                :disabled="activityForm.processing"
+                                class="rounded-xl bg-stone-950 px-5 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-stone-800 disabled:opacity-50"
+                            >
+                                {{ activityForm.processing ? 'Menyimpan...' : 'Simpan Aktivitas' }}
+                            </button>
                         </div>
                     </form>
 
@@ -288,11 +333,11 @@
                         <article v-for="activity in activities" :key="activity.id" class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
                             <div class="flex items-start justify-between gap-4">
                                 <div>
-                                <p class="text-sm font-semibold text-stone-900">{{ activity.description }}</p>
-                                <p class="mt-2 text-xs text-stone-500">{{ activity.user?.name || 'Sistem' }} / {{ activity.created_at || '-' }}</p>
+                                    <p class="text-sm font-semibold text-stone-900">{{ activity.description }}</p>
+                                    <p class="mt-2 text-xs text-stone-500">{{ activity.user?.name || 'Sistem' }} / {{ activity.created_at || '-' }}</p>
                                 </div>
                                 <span class="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]" :class="activityBadgeClass(activity.metadata?.action)">
-                                {{ translateAction(activity.metadata?.action || activity.type) }}
+                                    {{ translateAction(activity.metadata?.action || activity.type) }}
                                 </span>
                             </div>
                         </article>
@@ -301,9 +346,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-          </div>
-        </div>
+            </div> <!-- End of Tab Content -->
+          </div> <!-- End of flex-1 min-w-0 -->
+        </div> <!-- End of flex flex-col gap-8 lg:flex-row -->
       </section>
     </div>
 
@@ -336,7 +381,8 @@ import {
   Pencil,
   Trash2,
   Receipt,
-  Briefcase
+  Briefcase,
+  Ticket
 } from 'lucide-vue-next'
 import WorkspaceLayout from '../../../Layouts/WorkspaceLayout.vue'
 import ContractGeneratorModal from '../../../Components/domain/crm/ContractGeneratorModal.vue'
@@ -361,6 +407,7 @@ const workspaceBaseUrl = `/w/${encodeURIComponent(props.workspace.slug)}`
 const clientsBaseUrl = `${workspaceBaseUrl}/crm/clients`
 const projectsBaseUrl = `${workspaceBaseUrl}/projects`
 const invoicesBaseUrl = `${workspaceBaseUrl}/finance/invoices`
+const ticketsBaseUrl = `${workspaceBaseUrl}/communication/support-tickets`
 const clientActivitiesUrl = `${clientsBaseUrl}/${encodeURIComponent(props.client.id)}/activities`
 const contractUrl = (contractId) => `${workspaceBaseUrl}/projects/contracts/${encodeURIComponent(contractId)}`
 const contractSendWaUrl = (contractId) => `${contractUrl(contractId)}/send-wa`
@@ -375,6 +422,7 @@ const tabOptions = computed(() => [
   { id: 'digital_services', label: `Infrastruktur (${props.tabs.digital_services.length})` },
   { id: 'invoices', label: `Keuangan (${props.tabs.invoices.length})` },
   { id: 'contracts', label: `Kontrak (${props.tabs.contracts.length})` },
+  { id: 'tickets', label: `Tiket (${props.tabs.tickets?.length || 0})` },
   { id: 'activity', label: `Aktivitas (${props.activities.length})` },
 ])
 
@@ -403,6 +451,26 @@ function translateInvoiceStatus(status) {
 
 function translateContractStatus(status) {
     return { signed: 'Ditandatangani', draft: 'Draf', expired: 'Kedaluwarsa', cancelled: 'Batal' }[status] || status
+}
+
+function translateTicketStatus(status) {
+    return { open: 'Terbuka', in_progress: 'Diproses', resolved: 'Selesai', closed: 'Ditutup' }[status] || status
+}
+
+function translatePriority(priority) {
+    return { urgent: 'Sangat Mendesak', high: 'Tinggi', medium: 'Sedang', low: 'Rendah' }[priority] || priority
+}
+
+function ticketStatusClass(status) {
+    if (status === 'resolved') return 'bg-emerald-100 text-emerald-700'
+    if (status === 'open') return 'bg-amber-100 text-amber-700'
+    return 'bg-stone-100 text-stone-600'
+}
+
+function priorityClass(priority) {
+    if (priority === 'urgent') return 'bg-rose-100 text-rose-700'
+    if (priority === 'high') return 'bg-orange-100 text-orange-700'
+    return 'bg-stone-100 text-stone-600'
 }
 
 function translateAction(action) {

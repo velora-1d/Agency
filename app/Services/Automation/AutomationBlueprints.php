@@ -10,13 +10,13 @@ class AutomationBlueprints
     public function triggerEvents(): array
     {
         return [
-            ['value' => 'lead_created', 'label' => 'Lead masuk'],
-            ['value' => 'invoice_due', 'label' => 'Invoice due'],
-            ['value' => 'task_completed', 'label' => 'Task selesai'],
-            ['value' => 'payment_received', 'label' => 'Payment masuk'],
-            ['value' => 'form_submitted', 'label' => 'Form submission'],
-            ['value' => 'support_ticket_created', 'label' => 'Support ticket masuk'],
-            ['value' => 'schedule', 'label' => 'Schedule trigger'],
+            ['value' => 'lead_created', 'label' => 'Prospek Baru'],
+            ['value' => 'invoice_due', 'label' => 'Jatuh Tempo Tagihan'],
+            ['value' => 'task_completed', 'label' => 'Tugas Selesai'],
+            ['value' => 'payment_received', 'label' => 'Pembayaran Diterima'],
+            ['value' => 'form_submitted', 'label' => 'Formulir Masuk'],
+            ['value' => 'support_ticket_created', 'label' => 'Tiket Dukungan Baru'],
+            ['value' => 'schedule', 'label' => 'Pemicu Terjadwal'],
         ];
     }
 
@@ -26,9 +26,9 @@ class AutomationBlueprints
     public function triggerTypes(): array
     {
         return [
-            ['value' => 'event', 'label' => 'Event'],
-            ['value' => 'schedule', 'label' => 'Schedule'],
-            ['value' => 'webhook', 'label' => 'Webhook'],
+            ['value' => 'event', 'label' => 'Kejadian (Event)'],
+            ['value' => 'schedule', 'label' => 'Jadwal (Schedule)'],
+            ['value' => 'webhook', 'label' => 'Picu Webhook'],
         ];
     }
 
@@ -38,12 +38,12 @@ class AutomationBlueprints
     public function stepTypes(): array
     {
         return [
-            ['value' => 'send_whatsapp', 'label' => 'Send WhatsApp'],
-            ['value' => 'send_email', 'label' => 'Send Email'],
-            ['value' => 'create_task', 'label' => 'Create Task'],
-            ['value' => 'update_status', 'label' => 'Update Status'],
-            ['value' => 'notify_team', 'label' => 'Notify Team'],
-            ['value' => 'webhook', 'label' => 'Webhook'],
+            ['value' => 'send_whatsapp', 'label' => 'Kirim WhatsApp'],
+            ['value' => 'send_email', 'label' => 'Kirim Email'],
+            ['value' => 'create_task', 'label' => 'Buat Tugas'],
+            ['value' => 'update_status', 'label' => 'Perbarui Status'],
+            ['value' => 'notify_team', 'label' => 'Notifikasi Tim'],
+            ['value' => 'webhook', 'label' => 'Panggil Webhook (n8n)'],
         ];
     }
 
@@ -53,12 +53,12 @@ class AutomationBlueprints
     public function conditionOperators(): array
     {
         return [
-            ['value' => 'equals', 'label' => 'Equals'],
-            ['value' => 'not_equals', 'label' => 'Not equals'],
-            ['value' => 'contains', 'label' => 'Contains'],
-            ['value' => 'exists', 'label' => 'Exists'],
-            ['value' => 'greater_than', 'label' => 'Greater than'],
-            ['value' => 'less_than', 'label' => 'Less than'],
+            ['value' => 'equals', 'label' => 'Sama Dengan'],
+            ['value' => 'not_equals', 'label' => 'Tidak Sama Dengan'],
+            ['value' => 'contains', 'label' => 'Mengandung'],
+            ['value' => 'exists', 'label' => 'Ada / Terisi'],
+            ['value' => 'greater_than', 'label' => 'Lebih Dari'],
+            ['value' => 'less_than', 'label' => 'Kurang Dari'],
         ];
     }
 

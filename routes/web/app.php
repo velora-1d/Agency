@@ -16,6 +16,9 @@ use App\Http\Controllers\App\Finance\ExpenseController;
 use App\Http\Controllers\App\Finance\FinancialReportController;
 use App\Http\Controllers\App\Finance\InvoiceController;
 use App\Http\Controllers\App\Marketing\MarketingController;
+use App\Http\Controllers\App\Marketing\CampaignController;
+use App\Http\Controllers\App\Marketing\SocialPostController;
+use App\Http\Controllers\App\Marketing\NewsletterController;
 use App\Http\Controllers\App\Finance\PayrollController;
 use App\Http\Controllers\App\Finance\QuotationController;
 use App\Http\Controllers\App\Finance\QuotationPublicController;
@@ -30,6 +33,8 @@ use App\Http\Controllers\App\Project\NoteController;
 use App\Http\Controllers\App\Project\ProjectTemplateController;
 use App\Http\Controllers\App\Project\TaskController;
 use App\Http\Controllers\App\System\SystemController;
+use App\Http\Controllers\App\System\SecurityVerificationController;
+use App\Http\Controllers\App\System\ExecutiveHubController;
 use App\Models\Workspace;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -46,10 +51,18 @@ Route::middleware('auth')->group(function (): void {
         return redirect()->route('workspace.dashboard', $workspace);
     })->name('app.home');
 
+    // Security Verification (Global)
+    Route::get('/app/verification/check', [SecurityVerificationController::class, 'check'])->name('app.verification.check');
+    Route::post('/app/verification/verify', [SecurityVerificationController::class, 'verify'])->name('app.verification.verify');
+    Route::post('/app/verification/pin', [SecurityVerificationController::class, 'updatePin'])->name('app.verification.pin.update');
+
     Route::prefix('w/{workspace:slug}')
         ->middleware(['setWorkspace', 'ensureWorkspaceAccess'])
         ->name('workspace.')
         ->group(function (): void {
+            Route::get('/', function (Workspace $workspace) {
+                return redirect()->route('workspace.dashboard', $workspace);
+            });
             Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
             Route::prefix('crm')->name('crm.')->group(function (): void {
@@ -269,15 +282,28 @@ Route::middleware('auth')->group(function (): void {
 
             Route::prefix('marketing')->name('marketing.')->group(function (): void {
                 Route::get('/', [MarketingController::class, 'index'])->name('index');
-                Route::post('/campaigns', [MarketingController::class, 'storeCampaign'])->name('campaigns.store');
-                Route::patch('/campaigns/{campaign}', [MarketingController::class, 'updateCampaign'])->name('campaigns.update');
-                Route::delete('/campaigns/{campaign}', [MarketingController::class, 'destroyCampaign'])->name('campaigns.destroy');
-                Route::post('/social-posts', [MarketingController::class, 'storePost'])->name('social-posts.store');
-                Route::patch('/social-posts/{socialPost}', [MarketingController::class, 'updatePost'])->name('social-posts.update');
-                Route::delete('/social-posts/{socialPost}', [MarketingController::class, 'destroyPost'])->name('social-posts.destroy');
-                Route::post('/newsletters', [MarketingController::class, 'storeNewsletter'])->name('newsletters.store');
-                Route::patch('/newsletters/{newsletter}', [MarketingController::class, 'updateNewsletter'])->name('newsletters.update');
-                Route::delete('/newsletters/{newsletter}', [MarketingController::class, 'destroyNewsletter'])->name('newsletters.destroy');
+                
+                // Campaigns
+                Route::get('/campaigns/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
+                Route::post('/campaigns', [CampaignController::class, 'store'])->name('campaigns.store');
+                Route::patch('/campaigns/{campaign}', [CampaignController::class, 'update'])->name('campaigns.update');
+                Route::delete('/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
+                Route::post('/campaigns/{campaign}/send-wa', [CampaignController::class, 'sendWhatsApp'])->name('campaigns.send-wa');
+                
+                // Social Posts
+                Route::get('/social-posts/{post}', [SocialPostController::class, 'show'])->name('social-posts.show');
+                Route::post('/social-posts', [SocialPostController::class, 'store'])->name('social-posts.store');
+                Route::patch('/social-posts/{post}', [SocialPostController::class, 'update'])->name('social-posts.update');
+                Route::delete('/social-posts/{post}', [SocialPostController::class, 'destroy'])->name('social-posts.destroy');
+                
+                // Newsletters
+                Route::get('/newsletters/{newsletter}', [NewsletterController::class, 'show'])->name('newsletters.show');
+                Route::post('/newsletters', [NewsletterController::class, 'store'])->name('newsletters.store');
+                Route::patch('/newsletters/{newsletter}', [NewsletterController::class, 'update'])->name('newsletters.update');
+                Route::delete('/newsletters/{newsletter}', [NewsletterController::class, 'destroy'])->name('newsletters.destroy');
+                Route::post('/newsletters/{newsletter}/send-wa', [NewsletterController::class, 'sendWhatsApp'])->name('newsletters.send-wa');
+                
+                // Subscribers
                 Route::post('/subscribers', [MarketingController::class, 'storeSubscriber'])->name('subscribers.store');
                 Route::patch('/subscribers/{subscriber}', [MarketingController::class, 'updateSubscriber'])->name('subscribers.update');
                 Route::delete('/subscribers/{subscriber}', [MarketingController::class, 'destroySubscriber'])->name('subscribers.destroy');
@@ -285,6 +311,8 @@ Route::middleware('auth')->group(function (): void {
 
             Route::prefix('system')->name('system.')->group(function (): void {
                 Route::get('/', [SystemController::class, 'index'])->name('index');
+                Route::get('/executive-hub', [ExecutiveHubController::class, 'index'])->name('executive-hub');
+                
                 Route::post('/roles', [SystemController::class, 'storeRole'])->name('roles.store');
                 Route::patch('/roles/{role}', [SystemController::class, 'updateRole'])->name('roles.update');
                 Route::delete('/roles/{role}', [SystemController::class, 'destroyRole'])->name('roles.destroy');
@@ -326,6 +354,7 @@ Route::middleware('auth')->group(function (): void {
                     Route::post('/', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'store'])->name('store');
                     Route::patch('/{supportTicket}', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'update'])->name('update');
                     Route::delete('/{supportTicket}', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'destroy'])->name('destroy');
+                    Route::post('/{supportTicket}/send-wa', [App\Http\Controllers\App\Communication\SupportTicketController::class, 'sendWhatsApp'])->name('send-wa');
                 });
             });
         });

@@ -1,7 +1,7 @@
 <template>
   <WorkspaceLayout
-    title="Automation"
-    subtitle="Menu 24 difokuskan untuk workflow automation lintas workspace: trigger, multi-step action, conditional logic, retry, run log, dan integrasi n8n yang tetap gampang dibaca tim."
+    title="Otomasi"
+    subtitle="Menu 24 difokuskan untuk otomasi alur kerja (workflow) lintas workspace: pemicu, langkah-langkah aksi, logika kondisi, coba ulang, log eksekusi, dan integrasi n8n yang tetap gampang dibaca tim."
   >
     <template #actions>
       <button
@@ -10,7 +10,7 @@
         class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-stone-800"
       >
         <Plus class="h-4 w-4" />
-        <span>Workflow Baru</span>
+        <span>Alur Kerja Baru</span>
       </button>
     </template>
 
@@ -19,24 +19,24 @@
       <section class="rounded-[1.6rem] border border-stone-200 bg-white p-4 shadow-[0_18px_50px_rgba(28,25,23,0.05)]">
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div class="max-w-3xl">
-            <p class="text-[11px] font-bold uppercase tracking-[0.28em] text-stone-400">Menu 24 / Automation</p>
-            <h2 class="mt-2 text-2xl font-semibold tracking-[-0.05em] text-stone-950">Workflow automation yang ringkas, tapi cukup kuat untuk lead, invoice, task, payment, form, dan support flow.</h2>
+            <p class="text-[11px] font-bold uppercase tracking-[0.28em] text-stone-400">Menu 24 / Otomasi</p>
+            <h2 class="mt-2 text-2xl font-semibold tracking-[-0.05em] text-stone-950">Otomasi alur kerja yang ringkas, tapi cukup kuat untuk lead, invoice, task, payment, form, dan support flow.</h2>
             <p class="mt-2 text-sm leading-6 text-stone-500">
-              Trigger, action chain, conditional logic, dan run log tetap ada, cuma area pembukanya dipadatkan supaya builder lebih mudah dibaca.
+              Pemicu, rantai aksi, logika kondisi, dan log eksekusi tetap ada, cuma area pembukanya dipadatkan supaya builder lebih mudah dibaca.
             </p>
           </div>
 
           <div class="grid min-w-full gap-3 sm:min-w-[22rem] sm:grid-cols-4 xl:w-[34rem]">
-            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Kesehatan</p><p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.success_rate }}%</p></div>
-            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Workflow</p><p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.total_workflows }}</p></div>
+            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Kesehatan Alur</p><p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.success_rate }}%</p></div>
+            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Alur Kerja</p><p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.total_workflows }}</p></div>
             <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Aktif</p><p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.active_workflows }}</p></div>
-            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Run</p><p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.total_runs }}</p></div>
+            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Eksekusi</p><p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.total_runs }}</p></div>
           </div>
         </div>
 
         <div class="mt-4 grid gap-3 md:grid-cols-3">
           <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Terjadwal</p><p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.scheduled_workflows }}</p></div>
-          <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">n8n Linked</p><p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.n8n_linked_workflows }}</p></div>
+          <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Terhubung n8n</p><p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.n8n_linked_workflows }}</p></div>
           <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5"><p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Gagal</p><p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ summary.failed_runs }}</p></div>
         </div>
       </section>
@@ -45,10 +45,10 @@
         <div class="filter-panel-head mb-5">
           <div>
             <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Filter</p>
-            <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Cari workflow berdasarkan nama, status, jenis trigger, atau template asalnya.</h2>
+            <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Cari alur kerja berdasarkan nama, status, jenis pemicu, atau templat asalnya.</h2>
           </div>
           <div class="filter-meta-badge">
-            <span class="font-semibold text-stone-950">{{ workflowItems.length }}</span> workflow tampil
+            <span class="font-semibold text-stone-950">{{ workflowItems.length }}</span> alur kerja tampil
           </div>
         </div>
 
@@ -58,6 +58,7 @@
             <input
               v-model="filterState.search"
               type="text"
+              placeholder="Cari alur kerja..."
               class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white"
             />
           </label>
@@ -79,7 +80,7 @@
           </label>
           <label class="space-y-2 text-sm">
             <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Templat</span>
-            <select v-model="filterState.template" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
+            <select v-model="filterState.template" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
               <option value="">Semua Templat</option>
               <option v-for="template in templateItems" :key="template.key" :value="template.key">{{ template.name }}</option>
             </select>
@@ -145,7 +146,7 @@
                   </div>
 
                   <p class="mt-2 text-sm leading-6" :class="selectedWorkflow?.id === workflow.id ? 'text-stone-300' : 'text-stone-500'">
-                    {{ workflow.config.description || 'Workflow ini belum punya deskripsi operasional.' }}
+                    {{ workflow.config.description || 'Alur kerja ini belum punya deskripsi operasional.' }}
                   </p>
 
                   <div class="mt-4 flex flex-wrap gap-2 text-xs">
@@ -153,7 +154,7 @@
                       {{ workflow.config.trigger_type }}
                     </span>
                     <span class="rounded-full px-3 py-1.5" :class="selectedWorkflow?.id === workflow.id ? 'bg-white/10 text-stone-200' : 'bg-white text-stone-500'">
-                      {{ workflow.counts.steps }} aksi
+                      {{ workflow.counts.steps }} langkah
                     </span>
                     <span class="rounded-full px-3 py-1.5" :class="selectedWorkflow?.id === workflow.id ? 'bg-white/10 text-stone-200' : 'bg-white text-stone-500'">
                       {{ workflow.counts.conditions }} kondisi
@@ -162,9 +163,9 @@
                 </div>
 
                 <div class="text-right">
-                  <p class="text-sm font-semibold" :class="selectedWorkflow?.id === workflow.id ? 'text-white' : 'text-stone-950'">{{ workflow.counts.runs }} run</p>
+                  <p class="text-sm font-semibold" :class="selectedWorkflow?.id === workflow.id ? 'text-white' : 'text-stone-950'">{{ workflow.counts.runs }} eksekusi</p>
                   <p class="mt-1 text-xs" :class="selectedWorkflow?.id === workflow.id ? 'text-stone-300' : 'text-stone-500'">
-                    {{ workflow.last_run?.started_at_label || 'Belum ada run log' }}
+                    {{ workflow.last_run?.started_at_label || 'Belum ada log eksekusi' }}
                   </p>
                 </div>
               </div>
@@ -181,7 +182,7 @@
                 </button>
                 <button type="button" @click="runWorkflowTest(workflow.id)" class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-3.5 py-2 text-xs font-semibold text-stone-700 transition hover:border-stone-300 hover:text-stone-950">
                   <Play class="h-3.5 w-3.5" />
-                  <span>Uji Run</span>
+                  <span>Uji Eksekusi</span>
                 </button>
                 <button type="button" @click="openWorkflowModal(workflow)" class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-3.5 py-2 text-xs font-semibold text-stone-700 transition hover:border-stone-300 hover:text-stone-950">
                   <Pencil class="h-3.5 w-3.5" />
@@ -195,15 +196,15 @@
             </article>
 
             <div v-if="workflowItems.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-300 bg-stone-50 px-6 py-14 text-center text-sm leading-6 text-stone-500">
-              Belum ada workflow automation yang cocok dengan filter saat ini.
+              Belum ada alur kerja otomasi yang cocok dengan filter saat ini.
             </div>
           </div>
         </article>
 
         <article class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
           <div class="border-b border-stone-200 pb-5">
-            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Workflow Inspector</p>
-            <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Detail workflow, action chain, dan run log terbaru.</h2>
+            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Inspektur Alur Kerja</p>
+            <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Detail alur kerja, rantai aksi, dan log eksekusi terbaru.</h2>
           </div>
 
           <div v-if="selectedWorkflow" class="mt-5 space-y-5">
@@ -213,37 +214,37 @@
                   <div class="flex flex-wrap items-center gap-2">
                     <h3 class="text-lg font-semibold tracking-[-0.03em] text-stone-950">{{ selectedWorkflow.name }}</h3>
                     <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="selectedWorkflow.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-200 text-stone-600'">
-                      {{ selectedWorkflow.is_active ? 'Active' : 'Inactive' }}
+                      {{ selectedWorkflow.is_active ? 'Aktif' : 'Nonaktif' }}
                     </span>
                   </div>
                   <p class="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
-                    {{ selectedWorkflow.config.description || 'Belum ada deskripsi workflow.' }}
+                    {{ selectedWorkflow.config.description || 'Belum ada deskripsi alur kerja.' }}
                   </p>
                 </div>
                 <div class="rounded-[1.3rem] border border-stone-200 bg-white px-4 py-3 text-sm text-stone-600">
-                      <p class="font-semibold text-stone-950">{{ selectedWorkflow.last_run?.status_label || 'Belum Pernah Run' }}</p>
-                  <p class="mt-1 text-xs text-stone-500">{{ selectedWorkflow.last_run?.started_at_label || 'Workflow ini belum pernah dijalankan.' }}</p>
+                      <p class="font-semibold text-stone-950">{{ selectedWorkflow.last_run?.status_label || 'Belum Pernah Dieksekusi' }}</p>
+                  <p class="mt-1 text-xs text-stone-500">{{ selectedWorkflow.last_run?.started_at_label || 'Alur kerja ini belum pernah dijalankan.' }}</p>
                 </div>
               </div>
 
               <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
                 <div class="rounded-[1.2rem] border border-stone-200 bg-white p-4">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Trigger</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Pemicu</p>
                   <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedWorkflow.trigger_label }}</p>
                   <p class="mt-1 text-xs text-stone-500">{{ selectedWorkflow.config.trigger_type }}</p>
                 </div>
                 <div class="rounded-[1.2rem] border border-stone-200 bg-white p-4">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Retry</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Coba Ulang</p>
                   <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedWorkflow.config.retry_enabled ? 'Aktif' : 'Nonaktif' }}</p>
-                  <p class="mt-1 text-xs text-stone-500">maks {{ selectedWorkflow.config.retry_limit }} retry</p>
+                  <p class="mt-1 text-xs text-stone-500">maks {{ selectedWorkflow.config.retry_limit }} coba ulang</p>
                 </div>
                 <div class="rounded-[1.2rem] border border-stone-200 bg-white p-4">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">n8n Link</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Tautan n8n</p>
                   <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedWorkflow.n8n_workflow_id || 'Belum terhubung' }}</p>
                   <p class="mt-1 text-xs text-stone-500 line-clamp-1">{{ selectedWorkflow.n8n_webhook_url || 'Webhook belum diisi' }}</p>
                 </div>
                 <div class="rounded-[1.2rem] border border-stone-200 bg-white p-4">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Workspace Scope</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Cakupan Workspace</p>
                   <p class="mt-2 text-sm font-semibold text-stone-950">{{ selectedWorkflow.config.scope }}</p>
                   <p class="mt-1 text-xs text-stone-500">{{ selectedWorkflow.counts.runs }} total log</p>
                 </div>
@@ -254,7 +255,7 @@
               <div class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
                 <div class="flex items-center gap-2">
                   <Layers3 class="h-4 w-4 text-stone-500" />
-                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Action Chain</h3>
+                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Rantai Aksi</h3>
                 </div>
 
                 <div class="mt-5 space-y-4">
@@ -283,7 +284,7 @@
                   </div>
 
                   <div v-if="selectedWorkflow.config.steps.length === 0" class="rounded-[1.4rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-10 text-center text-sm text-stone-500">
-                    Belum ada action step di workflow ini.
+                    Belum ada langkah aksi di alur kerja ini.
                   </div>
                 </div>
               </div>
@@ -292,7 +293,7 @@
                 <div class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
                   <div class="flex items-center gap-2">
                     <GitBranch class="h-4 w-4 text-stone-500" />
-                    <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Conditional Logic</h3>
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Logika Kondisi</h3>
                   </div>
 
                   <div class="mt-5 space-y-3">
@@ -301,7 +302,7 @@
                       :key="`${selectedWorkflow.id}-condition-${index}`"
                       class="rounded-[1.2rem] border border-stone-200 bg-stone-50 px-4 py-4"
                     >
-                      <p class="text-sm font-semibold text-stone-950">Condition {{ index + 1 }}</p>
+                      <p class="text-sm font-semibold text-stone-950">Kondisi {{ index + 1 }}</p>
                       <p class="mt-2 text-sm leading-6 text-stone-600">
                         <span class="font-semibold text-stone-950">{{ condition.field || 'field' }}</span>
                         {{ operatorLabel(condition.operator) }}
@@ -310,7 +311,7 @@
                     </div>
 
                     <div v-if="selectedWorkflow.config.conditions.length === 0" class="rounded-[1.2rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-8 text-center text-sm text-stone-500">
-                      Workflow ini belum punya conditional logic. Semua action akan jalan linear.
+                      Alur kerja ini belum punya logika kondisi. Semua aksi akan jalan linear.
                     </div>
                   </div>
                 </div>
@@ -318,7 +319,7 @@
                 <div class="rounded-[1.6rem] border border-stone-200 bg-white p-5">
                   <div class="flex items-center gap-2">
                     <Clock3 class="h-4 w-4 text-stone-500" />
-                    <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Selected Logs</h3>
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Log Terpilih</h3>
                   </div>
 
                   <div class="mt-5 space-y-3">
@@ -333,12 +334,12 @@
                         </span>
                         <span class="text-xs text-stone-500">{{ log.started_at_human }}</span>
                       </div>
-                      <p class="mt-3 text-sm font-semibold text-stone-950">{{ log.message || 'Run log tercatat tanpa pesan tambahan.' }}</p>
-                      <p class="mt-2 text-xs uppercase tracking-[0.18em] text-stone-400">{{ log.trigger_label }} • Attempt {{ log.attempt }}</p>
+                      <p class="mt-3 text-sm font-semibold text-stone-950">{{ log.message || 'Log eksekusi tercatat tanpa pesan tambahan.' }}</p>
+                      <p class="mt-2 text-xs uppercase tracking-[0.18em] text-stone-400">{{ log.trigger_label }} • Upaya {{ log.attempt }}</p>
                     </div>
 
                     <div v-if="selectedWorkflowLogs.length === 0" class="rounded-[1.2rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-8 text-center text-sm text-stone-500">
-                      Belum ada run log untuk workflow terpilih ini.
+                      Belum ada log eksekusi untuk alur kerja terpilih ini.
                     </div>
                   </div>
                 </div>
@@ -347,7 +348,7 @@
           </div>
 
           <div v-else class="mt-8 rounded-[1.8rem] border border-dashed border-stone-300 bg-stone-50 px-6 py-16 text-center text-sm leading-6 text-stone-500">
-            Pilih workflow di panel kiri untuk melihat action chain, kondisi, dan run log.
+            Pilih alur kerja di panel kiri untuk melihat rantai aksi, kondisi, dan log eksekusi.
           </div>
         </article>
       </section>
@@ -357,7 +358,7 @@
           <div class="flex items-center justify-between gap-3 border-b border-stone-200 pb-5">
             <div>
               <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Templat</p>
-              <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Preset workflow untuk ngebut setup awal tanpa mulai dari kosong.</h2>
+              <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Preset alur kerja untuk ngebut setup awal tanpa mulai dari kosong.</h2>
             </div>
             <Sparkles class="h-5 w-5 text-amber-500" />
           </div>
@@ -379,9 +380,9 @@
               </div>
 
               <div class="mt-4 flex flex-wrap gap-2 text-xs">
-                <span class="rounded-full bg-white px-3 py-1.5 text-stone-500">{{ template.step_count }} steps</span>
-                <span class="rounded-full bg-white px-3 py-1.5 text-stone-500">{{ template.condition_count }} conditions</span>
-                <span class="rounded-full bg-white px-3 py-1.5 text-stone-500">{{ template.retry_limit }} retries</span>
+                <span class="rounded-full bg-white px-3 py-1.5 text-stone-500">{{ template.step_count }} langkah</span>
+                <span class="rounded-full bg-white px-3 py-1.5 text-stone-500">{{ template.condition_count }} kondisi</span>
+                <span class="rounded-full bg-white px-3 py-1.5 text-stone-500">{{ template.retry_limit }} coba ulang</span>
               </div>
 
               <button
@@ -399,8 +400,8 @@
         <article class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
           <div class="flex items-center justify-between gap-3 border-b border-stone-200 pb-5">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Recent Run Logs</p>
-              <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Pantau apakah automation berhasil, gagal, atau perlu retry.</h2>
+              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Log Eksekusi Terbaru</p>
+              <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Pantau apakah otomasi berhasil, gagal, atau perlu coba ulang.</h2>
             </div>
             <Clock3 class="h-5 w-5 text-stone-500" />
           </div>
@@ -414,12 +415,12 @@
               <div class="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <div class="flex flex-wrap items-center gap-2">
-                    <p class="text-sm font-semibold text-stone-950">{{ log.workflow_name || 'Unknown workflow' }}</p>
+                    <p class="text-sm font-semibold text-stone-950">{{ log.workflow_name || 'Alur kerja tidak dikenal' }}</p>
                     <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="logStatusClass(log.status)">
                       {{ log.status_label }}
                     </span>
                   </div>
-                  <p class="mt-2 text-sm leading-6 text-stone-600">{{ log.message || 'Run log without message.' }}</p>
+                  <p class="mt-2 text-sm leading-6 text-stone-600">{{ log.message || 'Log eksekusi tanpa pesan.' }}</p>
                 </div>
                 <div class="text-right">
                   <p class="text-xs uppercase tracking-[0.18em] text-stone-400">{{ log.trigger_label }}</p>
@@ -429,7 +430,7 @@
             </article>
 
             <div v-if="recentLogs.length === 0" class="rounded-[1.4rem] border border-dashed border-stone-300 bg-stone-50 px-4 py-12 text-center text-sm text-stone-500">
-              Belum ada recent run log untuk automation.
+              Belum ada log eksekusi terbaru untuk otomasi.
             </div>
           </div>
         </article>
@@ -442,8 +443,8 @@
         <div class="flex items-start justify-between gap-4">
           <div>
             <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">{{ isEditingWorkflow ? 'Ubah Alur Kerja' : 'Buat Alur Kerja' }}</p>
-            <h2 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingWorkflow ? 'Rapikan logic automation yang sudah ada.' : 'Susun workflow automation baru.' }}</h2>
-            <p class="mt-2 max-w-2xl text-sm leading-6 text-stone-500">Builder ini fokus ke struktur yang mudah dibaca tim: trigger, conditional logic, action chain, retry, dan endpoint n8n.</p>
+            <h2 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ isEditingWorkflow ? 'Rapikan logika otomasi yang sudah ada.' : 'Susun alur kerja otomasi baru.' }}</h2>
+            <p class="mt-2 max-w-2xl text-sm leading-6 text-stone-500">Builder ini fokus ke struktur yang mudah dibaca tim: pemicu, logika kondisi, rantai aksi, coba ulang, dan endpoint n8n.</p>
           </div>
           <button type="button" @click="closeWorkflowModal" class="rounded-full p-2 text-stone-400 transition-all hover:bg-stone-100 hover:text-stone-700">
             <X class="h-5 w-5" />
@@ -454,30 +455,30 @@
           <section class="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
             <div class="space-y-4">
               <div class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-                <p class="text-sm font-semibold text-stone-950">Workflow Basics</p>
+                <p class="text-sm font-semibold text-stone-950">Dasar Alur Kerja</p>
                 <div class="mt-4 grid gap-4 md:grid-cols-2">
                   <label class="space-y-2 text-sm md:col-span-2">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Workflow Name</span>
-                    <input v-model="workflowForm.name" type="text" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400" />
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Nama Alur Kerja</span>
+                    <input v-model="workflowForm.name" type="text" placeholder="Contoh: Notifikasi Invoice Baru" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400" />
                     <p v-if="workflowForm.errors.name" class="text-xs text-rose-600">{{ workflowForm.errors.name }}</p>
                   </label>
 
                   <label class="space-y-2 text-sm md:col-span-2">
                     <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Deskripsi</span>
-                    <textarea v-model="workflowForm.description" rows="3" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400"></textarea>
+                    <textarea v-model="workflowForm.description" rows="3" placeholder="Jelaskan tujuan alur kerja ini..." class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400"></textarea>
                     <p v-if="workflowForm.errors.description" class="text-xs text-rose-600">{{ workflowForm.errors.description }}</p>
                   </label>
 
                   <label class="space-y-2 text-sm">
                     <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Templat</span>
                     <select v-model="workflowForm.template_key" @change="applyTemplateSelection" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400">
-                      <option value="">Workflow Kustom</option>
+                      <option value="">Alur Kerja Kustom</option>
                       <option v-for="template in templateItems" :key="template.key" :value="template.key">{{ template.name }}</option>
                     </select>
                   </label>
 
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Workflow Status</span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Status Alur Kerja</span>
                     <select v-model="workflowForm.is_active" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400">
                       <option :value="true">Aktif</option>
                       <option :value="false">Nonaktif</option>
@@ -487,10 +488,10 @@
               </div>
 
               <div class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-                <p class="text-sm font-semibold text-stone-950">Trigger & n8n</p>
+                <p class="text-sm font-semibold text-stone-950">Pemicu & n8n</p>
                 <div class="mt-4 grid gap-4 md:grid-cols-2">
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Trigger Event</span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Kejadian Pemicu (Event)</span>
                     <select v-model="workflowForm.trigger_event" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400">
                       <option v-for="event in automation.options.trigger_events" :key="event.value" :value="event.value">{{ event.label }}</option>
                     </select>
@@ -506,8 +507,8 @@
                   </label>
 
                   <label v-if="workflowForm.trigger_type === 'schedule'" class="space-y-2 text-sm md:col-span-2">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Schedule Expression</span>
-                    <input v-model="workflowForm.schedule_expression" type="text" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400" />
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Ekspresi Jadwal</span>
+                    <input v-model="workflowForm.schedule_expression" type="text" placeholder="* * * * *" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400" />
                     <p class="text-xs text-stone-500">Gunakan format cron standar untuk jadwal otomatis.</p>
                     <p v-if="workflowForm.errors.schedule_expression" class="text-xs text-rose-600">{{ workflowForm.errors.schedule_expression }}</p>
                   </label>
@@ -515,14 +516,14 @@
                   <label class="space-y-2 text-sm">
                     <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">n8n Workflow ID</span>
                     <input v-model="workflowForm.n8n_workflow_id" type="text" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400" />
-                    <p class="text-xs text-stone-500">Samakan dengan ID workflow yang dipakai di panel n8n.</p>
+                    <p class="text-xs text-stone-500">Samakan dengan ID alur kerja yang dipakai di panel n8n.</p>
                     <p v-if="workflowForm.errors.n8n_workflow_id" class="text-xs text-rose-600">{{ workflowForm.errors.n8n_workflow_id }}</p>
                   </label>
 
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">n8n Webhook URL</span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Tautan Webhook n8n</span>
                     <input v-model="workflowForm.n8n_webhook_url" type="url" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400" />
-                    <p class="text-xs text-stone-500">Isi bila workflow menerima trigger dari endpoint eksternal.</p>
+                    <p class="text-xs text-stone-500">Masukkan Production URL dari Node Webhook di n8n lu (Metode POST).</p>
                     <p v-if="workflowForm.errors.n8n_webhook_url" class="text-xs text-rose-600">{{ workflowForm.errors.n8n_webhook_url }}</p>
                   </label>
                 </div>
@@ -531,10 +532,10 @@
 
             <div class="space-y-4">
               <div class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-                <p class="text-sm font-semibold text-stone-950">Retry & Scope</p>
+                <p class="text-sm font-semibold text-stone-950">Coba Ulang & Cakupan</p>
                 <div class="mt-4 grid gap-4 md:grid-cols-2">
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Retry Enabled</span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Aktifkan Coba Ulang</span>
                     <select v-model="workflowForm.retry_enabled" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400">
                       <option :value="true">Aktif</option>
                       <option :value="false">Nonaktif</option>
@@ -542,14 +543,14 @@
                   </label>
 
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Retry Limit</span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Batas Coba Ulang</span>
                     <input v-model.number="workflowForm.retry_limit" type="number" min="0" max="10" class="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400" />
                     <p v-if="workflowForm.errors.retry_limit" class="text-xs text-rose-600">{{ workflowForm.errors.retry_limit }}</p>
                   </label>
                 </div>
 
                 <div class="mt-4 rounded-[1.2rem] border border-dashed border-stone-300 bg-white px-4 py-4 text-sm leading-6 text-stone-600">
-                  Scope workflow otomatis berada di level workspace aktif. Jadi form ini fokus ke trigger, logic, dan action chain tanpa perlu mapping ulang tenant secara manual.
+                  Cakupan alur kerja otomatis berada di level workspace aktif. Jadi form ini fokus ke pemicu, logika, dan rantai aksi tanpa perlu mapping ulang tenant secara manual.
                 </div>
               </div>
             </div>
@@ -558,8 +559,8 @@
           <section class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
             <div class="flex items-center justify-between gap-3">
               <div>
-                <p class="text-sm font-semibold text-stone-950">Conditional Logic</p>
-                <p class="mt-1 text-sm text-stone-500">Tambah rule kalau workflow hanya boleh jalan pada kondisi tertentu.</p>
+                <p class="text-sm font-semibold text-stone-950">Logika Kondisi</p>
+                <p class="mt-1 text-sm text-stone-500">Tambah aturan kalau alur kerja hanya boleh jalan pada kondisi tertentu.</p>
               </div>
               <button type="button" @click="addCondition" class="rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-300 hover:text-stone-950">
                 Tambah Kondisi
@@ -577,8 +578,8 @@
               >
                 <div class="grid gap-4 md:grid-cols-[1fr_0.8fr_1fr_auto]">
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Field</span>
-                    <input v-model="condition.field" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Kolom (Field)</span>
+                    <input v-model="condition.field" type="text" placeholder="Contoh: status" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
                   </label>
 
                   <label class="space-y-2 text-sm">
@@ -589,8 +590,8 @@
                   </label>
 
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Value</span>
-                    <input v-model="condition.value" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Nilai (Value)</span>
+                    <input v-model="condition.value" type="text" placeholder="Contoh: paid" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
                   </label>
 
                   <div class="flex items-end">
@@ -606,11 +607,11 @@
           <section class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
             <div class="flex items-center justify-between gap-3">
               <div>
-                <p class="text-sm font-semibold text-stone-950">Action Steps</p>
-                <p class="mt-1 text-sm text-stone-500">Urutkan aksi yang harus dijalankan setelah trigger terpenuhi.</p>
+                <p class="text-sm font-semibold text-stone-950">Langkah-langkah Aksi</p>
+                <p class="mt-1 text-sm text-stone-500">Urutkan aksi yang harus dijalankan setelah pemicu terpenuhi.</p>
               </div>
               <button type="button" @click="addStep" class="rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-300 hover:text-stone-950">
-                Tambah Step
+                Tambah Langkah
               </button>
             </div>
 
@@ -641,20 +642,20 @@
                   </label>
 
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Step Label</span>
-                    <input v-model="step.label" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Label Langkah</span>
+                    <input v-model="step.label" type="text" placeholder="Contoh: Kirim WA ke Tim" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
                     <p class="text-xs text-stone-500">Nama singkat aksi untuk tim internal.</p>
                   </label>
 
                   <label class="space-y-2 text-sm">
                     <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Target</span>
-                    <input v-model="step.target" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
-                    <p class="text-xs text-stone-500">Isi target object, tim, atau endpoint yang menerima aksi.</p>
+                    <input v-model="step.target" type="text" placeholder="Contoh: Finance Team" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white" />
+                    <p class="text-xs text-stone-500">Isi target objek, tim, atau endpoint yang menerima aksi.</p>
                   </label>
 
                   <label class="space-y-2 text-sm">
-                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Message / Payload</span>
-                    <textarea v-model="step.message" rows="3" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white"></textarea>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Pesan / Payload</span>
+                    <textarea v-model="step.message" rows="3" placeholder="Isi pesan atau data JSON..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition focus:border-stone-400 focus:bg-white"></textarea>
                   </label>
                 </div>
               </div>
@@ -666,7 +667,7 @@
               Batal
             </button>
             <button type="submit" :disabled="workflowForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60">
-              {{ workflowForm.processing ? 'Menyimpan...' : isEditingWorkflow ? 'Perbarui Workflow' : 'Buat Workflow' }}
+              {{ workflowForm.processing ? 'Menyimpan...' : isEditingWorkflow ? 'Perbarui Alur Kerja' : 'Buat Alur Kerja' }}
             </button>
           </div>
         </form>
@@ -737,7 +738,7 @@ const activeFilterChips = computed(() => {
   if (filterState.value.trigger_type) {
     const type = props.automation.options.trigger_types.find((item) => item.value === filterState.value.trigger_type)
     if (type) {
-      chips.push({ key: 'trigger_type', label: `Trigger: ${type.label}` })
+      chips.push({ key: 'trigger_type', label: `Pemicu: ${type.label}` })
     }
   }
 

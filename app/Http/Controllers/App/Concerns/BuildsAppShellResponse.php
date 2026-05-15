@@ -17,11 +17,12 @@ trait BuildsAppShellResponse
         ?string $activeLabel = null,
     ): Response {
         $nav = app(NavigationService::class);
+        $user = auth()->user();
 
         return Inertia::render($screen, array_merge($payload, [
             'workspace' => $workspace->only(['id', 'name', 'slug']),
             'title' => $title,
-            'navigation' => $nav->getNavigation($workspace, $activeLabel ?? $title),
+            'navigation' => $nav->getNavigation($workspace, $activeLabel ?? $title, $user),
         ]));
     }
 }

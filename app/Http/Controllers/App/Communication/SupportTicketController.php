@@ -10,6 +10,7 @@ use App\Models\SupportTicket;
 use App\Models\Workspace;
 use App\Modules\Communication\SupportTickets\Queries\SupportTicketIndexQuery;
 use App\Services\Communication\SupportTicketService;
+use App\Services\Communication\EvolutionApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -62,5 +63,33 @@ class SupportTicketController extends Controller
         $this->service->delete($workspace, $supportTicket);
 
         return back()->with('success', 'Support ticket deleted successfully.');
+    }
+
+    public function sendWhatsApp(Workspace $workspace, SupportTicket $supportTicket, EvolutionApiService $wa): RedirectResponse
+    {
+        abort_unless($supportTicket->workspace_id === $workspace->id, 404);
+
+        $client = $supportTicket->client;
+        if (!$client || !$client->phone) {
+            return back()->with('error', 'Nomor WhatsApp klien tidak ditemukan.');
+        }
+
+        $statusLabel = match ($supportTicket->status) {
+            'open' => 'Terbuka',
+            'in_progress' => 'Sedang Diproses',
+            'resolved' => 'Selesai',
+            'closed' => 'Ditutup',
+            default => $supportTicket->status
+        };
+
+        $message = "Halo *{$client->pic_name}*,\n\nTiket dukungan Anda *#{$supportTicket->id}* (*{$supportTicket->title}*) saat ini berstatus: *{$statusLabel}*.\n\nKami akan terus memberikan update terbaru. Terima kasih.\n\nSalam,\n*{$workspace->name}*";
+
+        $success = $wa->sendMessage('default', $client->phone, $message);
+
+        if ($success) {
+            return back()->with('success', 'Update tiket berhasil dikirim via WhatsApp.');
+        }
+
+        return back()->with('error', 'Gagal mengirim update via WhatsApp.');
     }
 }

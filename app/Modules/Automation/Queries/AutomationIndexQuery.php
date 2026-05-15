@@ -246,9 +246,9 @@ class AutomationIndexQuery
     protected function statusLabel(string $status): string
     {
         return match ($status) {
-            'success' => 'Success',
-            'failed' => 'Failed',
-            'skipped' => 'Skipped',
+            'success' => 'Berhasil',
+            'failed' => 'Gagal',
+            'skipped' => 'Dilewati',
             default => ucfirst(str_replace('_', ' ', $status)),
         };
     }

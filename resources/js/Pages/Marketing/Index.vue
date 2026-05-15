@@ -1,7 +1,7 @@
 <template>
   <WorkspaceLayout
     title="Pemasaran"
-    subtitle="Menu 33-36 untuk ringkasan campaign, social planner, email campaign, dan analytics yang dibaca dari data nyata workspace."
+    subtitle="Menu 33-36 untuk ringkasan kampanye, perencanaan media sosial, kampanye email, dan analitik yang dibaca dari data nyata workspace."
   >
     <template #actions>
       <button
@@ -59,6 +59,7 @@
               <input
                 v-model="filterState.search"
                 type="text"
+                placeholder="Masukkan kata kunci pencarian..."
                 class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white"
               />
             </label>
@@ -66,7 +67,7 @@
             <label class="space-y-2 text-sm">
               <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">{{ activeMeta.statusLabel }}</span>
               <select v-model="filterState.status" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none transition-all focus:border-stone-400 focus:bg-white">
-                <option value="">Semua</option>
+                <option value="">Semua Status</option>
                 <option v-for="item in statusOptions" :key="item" :value="item">{{ formatOption(item) }}</option>
               </select>
             </label>
@@ -87,7 +88,7 @@
               class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition-all hover:bg-stone-100 hover:text-stone-900"
             >
               <RotateCcw class="h-4 w-4" />
-              <span>Atur Ulang</span>
+              <span>Atur Ulang Filter</span>
             </button>
           </div>
         </section>
@@ -99,7 +100,7 @@
                 <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">{{ activeMeta.boardLabel }}</p>
                 <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ activeMeta.boardTitle }}</h2>
               </div>
-              <span class="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-500">{{ filteredCount }} items</span>
+              <span class="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stone-500">{{ filteredCount }} item</span>
             </div>
 
             <div v-if="activeTab === 'overview'" class="mt-5 space-y-4">
@@ -113,18 +114,22 @@
                     </div>
                     <p class="mt-2 text-sm text-stone-500">Sumber {{ formatOption(campaign.primary_source) }} / {{ campaign.external_reference || 'Tanpa referensi eksternal' }}</p>
                     <div class="mt-4 flex flex-wrap gap-2 text-xs text-stone-500">
-                      <span class="rounded-full bg-white px-3 py-1.5">Budget {{ formatMoney(campaign.budget) }}</span>
-                      <span class="rounded-full bg-white px-3 py-1.5">Spend {{ formatMoney(campaign.spend) }}</span>
-                      <span class="rounded-full bg-white px-3 py-1.5">Leads {{ formatNumber(campaign.leads_generated) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Anggaran {{ formatMoney(campaign.budget) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Pengeluaran {{ formatMoney(campaign.spend) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Prospek {{ formatNumber(campaign.leads_generated) }}</span>
                       <span class="rounded-full bg-white px-3 py-1.5">ROI {{ formatPercent(campaign.roi_percentage) }}</span>
                     </div>
                   </div>
 
                   <div class="flex items-center gap-2">
-                    <button type="button" @click="openCampaignModal(campaign)" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
+                    <Link :href="`${marketingBaseUrl}/campaigns/${campaign.id}`" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
+                      <Eye class="h-4 w-4" />
+                      <span>Lihat Detail</span>
+                    </Link>
+                    <button type="button" @click="openCampaignModal(campaign)" title="Ubah" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
                       <Pencil class="h-4 w-4" />
                     </button>
-                    <button type="button" @click="deleteCampaign(campaign.id)" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
+                    <button type="button" @click="deleteCampaign(campaign.id)" title="Hapus" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
                       <Trash2 class="h-4 w-4" />
                     </button>
                   </div>
@@ -132,22 +137,22 @@
 
                 <div class="mt-5 grid gap-3 md:grid-cols-3">
                   <div class="rounded-[1.2rem] border border-white bg-white p-4">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Period</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Periode</p>
                     <p class="mt-2 text-sm font-semibold text-stone-950">{{ campaign.start_date_label }} - {{ campaign.end_date_label }}</p>
                   </div>
                   <div class="rounded-[1.2rem] border border-white bg-white p-4">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Traffic</p>
-                    <p class="mt-2 text-sm font-semibold text-stone-950">{{ formatNumber(campaign.traffic_sessions) }}</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Lalu Lintas</p>
+                    <p class="mt-2 text-sm font-semibold text-stone-950">{{ formatNumber(campaign.traffic_sessions) }} Sesi</p>
                   </div>
                   <div class="rounded-[1.2rem] border border-white bg-white p-4">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Updated</p>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Diperbarui</p>
                     <p class="mt-2 text-sm font-semibold text-stone-950">{{ campaign.updated_at_label }}</p>
                   </div>
                 </div>
               </article>
 
               <div v-if="filteredCampaigns.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-300 bg-stone-50 px-6 py-14 text-center text-sm leading-6 text-stone-500">
-                Belum ada campaign yang cocok dengan filter saat ini.
+                Belum ada kampanye yang cocok dengan filter saat ini.
               </div>
             </div>
 
@@ -156,25 +161,29 @@
                 <div class="flex flex-wrap items-start justify-between gap-4">
                   <div class="max-w-2xl">
                     <div class="flex flex-wrap items-center gap-2">
-                      <h3 class="text-base font-semibold text-stone-950">{{ post.title || 'Untitled post' }}</h3>
+                      <h3 class="text-base font-semibold text-stone-950">{{ post.title || 'Postingan tanpa judul' }}</h3>
                       <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="socialStatusClass(post.status)">{{ formatOption(post.status) }}</span>
                       <span v-for="platform in post.platforms.slice(0, 3)" :key="platform" class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] bg-white text-stone-500">{{ formatOption(platform) }}</span>
                     </div>
                     <p class="mt-2 text-sm text-stone-500">{{ post.client?.name || 'Tanpa klien' }}</p>
                     <p class="mt-3 text-sm leading-6 text-stone-600">{{ post.caption || 'Tanpa keterangan' }}</p>
                     <div class="mt-4 flex flex-wrap gap-2 text-xs text-stone-500">
-                      <span class="rounded-full bg-white px-3 py-1.5">Reach {{ formatNumber(post.reach) }}</span>
-                      <span class="rounded-full bg-white px-3 py-1.5">Engagement {{ formatNumber(post.engagement) }}</span>
-                      <span class="rounded-full bg-white px-3 py-1.5">Clicks {{ formatNumber(post.clicks) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Jangkauan {{ formatNumber(post.reach) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Interaksi {{ formatNumber(post.engagement) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Klik {{ formatNumber(post.clicks) }}</span>
                       <span class="rounded-full bg-white px-3 py-1.5">{{ post.scheduled_at_label }}</span>
                     </div>
                   </div>
 
                   <div class="flex items-center gap-2">
-                    <button type="button" @click="openPostModal(post)" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
+                    <Link :href="`${marketingBaseUrl}/social-posts/${post.id}`" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
+                      <Eye class="h-4 w-4" />
+                      <span>Lihat Detail</span>
+                    </Link>
+                    <button type="button" @click="openPostModal(post)" title="Ubah" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
                       <Pencil class="h-4 w-4" />
                     </button>
-                    <button type="button" @click="deletePost(post.id)" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
+                    <button type="button" @click="deletePost(post.id)" title="Hapus" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
                       <Trash2 class="h-4 w-4" />
                     </button>
                   </div>
@@ -182,7 +191,7 @@
               </article>
 
               <div v-if="filteredPosts.length === 0" class="rounded-[1.6rem] border border-dashed border-stone-300 bg-stone-50 px-6 py-14 text-center text-sm leading-6 text-stone-500">
-                Belum ada social post yang cocok dengan filter saat ini.
+                Belum ada post sosial yang cocok dengan filter saat ini.
               </div>
             </div>
 
@@ -196,18 +205,22 @@
                     </div>
                     <p class="mt-2 text-sm leading-6 text-stone-600">{{ newsletter.excerpt }}</p>
                     <div class="mt-4 flex flex-wrap gap-2 text-xs text-stone-500">
-                      <span class="rounded-full bg-white px-3 py-1.5">Open {{ formatPercent(newsletter.open_rate) }}</span>
-                      <span class="rounded-full bg-white px-3 py-1.5">Click {{ formatPercent(newsletter.click_rate) }}</span>
-                      <span class="rounded-full bg-white px-3 py-1.5">Bounce {{ formatPercent(newsletter.bounce_rate) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Buka {{ formatPercent(newsletter.open_rate) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Klik {{ formatPercent(newsletter.click_rate) }}</span>
+                      <span class="rounded-full bg-white px-3 py-1.5">Mental {{ formatPercent(newsletter.bounce_rate) }}</span>
                       <span class="rounded-full bg-white px-3 py-1.5">{{ newsletter.scheduled_at_label }}</span>
                     </div>
                   </div>
 
                   <div class="flex items-center gap-2">
-                    <button type="button" @click="openNewsletterModal(newsletter)" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
+                    <Link :href="`${marketingBaseUrl}/newsletters/${newsletter.id}`" class="inline-flex items-center gap-2 rounded-full border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
+                      <Eye class="h-4 w-4" />
+                      <span>Lihat Detail</span>
+                    </Link>
+                    <button type="button" @click="openNewsletterModal(newsletter)" title="Ubah" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-600 transition hover:border-stone-300 hover:text-stone-950">
                       <Pencil class="h-4 w-4" />
                     </button>
-                    <button type="button" @click="deleteNewsletter(newsletter.id)" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
+                    <button type="button" @click="deleteNewsletter(newsletter.id)" title="Hapus" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
                       <Trash2 class="h-4 w-4" />
                     </button>
                   </div>
@@ -222,7 +235,7 @@
             <div v-else class="mt-5 space-y-4">
               <div class="grid gap-4 md:grid-cols-2">
                 <div class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Traffic / Leads</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Lalu Lintas / Prospek</p>
                   <div class="mt-4 grid gap-3 sm:grid-cols-2">
                     <div v-for="card in analyticsCardsLeft" :key="card.label" class="rounded-[1.2rem] border border-white bg-white p-4">
                       <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">{{ card.label }}</p>
@@ -232,7 +245,7 @@
                 </div>
 
                 <div class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Email Health</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Kesehatan Email</p>
                   <div class="mt-4 grid gap-3 sm:grid-cols-2">
                     <div v-for="card in analyticsCardsRight" :key="card.label" class="rounded-[1.2rem] border border-white bg-white p-4">
                       <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">{{ card.label }}</p>
@@ -244,22 +257,22 @@
 
               <div class="grid gap-4 md:grid-cols-2">
                 <article class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Source Breakdown</p>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Rincian Sumber</p>
                   <div class="mt-4 space-y-3">
                     <div v-for="source in sourceBreakdown" :key="source.source" class="rounded-[1.2rem] border border-white bg-white p-4">
                       <div class="flex items-center justify-between gap-3">
                         <p class="text-sm font-semibold text-stone-950">{{ formatOption(source.source) }}</p>
-                        <p class="text-xs text-stone-500">{{ formatNumber(source.leads) }} leads</p>
+                        <p class="text-xs text-stone-500">{{ formatNumber(source.leads) }} prospek</p>
                       </div>
-                      <p class="mt-2 text-xs text-stone-500">{{ formatNumber(source.campaigns) }} campaigns / {{ formatNumber(source.sessions) }} sessions</p>
+                      <p class="mt-2 text-xs text-stone-500">{{ formatNumber(source.campaigns) }} kampanye / {{ formatNumber(source.sessions) }} sesi</p>
                     </div>
                   </div>
                 </article>
 
                 <article class="rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
                   <div class="flex items-center justify-between gap-3">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Subscriber List</p>
-                    <button type="button" @click="openSubscriberModal()" class="inline-flex items-center justify-center rounded-full border border-stone-200 bg-white p-2 text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Daftar Pelanggan</p>
+                    <button type="button" @click="openSubscriberModal()" title="Tambah Pelanggan" class="inline-flex items-center justify-center rounded-full border border-stone-200 bg-white p-2 text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">
                       <Plus class="h-3.5 w-3.5" />
                     </button>
                   </div>
@@ -271,11 +284,11 @@
                           <p class="mt-1 text-xs text-stone-500">{{ subscriber.email }}</p>
                         </div>
                         <div class="flex items-center gap-2">
-                          <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="subscriber.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'">{{ subscriber.is_active ? 'Active' : 'Inactive' }}</span>
-                          <button type="button" @click="openSubscriberModal(subscriber)" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-500 transition hover:text-stone-950">
+                          <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em]" :class="subscriber.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'">{{ subscriber.is_active ? 'Aktif' : 'Tidak Aktif' }}</span>
+                          <button type="button" @click="openSubscriberModal(subscriber)" title="Ubah" class="inline-flex items-center justify-center rounded-full border border-stone-200 p-2 text-stone-500 transition hover:text-stone-950">
                             <Pencil class="h-3.5 w-3.5" />
                           </button>
-                          <button type="button" @click="deleteSubscriber(subscriber.id)" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
+                          <button type="button" @click="deleteSubscriber(subscriber.id)" title="Hapus" class="inline-flex items-center justify-center rounded-full border border-rose-200 p-2 text-rose-700 transition hover:bg-rose-50">
                             <Trash2 class="h-3.5 w-3.5" />
                           </button>
                         </div>
@@ -318,8 +331,8 @@
 
           <div class="mt-6 grid gap-4 md:grid-cols-2">
             <label class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Campaign Name</span>
-              <input v-model="campaignForm.name" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Nama Kampanye</span>
+              <input v-model="campaignForm.name" type="text" placeholder="Contoh: Promo Akhir Tahun" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
               <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tipe</span>
@@ -334,38 +347,38 @@
               </select>
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Budget</span>
-              <input v-model="campaignForm.budget" type="number" step="0.01" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Anggaran</span>
+              <input v-model="campaignForm.budget" type="number" step="1000" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Spend</span>
-              <input v-model="campaignForm.spend" type="number" step="0.01" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Pengeluaran</span>
+              <input v-model="campaignForm.spend" type="number" step="1000" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Start Date</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tanggal Mulai</span>
               <input v-model="campaignForm.start_date" type="date" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">End Date</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tanggal Selesai</span>
               <input v-model="campaignForm.end_date" type="date" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Primary Source</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Sumber Utama</span>
               <select v-model="campaignForm.primary_source" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white">
-                <option value="">Semua</option>
+                <option value="">Semua Sumber</option>
                 <option v-for="item in options.campaignSources" :key="item" :value="item">{{ formatOption(item) }}</option>
               </select>
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">External Ref</span>
-              <input v-model="campaignForm.external_reference" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Referensi Eksternal</span>
+              <input v-model="campaignForm.external_reference" type="text" placeholder="ID Iklan, dsb" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Leads</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Prospek (Leads)</span>
               <input v-model="campaignForm.leads_generated" type="number" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Traffic Sessions</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Sesi Lalu Lintas</span>
               <input v-model="campaignForm.traffic_sessions" type="number" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm md:col-span-2">
@@ -376,7 +389,7 @@
 
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" @click="closeCampaignModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">Batal</button>
-            <button type="submit" :disabled="campaignForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingCampaignId ? 'Simpan Perubahan' : 'Buat Item' }}</button>
+            <button type="submit" :disabled="campaignForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingCampaignId ? 'Simpan Perubahan' : 'Buat Kampanye' }}</button>
           </div>
         </form>
       </div>
@@ -387,7 +400,7 @@
         <form class="w-full max-w-4xl rounded-[2rem] bg-white p-6 shadow-2xl" @submit.prevent="submitPost">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Social Media Post</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Postingan Media Sosial</p>
               <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ editingPostId ? 'Ubah Post' : 'Post Baru' }}</h3>
             </div>
             <button type="button" @click="closePostModal" class="rounded-full p-2 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700">x</button>
@@ -397,26 +410,26 @@
             <label class="space-y-2 text-sm md:col-span-2">
               <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Klien</span>
               <select v-model="postForm.client_id" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white">
-                <option value="">Semua</option>
+                <option value="">Semua Klien</option>
                 <option v-for="client in options.clients" :key="client.id" :value="client.id">{{ client.name }}</option>
               </select>
             </label>
             <label class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Title</span>
-              <input v-model="postForm.title" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Judul</span>
+              <input v-model="postForm.title" type="text" placeholder="Judul konten..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Caption</span>
-              <textarea v-model="postForm.caption" rows="4" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white"></textarea>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Keterangan (Caption)</span>
+              <textarea v-model="postForm.caption" rows="4" placeholder="Tulis keterangan di sini..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white"></textarea>
             </label>
             <label class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Hashtags</span>
-              <input v-model="postForm.hashtags" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Tagar (Hashtags)</span>
+              <input v-model="postForm.hashtags" type="text" placeholder="#digitalmarketing #agency" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <div class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Platforms</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Platform</span>
               <div class="grid gap-3 sm:grid-cols-3">
-                <label v-for="platform in options.platforms" :key="platform" class="flex items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700">
+                <label v-for="platform in options.platforms" :key="platform" class="flex items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 cursor-pointer hover:bg-white transition-all">
                   <input v-model="postForm.platforms" type="checkbox" :value="platform" class="h-4 w-4 rounded border-stone-300 text-stone-950 focus:ring-stone-950" />
                   <span>{{ formatOption(platform) }}</span>
                 </label>
@@ -429,30 +442,30 @@
               </select>
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Scheduled At</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Dijadwalkan Pada</span>
               <input v-model="postForm.scheduled_at" type="datetime-local" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Posted At</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Diposting Pada</span>
               <input v-model="postForm.posted_at" type="datetime-local" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Reach</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Jangkauan (Reach)</span>
               <input v-model="postForm.reach" type="number" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Engagement</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Interaksi (Engagement)</span>
               <input v-model="postForm.engagement" type="number" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Clicks</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Klik</span>
               <input v-model="postForm.clicks" type="number" min="0" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
           </div>
 
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" @click="closePostModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">Batal</button>
-            <button type="submit" :disabled="postForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingPostId ? 'Simpan Perubahan' : 'Buat Item' }}</button>
+            <button type="submit" :disabled="postForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingPostId ? 'Simpan Perubahan' : 'Buat Postingan' }}</button>
           </div>
         </form>
       </div>
@@ -463,7 +476,7 @@
         <form class="w-full max-w-4xl rounded-[2rem] bg-white p-6 shadow-2xl" @submit.prevent="submitNewsletter">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Email Campaign</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Kampanye Email</p>
               <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ editingNewsletterId ? 'Ubah Newsletter' : 'Newsletter Baru' }}</h3>
             </div>
             <button type="button" @click="closeNewsletterModal" class="rounded-full p-2 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700">x</button>
@@ -471,12 +484,12 @@
 
           <div class="mt-6 grid gap-4 md:grid-cols-2">
             <label class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Subject</span>
-              <input v-model="newsletterForm.subject" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Subjek</span>
+              <input v-model="newsletterForm.subject" type="text" placeholder="Subjek email..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm md:col-span-2">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Content</span>
-              <textarea v-model="newsletterForm.content" rows="6" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white"></textarea>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Konten</span>
+              <textarea v-model="newsletterForm.content" rows="6" placeholder="Isi konten email..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white"></textarea>
             </label>
             <label class="space-y-2 text-sm">
               <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Status</span>
@@ -485,7 +498,7 @@
               </select>
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Scheduled At</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Dijadwalkan Pada</span>
               <input v-model="newsletterForm.scheduled_at" type="datetime-local" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
@@ -497,22 +510,22 @@
               <input v-model="newsletterForm.open_rate" type="number" step="0.1" min="0" max="100" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Click Rate %</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Rasio Klik %</span>
               <input v-model="newsletterForm.click_rate" type="number" step="0.1" min="0" max="100" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Bounce Rate %</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Rasio Mental %</span>
               <input v-model="newsletterForm.bounce_rate" type="number" step="0.1" min="0" max="100" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Unsubscribe %</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Berhenti Berlangganan %</span>
               <input v-model="newsletterForm.unsubscribe_rate" type="number" step="0.1" min="0" max="100" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
           </div>
 
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" @click="closeNewsletterModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">Batal</button>
-            <button type="submit" :disabled="newsletterForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingNewsletterId ? 'Simpan Perubahan' : 'Buat Item' }}</button>
+            <button type="submit" :disabled="newsletterForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingNewsletterId ? 'Simpan Perubahan' : 'Buat Newsletter' }}</button>
           </div>
         </form>
       </div>
@@ -523,7 +536,7 @@
         <form class="w-full max-w-3xl rounded-[2rem] bg-white p-6 shadow-2xl" @submit.prevent="submitSubscriber">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Subscriber</p>
+              <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Pelanggan / Audiens</p>
               <h3 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ editingSubscriberId ? 'Ubah Pelanggan' : 'Pelanggan Baru' }}</h3>
             </div>
             <button type="button" @click="closeSubscriberModal" class="rounded-full p-2 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700">x</button>
@@ -533,31 +546,31 @@
             <label class="space-y-2 text-sm md:col-span-2">
               <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Klien</span>
               <select v-model="subscriberForm.client_id" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white">
-                <option value="">Semua</option>
+                <option value="">Semua Klien</option>
                 <option v-for="client in options.clients" :key="client.id" :value="client.id">{{ client.name }}</option>
               </select>
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Name</span>
-              <input v-model="subscriberForm.name" type="text" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Nama</span>
+              <input v-model="subscriberForm.name" type="text" placeholder="Nama pelanggan..." class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
             <label class="space-y-2 text-sm">
               <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Email</span>
-              <input v-model="subscriberForm.email" type="email" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
+              <input v-model="subscriberForm.email" type="email" placeholder="email@contoh.com" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
-            <label class="flex items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700">
+            <label class="flex items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 cursor-pointer hover:bg-white transition-all">
               <input v-model="subscriberForm.is_active" type="checkbox" class="h-4 w-4 rounded border-stone-300 text-stone-950 focus:ring-stone-950" />
               <span>Pelanggan Aktif</span>
             </label>
             <label class="space-y-2 text-sm">
-              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Unsubscribed At</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Berhenti Berlangganan Pada</span>
               <input v-model="subscriberForm.unsubscribed_at" type="datetime-local" class="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700 outline-none focus:border-stone-400 focus:bg-white" />
             </label>
           </div>
 
           <div class="mt-6 flex justify-end gap-3">
             <button type="button" @click="closeSubscriberModal" class="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-sm font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900">Batal</button>
-            <button type="submit" :disabled="subscriberForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingSubscriberId ? 'Simpan Perubahan' : 'Buat Item' }}</button>
+            <button type="submit" :disabled="subscriberForm.processing" class="rounded-2xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-60">{{ editingSubscriberId ? 'Simpan Perubahan' : 'Buat Pelanggan' }}</button>
           </div>
         </form>
       </div>
@@ -567,8 +580,8 @@
 
 <script setup>
 import { computed, reactive, ref } from 'vue'
-import { router, useForm } from '@inertiajs/vue3'
-import { Pencil, Plus, RotateCcw, Trash2 } from 'lucide-vue-next'
+import { Link, router, useForm } from '@inertiajs/vue3'
+import { Eye, Pencil, Plus, RotateCcw, Trash2 } from 'lucide-vue-next'
 import WorkspaceLayout from '../../Layouts/WorkspaceLayout.vue'
 import MarketingLayout from '../../Layouts/MarketingLayout.vue'
 
@@ -592,57 +605,57 @@ const tabMeta = {
     menu: 33,
     label: 'Ringkasan Pemasaran',
     actionLabel: 'Kampanye Baru',
-    headline: 'Campaign ringkas, spend terbaca, dan lead marketing tidak tercecer.',
-    copy: 'Dashboard marketing dibaca dari campaign nyata, source breakdown, dan konten yang paling kuat di workspace.',
-    filterTitle: 'Cari campaign berdasarkan nama, source, status, atau type.',
+    headline: 'Kampanye ringkas, pengeluaran terbaca, dan prospek pemasaran tidak tercecer.',
+    copy: 'Dashboard pemasaran dibaca dari kampanye nyata, rincian sumber, dan konten yang paling kuat di workspace.',
+    filterTitle: 'Cari kampanye berdasarkan nama, sumber, status, atau tipe.',
     statusLabel: 'Status',
-    secondaryFilterLabel: 'Type',
-    boardLabel: 'Campaign Register',
-    boardTitle: 'Semua campaign aktif dan history spend workspace.',
-    sideLabel: 'Overview signals',
-    sideTitle: 'What moves the numbers',
+    secondaryFilterLabel: 'Tipe',
+    boardLabel: 'Daftar Kampanye',
+    boardTitle: 'Semua kampanye aktif dan riwayat pengeluaran workspace.',
+    sideLabel: 'Sinyal ringkasan',
+    sideTitle: 'Apa yang menggerakkan angka',
   },
   social: {
     menu: 34,
-    label: 'Social Media Planner',
+    label: 'Perencanaan Media Sosial',
     actionLabel: 'Post Baru',
-    headline: 'Konten social disusun sebagai pipeline, bukan daftar caption yang tercecer.',
-    copy: 'Idea, draft, review, scheduled, dan posted dibaca per platform supaya tim mudah lihat progres konten.',
-    filterTitle: 'Cari post berdasarkan judul, client, status, atau platform.',
+    headline: 'Konten media sosial disusun sebagai alur kerja, bukan daftar keterangan yang tercecer.',
+    copy: 'Ide, draf, tinjauan, dijadwalkan, dan diposting dibaca per platform supaya tim mudah melihat progres konten.',
+    filterTitle: 'Cari postingan berdasarkan judul, klien, status, atau platform.',
     statusLabel: 'Status',
     secondaryFilterLabel: 'Platform',
-    boardLabel: 'Social Planner',
-    boardTitle: 'Semua post dan jadwal publish workspace.',
-    sideLabel: 'Planner signals',
-    sideTitle: 'Scheduling and engagement',
+    boardLabel: 'Perencana Media Sosial',
+    boardTitle: 'Semua postingan dan jadwal terbit workspace.',
+    sideLabel: 'Sinyal perencanaan',
+    sideTitle: 'Penjadwalan dan interaksi',
   },
   email: {
     menu: 35,
-    label: 'Email Campaigns',
+    label: 'Kampanye Email',
     actionLabel: 'Newsletter Baru',
-    headline: 'Newsletter dan audience disatukan supaya blast, schedule, dan tracking tidak terpisah.',
-    copy: 'Draft, scheduled, sending, dan sent dibaca bersama subscriber list dan rate tracking yang tersimpan.',
-    filterTitle: 'Cari newsletter berdasarkan subject atau isi konten.',
+    headline: 'Newsletter dan audiens disatukan supaya pengiriman, jadwal, dan pelacakan tidak terpisah.',
+    copy: 'Draf, dijadwalkan, mengirim, dan terkirim dibaca bersama daftar pelanggan dan pelacakan rasio yang tersimpan.',
+    filterTitle: 'Cari newsletter berdasarkan subjek atau isi konten.',
     statusLabel: 'Status',
-    secondaryFilterLabel: 'Audience',
-    boardLabel: 'Email Library',
-    boardTitle: 'Newsletter dan subscriber workspace.',
-    sideLabel: 'Email signals',
-    sideTitle: 'Audience health',
+    secondaryFilterLabel: 'Audiens',
+    boardLabel: 'Perpustakaan Email',
+    boardTitle: 'Newsletter dan pelanggan workspace.',
+    sideLabel: 'Sinyal email',
+    sideTitle: 'Kesehatan audiens',
   },
   analytics: {
     menu: 36,
-    label: 'Analytics',
+    label: 'Analitik',
     actionLabel: '',
-    headline: 'Analytics dibaca dari campaign, social post, dan newsletter yang memang tersimpan di workspace.',
-    copy: 'Traffic sessions, ROI, engagement, open rate, dan lead source breakdown dikumpulkan dari data marketing aktif.',
-    filterTitle: 'Cari source breakdown atau campaign yang relevan.',
-    statusLabel: 'Type',
-    secondaryFilterLabel: 'Source',
+    headline: 'Analitik dibaca dari kampanye, post sosial, dan newsletter yang memang tersimpan di workspace.',
+    copy: 'Sesi lalu lintas, ROI, interaksi, rasio buka, dan rincian sumber prospek dikumpulkan dari data pemasaran aktif.',
+    filterTitle: 'Cari rincian sumber atau kampanye yang relevan.',
+    statusLabel: 'Tipe',
+    secondaryFilterLabel: 'Sumber',
     boardLabel: 'Analitik Pemasaran',
-    boardTitle: 'Ringkasan performa lintas channel.',
-    sideLabel: 'Analytics signals',
-    sideTitle: 'Performance lens',
+    boardTitle: 'Ringkasan performa lintas kanal.',
+    sideLabel: 'Sinyal analitik',
+    sideTitle: 'Lensa performa',
   },
 }
 
@@ -651,28 +664,28 @@ const activeMeta = computed(() => tabMeta[activeTab.value] ?? tabMeta.overview)
 const activeStatCards = computed(() => {
   const cards = {
     overview: [
-      { label: 'Campaigns', value: props.summary.overview.total_campaigns },
-      { label: 'Active', value: props.summary.overview.active_campaigns },
-      { label: 'Spend', value: formatMoney(props.summary.overview.total_spend) },
+      { label: 'Kampanye', value: props.summary.overview.total_campaigns },
+      { label: 'Aktif', value: props.summary.overview.active_campaigns },
+      { label: 'Pengeluaran', value: formatMoney(props.summary.overview.total_spend) },
       { label: 'ROI', value: `${props.summary.overview.avg_roi}%` },
     ],
     social: [
-      { label: 'Posts', value: props.summary.social.total_posts },
-      { label: 'Scheduled', value: props.summary.social.scheduled_posts },
-      { label: 'Reach', value: formatNumber(props.summary.social.reach) },
-      { label: 'Engagement', value: formatNumber(props.summary.social.engagement) },
+      { label: 'Postingan', value: props.summary.social.total_posts },
+      { label: 'Dijadwalkan', value: props.summary.social.scheduled_posts },
+      { label: 'Jangkauan', value: formatNumber(props.summary.social.reach) },
+      { label: 'Interaksi', value: formatNumber(props.summary.social.engagement) },
     ],
     email: [
-      { label: 'Newsletters', value: props.summary.email.total_newsletters },
-      { label: 'Sent', value: props.summary.email.sent_newsletters },
-      { label: 'Open', value: `${props.summary.email.avg_open_rate}%` },
-      { label: 'Click', value: `${props.summary.email.avg_click_rate}%` },
+      { label: 'Newsletter', value: props.summary.email.total_newsletters },
+      { label: 'Terkirim', value: props.summary.email.sent_newsletters },
+      { label: 'Buka', value: `${props.summary.email.avg_open_rate}%` },
+      { label: 'Klik', value: `${props.summary.email.avg_click_rate}%` },
     ],
     analytics: [
-      { label: 'Sessions', value: formatNumber(props.summary.analytics.traffic_sessions) },
+      { label: 'Sesi', value: formatNumber(props.summary.analytics.traffic_sessions) },
       { label: 'Meta Spend', value: formatMoney(props.summary.analytics.meta_spend) },
       { label: 'TikTok Spend', value: formatMoney(props.summary.analytics.tiktok_spend) },
-      { label: 'Leads', value: props.summary.overview.total_leads },
+      { label: 'Prospek', value: props.summary.overview.total_leads },
     ],
   }
 
@@ -682,24 +695,24 @@ const activeStatCards = computed(() => {
 const activeSignals = computed(() => {
   const map = {
     overview: [
-      { label: 'Sumber prospek', copy: `${props.summary.overview.total_leads} prospek sudah direkam dari sumber kampanye.` },
-      { label: 'Spend posture', copy: `${formatMoney(props.summary.overview.total_spend)} spend terpakai dari budget ${formatMoney(props.summary.overview.total_budget)}.` },
-      { label: 'Top content', copy: props.summary.overview.top_content || 'Belum ada top content yang terbaca.' },
+      { label: 'Sumber Prospek', copy: `${props.summary.overview.total_leads} prospek sudah direkam dari sumber kampanye.` },
+      { label: 'Postur Pengeluaran', copy: `${formatMoney(props.summary.overview.total_spend)} pengeluaran terpakai dari anggaran ${formatMoney(props.summary.overview.total_budget)}.` },
+      { label: 'Konten Terbaik', copy: props.summary.overview.top_content || 'Belum ada konten terbaik yang terbaca.' },
     ],
     social: [
-      { label: 'Publishing', copy: `${props.summary.social.posted_posts} post sudah publish dan ${props.summary.social.scheduled_posts} masih terjadwal.` },
-      { label: 'Reach stack', copy: `${formatNumber(props.summary.social.reach)} reach terkumpul dari social planner.` },
-      { label: 'Clicks', copy: `${formatNumber(props.summary.social.clicks)} clicks tercatat di analytics post.` },
+      { label: 'Penerbitan', copy: `${props.summary.social.posted_posts} postingan sudah terbit dan ${props.summary.social.scheduled_posts} masih terjadwal.` },
+      { label: 'Tumpukan Jangkauan', copy: `${formatNumber(props.summary.social.reach)} jangkauan terkumpul dari perencanaan media sosial.` },
+      { label: 'Klik', copy: `${formatNumber(props.summary.social.clicks)} klik tercatat di analitik postingan.` },
     ],
     email: [
-      { label: 'Audience', copy: `${props.summary.email.active_subscribers} subscriber aktif dan ${props.summary.email.inactive_subscribers} nonaktif.` },
-      { label: 'Open rate', copy: `${props.summary.email.avg_open_rate}% open rate rata-rata dari newsletter.` },
-      { label: 'Click rate', copy: `${props.summary.email.avg_click_rate}% click rate rata-rata dari newsletter.` },
+      { label: 'Audiens', copy: `${props.summary.email.active_subscribers} pelanggan aktif dan ${props.summary.email.inactive_subscribers} tidak aktif.` },
+      { label: 'Rasio Buka', copy: `${props.summary.email.avg_open_rate}% rasio buka rata-rata dari newsletter.` },
+      { label: 'Rasio Klik', copy: `${props.summary.email.avg_click_rate}% rasio klik rata-rata dari newsletter.` },
     ],
     analytics: [
-      { label: 'Sessions', copy: `${formatNumber(props.summary.analytics.traffic_sessions)} traffic sessions dibaca dari campaign.` },
-      { label: 'Email health', copy: `Open ${props.summary.analytics.email_open_rate}% dan click ${props.summary.analytics.email_click_rate}% untuk email tracking.` },
-      { label: 'Breakdown', copy: `${sourceBreakdown.value.length} source berbeda sudah masuk ke analisis.` },
+      { label: 'Sesi', copy: `${formatNumber(props.summary.analytics.traffic_sessions)} sesi lalu lintas dibaca dari kampanye.` },
+      { label: 'Kesehatan Email', copy: `Buka ${props.summary.analytics.email_open_rate}% dan klik ${props.summary.analytics.email_click_rate}% untuk pelacakan email.` },
+      { label: 'Rincian', copy: `${sourceBreakdown.value.length} sumber berbeda sudah masuk ke analisis.` },
     ],
   }
 
@@ -707,40 +720,40 @@ const activeSignals = computed(() => {
 })
 
 const analyticsCardsLeft = computed(() => [
-  { label: 'Traffic Sessions', value: formatNumber(props.summary.analytics.traffic_sessions) },
-  { label: 'Total Leads', value: formatNumber(props.summary.overview.total_leads) },
+  { label: 'Sesi Lalu Lintas', value: formatNumber(props.summary.analytics.traffic_sessions) },
+  { label: 'Total Prospek', value: formatNumber(props.summary.overview.total_leads) },
   { label: 'Meta Spend', value: formatMoney(props.summary.analytics.meta_spend) },
   { label: 'TikTok Spend', value: formatMoney(props.summary.analytics.tiktok_spend) },
 ])
 
 const analyticsCardsRight = computed(() => [
-  { label: 'Email Open', value: `${props.summary.analytics.email_open_rate}%` },
-  { label: 'Email Click', value: `${props.summary.analytics.email_click_rate}%` },
-  { label: 'Avg ROI', value: `${props.summary.overview.avg_roi}%` },
-  { label: 'Top Content', value: props.summary.overview.top_content || 'None' },
+  { label: 'Email Buka', value: `${props.summary.analytics.email_open_rate}%` },
+  { label: 'Email Klik', value: `${props.summary.analytics.email_click_rate}%` },
+  { label: 'Rata-rata ROI', value: `${props.summary.overview.avg_roi}%` },
+  { label: 'Konten Terbaik', value: props.summary.overview.top_content || 'Tidak Ada' },
 ])
 
 const activePanels = computed(() => {
   const panels = {
     overview: [
       { title: 'Komposisi sumber prospek', copy: 'Rincian sumber dipakai untuk membaca kanal mana yang paling banyak menyumbang prospek dan sesi.' },
-      { title: 'Budget control', copy: 'Spend dan budget tampil berdampingan supaya keputusan scaling lebih cepat diambil.' },
-      { title: 'ROI read', copy: 'ROI disimpan di campaign meta agar laporan performa bisa dihitung dari data nyata.' },
+      { title: 'Kontrol anggaran', copy: 'Pengeluaran dan anggaran tampil berdampingan supaya keputusan penskalaan lebih cepat diambil.' },
+      { title: 'Pembacaan ROI', copy: 'ROI disimpan di meta kampanye agar laporan performa bisa dihitung dari data nyata.' },
     ],
     social: [
-      { title: 'Platform spread', copy: 'Distribusi platform membantu melihat konten mana yang cocok untuk Instagram, TikTok, atau LinkedIn.' },
-      { title: 'Post analytics', copy: 'Reach, engagement, dan clicks ditarik langsung dari analytics tiap post.' },
-      { title: 'Pipeline status', copy: 'Idea sampai posted dibaca sebagai alur kerja yang gampang dilacak.' },
+      { title: 'Penyebaran platform', copy: 'Distribusi platform membantu melihat konten mana yang cocok untuk Instagram, TikTok, atau LinkedIn.' },
+      { title: 'Analitik postingan', copy: 'Jangkauan, interaksi, dan klik ditarik langsung dari analitik tiap postingan.' },
+      { title: 'Status alur kerja', copy: 'Ide sampai diposting dibaca sebagai alur kerja yang mudah dilacak.' },
     ],
     email: [
-      { title: 'Audience hygiene', copy: 'Subscriber aktif dan nonaktif dipantau bersama supaya list tetap sehat.' },
-      { title: 'Delivery rates', copy: 'Open, click, bounce, dan unsubscribe rate disimpan di newsletter metrics.' },
-      { title: 'Scheduler', copy: 'Scheduled dan sent timestamp dipakai untuk baca lifecycle campaign email.' },
+      { title: 'Kebersihan audiens', copy: 'Pelanggan aktif dan tidak aktif dipantau bersama supaya daftar tetap sehat.' },
+      { title: 'Rasio pengiriman', copy: 'Buka, klik, mental, dan berhenti berlangganan disimpan di metrik newsletter.' },
+      { title: 'Penjadwalan', copy: 'Tanda waktu dijadwalkan dan dikirim dipakai untuk membaca siklus hidup kampanye email.' },
     ],
     analytics: [
-      { title: 'Traffic lens', copy: 'Traffic sessions dan leads digabung untuk membaca kontribusi channel ke hasil akhir.' },
-      { title: 'Channel spend', copy: 'Meta Ads dan TikTok Ads dibedakan agar spend tiap channel terlihat jelas.' },
-      { title: 'Email performance', copy: 'Open rate dan click rate jadi pembanding saat campaign email dijalankan.' },
+      { title: 'Lensa lalu lintas', copy: 'Sesi lalu lintas dan prospek digabung untuk membaca kontribusi kanal ke hasil akhir.' },
+      { title: 'Pengeluaran kanal', copy: 'Meta Ads dan TikTok Ads dibedakan agar pengeluaran tiap kanal terlihat jelas.' },
+      { title: 'Performa email', copy: 'Rasio buka dan rasio klik jadi pembanding saat kampanye email dijalankan.' },
     ],
   }
 
@@ -807,7 +820,41 @@ function resetFilters() {
 }
 
 function formatOption(value) {
-  return String(value || '').replaceAll('-', ' ').replaceAll('_', ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+  const translations = {
+    // Status Kampanye
+    'planning': 'Perencanaan',
+    'active': 'Aktif',
+    'paused': 'Ditangguhkan',
+    'completed': 'Selesai',
+    
+    // Status Social Post
+    'idea': 'Ide',
+    'draft': 'Draf',
+    'review': 'Tinjauan',
+    'scheduled': 'Dijadwalkan',
+    'posted': 'Diposting',
+    
+    // Status Newsletter
+    'sending': 'Mengirim',
+    'sent': 'Terkirim',
+    
+    // Tipe / Platform
+    'google_ads': 'Google Ads',
+    'meta_ads': 'Meta Ads',
+    'tiktok_ads': 'TikTok Ads',
+    'email': 'Email',
+    'whatsapp': 'WhatsApp',
+    'seo': 'SEO',
+    'content': 'Konten',
+    'instagram': 'Instagram',
+    'facebook': 'Facebook',
+    'twitter': 'Twitter',
+    'linkedin': 'LinkedIn',
+    'youtube': 'YouTube',
+    'inactive': 'Tidak Aktif'
+  }
+  
+  return translations[value] || String(value || '').replaceAll('-', ' ').replaceAll('_', ' ').replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
 function formatNumber(value) {
@@ -910,7 +957,7 @@ function submitCampaign() {
 }
 
 function deleteCampaign(id) {
-  if (!confirm('Delete this campaign?')) return
+  if (!confirm('Hapus kampanye ini?')) return
   router.delete(`${marketingBaseUrl}/campaigns/${encodeURIComponent(id)}`, { preserveScroll: true })
 }
 
@@ -960,7 +1007,7 @@ function submitPost() {
 }
 
 function deletePost(id) {
-  if (!confirm('Delete this social post?')) return
+  if (!confirm('Hapus postingan sosial ini?')) return
   router.delete(`${marketingBaseUrl}/social-posts/${encodeURIComponent(id)}`, { preserveScroll: true })
 }
 
@@ -1006,7 +1053,7 @@ function submitNewsletter() {
 }
 
 function deleteNewsletter(id) {
-  if (!confirm('Delete this newsletter?')) return
+  if (!confirm('Hapus newsletter ini?')) return
   router.delete(`${marketingBaseUrl}/newsletters/${encodeURIComponent(id)}`, { preserveScroll: true })
 }
 
@@ -1044,7 +1091,7 @@ function submitSubscriber() {
 }
 
 function deleteSubscriber(id) {
-  if (!confirm('Delete this subscriber?')) return
+  if (!confirm('Hapus pelanggan ini?')) return
   router.delete(`${marketingBaseUrl}/subscribers/${encodeURIComponent(id)}`, { preserveScroll: true })
 }
 
