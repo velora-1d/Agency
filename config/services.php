@@ -67,4 +67,9 @@ return [
         'default_instance' => env('EVOLUTION_DEFAULT_INSTANCE'),
     ],
 
+    'ninerouter' => [
+        'url' => env('NINE_ROUTER_BASE_URL', 'http://localhost:20128/v1'),
+        'key' => env('NINE_ROUTER_API_KEY'),
+    ],
+
 ];
