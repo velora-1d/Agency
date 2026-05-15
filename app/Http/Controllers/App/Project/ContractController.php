@@ -9,6 +9,7 @@ use App\Models\Workspace;
 use App\Modules\Project\Contracts\Queries\ContractIndexQuery;
 use App\Services\Project\ContractService;
 use App\Services\Communication\EvolutionApiService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -28,11 +29,26 @@ class ContractController extends Controller
         );
     }
 
+    public function previewPdf(Workspace $workspace, Contract $contract)
+    {
+        abort_unless($contract->workspace_id === $workspace->id, 404);
+
+        $contract->load(['client', 'project', 'quotation.items']);
+
+        $pdf = Pdf::loadView('pdf.contract', [
+            'workspace' => $workspace,
+            'contract' => $contract,
+        ]);
+
+        return $pdf->stream("Contract-{$contract->title}.pdf");
+    }
+
     public function store(Request $request, Workspace $workspace, ContractService $service): RedirectResponse
     {
         $validated = $request->validate([
             'client_id' => ['nullable', 'uuid', 'exists:clients,id'],
             'project_id' => ['nullable', 'uuid', 'exists:projects,id'],
+            'quotation_id' => ['nullable', 'uuid', 'exists:quotations,id'],
             'title' => ['required', 'string', 'max:255'],
             'content' => ['nullable', 'string'],
             'value' => ['nullable', 'numeric', 'min:0'],
@@ -51,6 +67,7 @@ class ContractController extends Controller
         $validated = $request->validate([
             'client_id' => ['nullable', 'uuid', 'exists:clients,id'],
             'project_id' => ['nullable', 'uuid', 'exists:projects,id'],
+            'quotation_id' => ['nullable', 'uuid', 'exists:quotations,id'],
             'title' => ['required', 'string', 'max:255'],
             'content' => ['nullable', 'string'],
             'value' => ['nullable', 'numeric', 'min:0'],
@@ -96,6 +113,8 @@ class ContractController extends Controller
 
     public function show(Workspace $workspace, Contract $contract, ContractIndexQuery $query): Response
     {
+        $contract->load(['client', 'project', 'quotation.items']);
+
         return $this->appShell(
             workspace: $workspace,
             screen: 'Projects/Contracts/Show',

@@ -17,6 +17,7 @@ class Contract extends Model
         'workspace_id',
         'client_id',
         'project_id',
+        'quotation_id',
         'title',
         'status',
         'content',
@@ -41,6 +42,11 @@ class Contract extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function quotation(): BelongsTo
+    {
+        return $this->belongsTo(Quotation::class);
     }
 
     public function creator(): BelongsTo

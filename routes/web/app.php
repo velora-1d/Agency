@@ -113,8 +113,8 @@ Route::middleware('auth')->group(function (): void {
                     Route::patch('/{contract}/status', [ContractController::class, 'updateStatus'])->name('status.update');
                     Route::post('/{contract}/upload-signed', [ContractController::class, 'uploadSigned'])->name('upload-signed');
                     Route::post('/{contract}/send-wa', [ContractController::class, 'sendWhatsApp'])->name('send-wa');
-                    Route::delete('/{contract}', [ContractController::class, 'destroy'])->name('destroy');
-                });
+                    Route::get('/{contract}/preview-pdf', [ContractController::class, 'previewPdf'])->name('preview-pdf');
+                    Route::delete('/{contract}', [ContractController::class, 'destroy'])->name('destroy');                });
 
                 Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
             });

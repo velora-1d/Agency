@@ -25,6 +25,15 @@
 
         <button
           type="button"
+          @click="downloadPdf"
+          class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:border-stone-300 hover:text-stone-950"
+        >
+          <FileDown class="h-4 w-4" />
+          <span>Download PDF</span>
+        </button>
+
+        <button
+          type="button"
           @click="goBack"
           class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:border-stone-300 hover:text-stone-950"
         >
@@ -77,11 +86,13 @@
           </div>
 
           <div class="mt-10 border-t border-stone-100 pt-8">
-            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Isi Kontrak / Ringkasan</p>
-            <div class="mt-4 rounded-[1.6rem] border border-stone-200 bg-stone-50 p-5">
-              <div class="prose prose-stone max-w-none whitespace-pre-wrap leading-relaxed text-stone-700">
-              {{ contract.content || 'Belum ada isi kontrak.' }}
-              </div>
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Dokumen Kontrak (A4 PDF)</p>
+            <div class="mt-4 overflow-hidden rounded-[2rem] border border-stone-200 bg-stone-100 shadow-inner">
+              <iframe 
+                :src="previewPdfUrl" 
+                class="h-[800px] w-full border-none"
+                title="Kontrak PDF Preview"
+              ></iframe>
             </div>
           </div>
 
@@ -297,7 +308,7 @@ import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { 
   ArrowLeft, Send, FileUp, FileText, CheckCircle2, 
-  Calendar, Clock, Bell, X, ArrowUpRight, LinkIcon 
+  Calendar, Clock, Bell, X, ArrowUpRight, LinkIcon, FileDown
 } from 'lucide-vue-next'
 import WorkspaceLayout from '../../../Layouts/WorkspaceLayout.vue'
 import ProjectLayout from '../../../Layouts/ProjectLayout.vue'
@@ -310,10 +321,15 @@ const props = defineProps({
 
 const workspaceBaseUrl = `/w/${encodeURIComponent(props.workspace.slug)}`
 const contractsBaseUrl = `${workspaceBaseUrl}/projects/contracts`
+const previewPdfUrl = `${contractsBaseUrl}/${encodeURIComponent(props.contract.id)}/preview-pdf`
 
 const showUploadModal = ref(false)
 const selectedFile = ref(null)
 const isUploading = ref(false)
+
+function downloadPdf() {
+  window.open(previewPdfUrl, '_blank')
+}
 
 function goBack() {
   router.get(contractsBaseUrl)
