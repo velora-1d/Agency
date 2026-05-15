@@ -234,6 +234,7 @@ Route::middleware('auth')->group(function (): void {
                     Route::post('/{invoice}/approve', [InvoiceController::class, 'approve'])->name('approve');
                     Route::post('/{invoice}/payments', [InvoiceController::class, 'recordPayment'])->name('payments.store');
                     Route::post('/{invoice}/pakasir-link', [InvoiceController::class, 'generatePakasirLink'])->name('pakasir-link.store');
+                    Route::post('/{invoice}/send-wa', [InvoiceController::class, 'sendWhatsApp'])->name('send-wa');
                 });
                 Route::prefix('quotations')->name('quotations.')->group(function (): void {
                     Route::get('/', [QuotationController::class, 'index'])->name('index');

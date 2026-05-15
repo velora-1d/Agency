@@ -231,6 +231,10 @@
                   <Send class="h-3.5 w-3.5" />
                   <span>Kirim</span>
                 </button>
+                <button type="button" @click.stop="sendViaWhatsApp(invoice.id)" :disabled="!invoice.can_send" class="inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-50" :class="selectedInvoice?.id === invoice.id ? 'border-emerald-300/30 text-emerald-200 hover:bg-emerald-500/10' : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'">
+                  <MessageCircle class="h-3.5 w-3.5" />
+                  <span>WA</span>
+                </button>
               </div>
             </article>
 
@@ -269,6 +273,10 @@
                 <button type="button" @click="sendInvoice(selectedInvoice.id)" :disabled="!selectedInvoice.can_send" class="inline-flex items-center gap-2 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-50">
                   <Send class="h-4 w-4" />
                   <span>Kirim</span>
+                </button>
+                <button type="button" @click="sendViaWhatsApp(selectedInvoice.id)" :disabled="!selectedInvoice.can_send" class="inline-flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50">
+                  <MessageCircle class="h-4 w-4" />
+                  <span>WA</span>
                 </button>
                 <button type="button" @click="openPaymentModal(selectedInvoice)" :disabled="!selectedInvoice.can_record_payment" class="inline-flex items-center gap-2 rounded-2xl bg-stone-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50">
                   <CircleDollarSign class="h-4 w-4" />
@@ -824,6 +832,7 @@ import {
   FileText,
   Filter,
   Link2,
+  MessageCircle,
   Pencil,
   Plus,
   Printer,
@@ -1065,6 +1074,14 @@ function sendInvoice(invoiceId) {
   router.patch(`${invoicesBaseUrl}/${encodeURIComponent(invoiceId)}/status`, {
     status: 'sent',
   }, {
+    preserveScroll: true,
+  })
+}
+
+function sendViaWhatsApp(invoiceId) {
+  if (!confirm('Kirim invoice ini ke WhatsApp klien?')) return
+
+  router.post(`${invoicesBaseUrl}/${encodeURIComponent(invoiceId)}/send-wa`, {}, {
     preserveScroll: true,
   })
 }

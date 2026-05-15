@@ -153,6 +153,17 @@
               <FormInput v-model="settingsForm.working_hours_end" label="Jam Kerja Selesai" type="time" />
               <FormTextarea v-model="settingsForm.holiday_dates_text" label="Kalender Libur" rows="5" class-name="md:col-span-2" />
               <FormTextarea v-model="settingsForm.notification_templates_text" label="Template Notifikasi" rows="5" class-name="md:col-span-2" />
+              <FormTextarea v-model="settingsForm.invoice_wa_template" label="Template WA Invoice" rows="8" class-name="md:col-span-2" />
+              <div class="md:col-span-2 rounded-[1.2rem] border border-stone-200 bg-stone-50 p-4 text-[11px] leading-relaxed text-stone-500">
+                <p class="font-bold uppercase tracking-wider mb-2">Placeholders Tersedia:</p>
+                <code class="bg-white px-1.5 py-0.5 rounded border border-stone-100">{pic_name}</code>, 
+                <code class="bg-white px-1.5 py-0.5 rounded border border-stone-100">{invoice_number}</code>, 
+                <code class="bg-white px-1.5 py-0.5 rounded border border-stone-100">{project_name}</code>, 
+                <code class="bg-white px-1.5 py-0.5 rounded border border-stone-100">{total}</code>, 
+                <code class="bg-white px-1.5 py-0.5 rounded border border-stone-100">{due_date}</code>, 
+                <code class="bg-white px-1.5 py-0.5 rounded border border-stone-100">{payment_link}</code>, 
+                <code class="bg-white px-1.5 py-0.5 rounded border border-stone-100">{workspace_name}</code>
+              </div>
               <FormTextarea v-model="settingsForm.backup_snapshots_text" label="Snapshot Backup" rows="5" class-name="md:col-span-2" />
             </div>
 
@@ -960,6 +971,7 @@ const settingsForm = useForm({
   storage_quota_gb: props.workspaceSettings.storage_quota_gb || 50,
   holiday_dates_text: props.workspaceSettings.holiday_dates_text || '',
   notification_templates_text: props.workspaceSettings.notification_templates_text || '',
+  invoice_wa_template: props.workspaceSettings.invoice_wa_template || '',
   backup_snapshots_text: props.workspaceSettings.backup_snapshots_text || '',
 })
 

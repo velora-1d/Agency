@@ -220,6 +220,7 @@ class SystemController extends Controller
             'notification_templates_text' => implode("\n", data_get($settings, 'notification_templates', [])),
             'backup_snapshots' => data_get($settings, 'backup_snapshots', []),
             'backup_snapshots_text' => implode("\n", data_get($settings, 'backup_snapshots', [])),
+            'invoice_wa_template' => data_get($settings, 'invoice_wa_template', ''),
             'allowed_ips' => data_get($security, 'allowed_ips', []),
             'allowed_ips_text' => implode("\n", data_get($security, 'allowed_ips', [])),
             'require_two_factor' => (bool) data_get($security, 'require_two_factor', false),
@@ -434,12 +435,14 @@ class SystemController extends Controller
             'holiday_dates_text' => ['nullable', 'string'],
             'notification_templates_text' => ['nullable', 'string'],
             'backup_snapshots_text' => ['nullable', 'string'],
+            'invoice_wa_template' => ['nullable', 'string'],
         ]);
 
         $settings = $workspace->settings ?? [];
         $settings['holiday_dates'] = $this->textToArray($validated['holiday_dates_text'] ?? '');
         $settings['notification_templates'] = $this->textToArray($validated['notification_templates_text'] ?? '');
         $settings['backup_snapshots'] = $this->textToArray($validated['backup_snapshots_text'] ?? '');
+        $settings['invoice_wa_template'] = $validated['invoice_wa_template'] ?? '';
 
         $workspace->update([
             'name' => $validated['name'],

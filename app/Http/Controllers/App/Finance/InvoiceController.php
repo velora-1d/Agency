@@ -12,6 +12,7 @@ use App\Models\Workspace;
 use App\Modules\Finance\Invoices\Queries\InvoiceIndexQuery;
 use App\Services\Finance\InvoiceService;
 use App\Integrations\Pakasir\PakasirService;
+use App\Services\Communication\EvolutionApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -28,6 +29,48 @@ class InvoiceController extends Controller
             title: 'Invoices',
             payload: $query->getIndexPayload($workspace, $request->all()),
         );
+    }
+
+    public function sendWhatsApp(Workspace $workspace, Invoice $invoice, EvolutionApiService $wa): RedirectResponse
+    {
+        abort_unless($invoice->workspace_id === $workspace->id, 404);
+
+        $client = $invoice->client;
+        if (! $client || ! $client->phone) {
+            return back()->with('error', 'Nomor WhatsApp klien tidak ditemukan.');
+        }
+
+        $amountLabel = number_format($invoice->total, 0, ',', '.');
+        $defaultTemplate = "Halo *{pic_name}*,\n\nBerikut invoice *{invoice_number}* untuk proyek *{project_name}*.\nTotal Tagihan: *{currency} {total}*\nJatuh Tempo: *{due_date}*\n{payment_link}\n\nSilakan lakukan pembayaran sebelum jatuh tempo. Terima kasih!\n\nSalam,\n*{workspace_name}*";
+        
+        $template = data_get($workspace->settings, 'invoice_wa_template', $defaultTemplate);
+
+        $placeholders = [
+            '{pic_name}' => $client->pic_name,
+            '{invoice_number}' => $invoice->number,
+            '{project_name}' => $invoice->project?->name ?? 'N/A',
+            '{currency}' => $invoice->currency,
+            '{total}' => $amountLabel,
+            '{due_date}' => $invoice->due_date->format('d M Y'),
+            '{payment_link}' => $invoice->pakasir_payment_url ? "Link Pembayaran: {$invoice->pakasir_payment_url}" : "",
+            '{workspace_name}' => $workspace->name,
+        ];
+
+        $message = str_replace(array_keys($placeholders), array_values($placeholders), $template);
+        $message = preg_replace("/\n{2,}/", "\n\n", trim($message)); // Clean up double newlines
+
+        $success = $wa->sendMessage('default', $client->phone, $message);
+
+        if ($success) {
+            $invoice->update([
+                'status' => 'sent',
+                'sent_at' => now(),
+            ]);
+
+            return back()->with('success', 'Invoice berhasil dikirim via WhatsApp.');
+        }
+
+        return back()->with('error', 'Gagal mengirim invoice via WhatsApp.');
     }
 
     public function store(

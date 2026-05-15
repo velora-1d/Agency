@@ -60,4 +60,11 @@ return [
         ],
     ],
 
+    'evolution' => [
+        'url' => env('EVOLUTION_API_URL'),
+        'key' => env('EVOLUTION_API_KEY'),
+        'global_key' => env('EVOLUTION_GLOBAL_API_KEY'),
+        'default_instance' => env('EVOLUTION_DEFAULT_INSTANCE'),
+    ],
+
 ];
