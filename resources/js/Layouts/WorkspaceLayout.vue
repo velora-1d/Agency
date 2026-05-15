@@ -11,12 +11,14 @@
     </template>
     <slot />
   </AppShell>
+  <AiAssistant />
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import AppShell from './AppShell.vue'
+import AiAssistant from '../Components/System/AiAssistant.vue'
 
 const props = defineProps({
   title: {
