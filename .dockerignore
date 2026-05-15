@@ -1,0 +1,15 @@
+node_modules
+vendor
+.git
+.env
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*.php
+bootstrap/cache/*.php
+Dockerfile
+docker-compose.yml
+docker
+.gitignore
+.editorconfig
+README.md
