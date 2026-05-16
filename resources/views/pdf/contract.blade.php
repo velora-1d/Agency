@@ -224,6 +224,90 @@
 
     <div style="page-break-after: always;"></div>
 
+    <h2>BAB V — PELAKSANAAN &amp; TIMELINE</h2>
+    <h3>Pasal 5.1 — Kewajiban Pihak Pertama ({{ $workspace->name }})</h3>
+    <ul style="font-size: 10pt; line-height: 1.8;">
+        <li>Mengerjakan Proyek sesuai Scope of Work yang tercantum dalam Lampiran A.</li>
+        <li>Memberikan laporan progres secara berkala kepada Pihak Kedua.</li>
+        <li>Menyelesaikan Proyek sesuai estimasi timeline yang disepakati.</li>
+        <li>Memberikan pemberitahuan tertulis apabila terjadi keterlambatan.</li>
+        <li>Menjaga kerahasiaan data dan informasi Pihak Kedua.</li>
+        <li>Menyerahkan Source Code setelah pelunasan 100% diterima.</li>
+    </ul>
+    <h3>Pasal 5.2 — Kewajiban Pihak Kedua (Klien)</h3>
+    <ul style="font-size: 10pt; line-height: 1.8;">
+        <li>Menyediakan konten, aset, dan informasi yang dibutuhkan dalam waktu yang wajar.</li>
+        <li>Memberikan feedback atau persetujuan atas hasil pekerjaan maksimal dalam 3 hari kerja.</li>
+        <li>Melakukan pembayaran sesuai jadwal yang telah disepakati.</li>
+        <li>Tidak mempekerjakan pihak lain untuk mengerjakan proyek yang sama selama perjanjian berlaku.</li>
+        <li>Menjaga kerahasiaan proses, metode, dan harga yang telah disepakati dengan Pihak Pertama.</li>
+    </ul>
+    <h3>Pasal 5.3 — Keterlambatan &amp; Force Majeure</h3>
+    <p class="prose">Keterlambatan akibat Force Majeure atau keterlambatan penyediaan aset oleh Pihak Kedua tidak termasuk dalam kewajiban Pihak Pertama. Pihak yang mengalami kondisi Force Majeure wajib memberitahu dalam 3x24 jam.</p>
+
+    <h2>BAB VI — REVISI &amp; CHANGE REQUEST</h2>
+    <h3>Pasal 6.1 — Ketentuan Revisi</h3>
+    <table class="bordered">
+        <tr><th width="40%">Ketentuan Revisi</th><th>Keterangan</th></tr>
+        <tr><td>Jumlah Revisi</td><td>Maksimal 5 (lima) kali revisi</td></tr>
+        <tr><td>Waktu Pengajuan Revisi</td><td>Maksimal 7 hari setelah Deliverable diterima</td></tr>
+        <tr><td>Cakupan Revisi</td><td>Perubahan dalam Scope of Work yang telah disepakati</td></tr>
+        <tr><td>Di Luar Cakupan</td><td>Dikategorikan sebagai Change Request — dikenakan biaya tambahan</td></tr>
+    </table>
+    <h3>Pasal 6.2 — Change Request</h3>
+    <p class="prose">Permintaan perubahan di luar Scope of Work dikategorikan sebagai Change Request. Pihak Pertama memberikan estimasi biaya dalam 3 hari kerja. Pengerjaan dimulai setelah pembayaran DP Change Request diterima.</p>
+
+    <h2>BAB VII — HAK KEPEMILIKAN &amp; SERAH TERIMA</h2>
+    <h3>Pasal 7.1 — Hak Kepemilikan</h3>
+    <ul style="font-size: 10pt; line-height: 1.8;">
+        <li>Selama proses pengerjaan, Source Code dan semua Deliverable merupakan aset Pihak Pertama.</li>
+        <li>Hak kepemilikan penuh atas Source Code berpindah ke Pihak Kedua setelah pelunasan 100% diterima.</li>
+        <li>Pihak Pertama berhak menampilkan Proyek sebagai portofolio kecuali ada perjanjian kerahasiaan khusus.</li>
+    </ul>
+    <h3>Pasal 7.2 — Serah Terima Proyek</h3>
+    <ul style="font-size: 10pt; line-height: 1.8;">
+        <li>Serah terima Proyek dilakukan setelah Deliverable selesai dan disetujui Pihak Kedua.</li>
+        <li>Source Code diserahkan dalam bentuk repository atau file ZIP setelah pelunasan diterima.</li>
+        <li>Pihak Kedua wajib menandatangani Berita Acara Serah Terima (BAST) sebagai tanda penerimaan resmi.</li>
+        <li>Setelah BAST ditandatangani, Proyek dinyatakan selesai dan masa garansi bug mulai berjalan.</li>
+    </ul>
+
+    <h2>BAB VIII — GARANSI &amp; MAINTENANCE</h2>
+    <h3>Pasal 8.1 — Garansi Bug</h3>
+    <table class="bordered">
+        <tr><th width="40%">Ketentuan</th><th>Detail</th></tr>
+        <tr><td>Masa Garansi</td><td>2 (dua) bulan sejak tanggal BAST ditandatangani</td></tr>
+        <tr><td>Yang Ditanggung</td><td>Bug / error yang berasal dari hasil pengerjaan Pihak Pertama</td></tr>
+        <tr><td>Yang Tidak Ditanggung</td><td>Error akibat modifikasi oleh Pihak Kedua atau pihak lain</td></tr>
+        <tr><td>Biaya Garansi</td><td>Gratis untuk bug dalam cakupan garansi</td></tr>
+    </table>
+    <h3>Pasal 8.2 — Modifikasi oleh Pihak Kedua</h3>
+    <p class="prose">Apabila Pihak Kedua atau pihak lain melakukan modifikasi pada Deliverable, garansi bug otomatis gugur untuk bagian yang dimodifikasi. Biaya perbaikan disepakati secara custom sesuai kompleksitas masalah.</p>
+
+    <h2>BAB IX — KERAHASIAAN (NDA)</h2>
+    <h3>Pasal 9.1 — Kewajiban Kerahasiaan</h3>
+    <ul style="font-size: 10pt; line-height: 1.8;">
+        <li><strong>Pihak Pertama:</strong> menjaga kerahasiaan data bisnis, data pelanggan, strategi, dan informasi teknis Pihak Kedua.</li>
+        <li><strong>Pihak Kedua:</strong> menjaga kerahasiaan metode kerja, harga, proses internal, dan informasi bisnis Pihak Pertama.</li>
+        <li>Para Pihak tidak diperkenankan mengungkapkan informasi rahasia kepada pihak ketiga tanpa persetujuan tertulis.</li>
+    </ul>
+    <h3>Pasal 9.2 — Perlindungan Data Pribadi</h3>
+    <p class="prose">Sesuai UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi, data yang diterima hanya digunakan untuk keperluan Proyek. Kewajiban ini tetap berlaku setelah perjanjian berakhir.</p>
+
+    <h2>BAB X — PEMBATALAN KONTRAK</h2>
+    <h3>Pasal 10.1 — Pembatalan oleh Pihak Kedua (Klien)</h3>
+    <p class="prose">Apabila Pihak Kedua membatalkan kontrak setelah pengerjaan dimulai, Down Payment (DP) dipotong <strong>15% (lima belas persen)</strong> sebagai biaya administrasi dan cancellation fee. Sisa DP dikembalikan dalam 14 hari kerja.</p>
+    <h3>Pasal 10.2 — Pembatalan oleh Pihak Pertama</h3>
+    <p class="prose">Apabila Pihak Pertama membatalkan kontrak, Down Payment dikembalikan <strong>100% (seratus persen)</strong> dalam 14 hari kerja. Pihak Pertama wajib memberikan pemberitahuan tertulis minimal 7 hari sebelum pembatalan.</p>
+
+    <h2>BAB XI — PENYELESAIAN SENGKETA</h2>
+    <h3>Pasal 11.1 — Musyawarah &amp; Mediasi</h3>
+    <p class="prose">Para Pihak mengutamakan penyelesaian secara musyawarah mufakat dalam 30 hari kalender. Apabila tidak tercapai kesepakatan, Para Pihak menempuh jalur mediasi dengan biaya ditanggung bersama secara proporsional.</p>
+    <h3>Pasal 11.2 — Jalur Hukum</h3>
+    <p class="prose">Apabila mediasi tidak berhasil, Para Pihak menyelesaikan perselisihan melalui jalur hukum sesuai ketentuan yang berlaku di Republik Indonesia.</p>
+
+    <div style="page-break-after: always;"></div>
+
     <h2>LAMPIRAN A — SCOPE OF WORK</h2>
     <table class="bordered">
         <thead>
@@ -254,5 +338,60 @@
             @endif
         </tbody>
     </table>
+
+    <div style="page-break-after: always;"></div>
+
+    <h2>LAMPIRAN B — RINCIAN BIAYA DETAIL</h2>
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th width="5%">No</th>
+                <th>Item</th>
+                <th>Keterangan</th>
+                <th width="25%" class="text-right">Harga (Rp)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($contract->quotation && $contract->quotation->items->count() > 0)
+                @foreach($contract->quotation->items as $index => $item)
+                    <tr>
+                        <td class="text-center">{{ $index + 1 }}</td>
+                        <td class="font-bold">{{ $item->name }}</td>
+                        <td style="font-size: 9pt; color: #57534e;">{{ $item->description }}</td>
+                        <td class="text-right">{{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <th colspan="3" class="text-right">SUBTOTAL</th>
+                    <th class="text-right">Rp {{ number_format($contract->quotation->subtotal ?? $contract->quotation->total, 0, ',', '.') }}</th>
+                </tr>
+                @if(($contract->quotation->discount ?? 0) > 0)
+                    <tr>
+                        <td colspan="3" class="text-right">Diskon</td>
+                        <td class="text-right">( {{ number_format($contract->quotation->discount, 0, ',', '.') }} )</td>
+                    </tr>
+                @endif
+            @endif
+            <tr>
+                <th colspan="3" class="text-right">TOTAL KESELURUHAN</th>
+                <th class="text-right" style="background-color: #fef3c7;">Rp {{ number_format($contract->value, 0, ',', '.') }}</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 style="margin-top: 1cm;">Rekening Pembayaran</h3>
+    <table class="bordered" style="width: 60%;">
+        <tr><th width="40%">Bank</th><td>{{ data_get($workspace->settings, 'bank_name', '—') }}</td></tr>
+        <tr><th>Nama Rekening</th><td>{{ $workspace->name }}</td></tr>
+        <tr><th>Nomor Rekening</th><td>{{ data_get($workspace->settings, 'bank_account_number', '—') }}</td></tr>
+        <tr><th>Atas Nama</th><td>{{ data_get($workspace->settings, 'bank_account_name', $workspace->name) }}</td></tr>
+    </table>
+    <p style="font-size: 9pt; font-style: italic; margin-top: 0.5cm;">
+        Harap konfirmasi setiap pembayaran kepada PIC Pihak Pertama via WhatsApp atau email dengan menyertakan bukti transfer.
+    </p>
+
+    <p style="text-align: center; font-size: 8pt; color: #78716c; margin-top: 1.5cm; border-top: 1px solid #e7e5e4; padding-top: 0.5cm;">
+        &copy; {{ now()->year }} {{ $workspace->name }} — Dokumen ini bersifat rahasia dan mengikat secara hukum
+    </p>
 @endsection
 
