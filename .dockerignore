@@ -12,6 +12,7 @@ docker-compose.yml
 docker/*
 !docker/nginx.conf
 !docker/supervisord.conf
+!docker/entrypoint.sh
 .gitignore
 .editorconfig
 README.md
