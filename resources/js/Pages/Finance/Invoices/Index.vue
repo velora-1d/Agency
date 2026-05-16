@@ -31,26 +31,26 @@
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div class="max-w-3xl">
             <p class="text-[11px] font-bold uppercase tracking-[0.28em] text-stone-400">Menu 16 / Tagihan</p>
-            <h2 class="mt-2 text-2xl font-semibold tracking-[-0.05em] text-stone-950">Tagihan workspace yang rapi: mudah dicek, mudah dibayar, dan mudah ditagih saat jatuh tempo mendekat.</h2>
+            <h2 class="mt-2 text-2xl font-semibold tracking-tighter text-stone-950">Tagihan workspace yang rapi: mudah dicek, mudah dibayar, dan mudah ditagih saat jatuh tempo mendekat.</h2>
             <p class="mt-2 text-sm leading-6 text-stone-500">
               Persetujuan, pengiriman, pengingat, dan konfirmasi pembayaran tetap satu alur, tapi ringkasan di atas sekarang lebih hemat ruang.
             </p>
           </div>
 
-          <div class="grid min-w-full gap-3 sm:min-w-[22rem] sm:grid-cols-4 xl:w-[34rem]">
-            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3">
+          <div class="grid min-w-full gap-3 sm:min-w-88 sm:grid-cols-4 xl:w-136">
+            <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3">
               <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Tertunggak</p>
               <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.outstanding_total_label }}</p>
             </div>
-            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3">
+            <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3">
               <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Total</p>
               <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.total_invoices }}</p>
             </div>
-            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3">
+            <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3">
               <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Terkirim</p>
               <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.sent_invoices }}</p>
             </div>
-            <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3">
+            <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3">
               <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Lunas</p>
               <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.paid_invoices }}</p>
             </div>
@@ -58,26 +58,26 @@
         </div>
 
         <div class="mt-4 grid gap-3 md:grid-cols-4">
-          <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5">
+          <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3.5">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Telat Bayar</p>
             <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.overdue_invoices }}</p>
           </div>
-          <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5">
+          <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3.5">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Menunggu Persetujuan</p>
             <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.pending_internal_approval }}</p>
           </div>
-          <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5">
+          <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3.5">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Proforma</p>
             <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.proforma_invoices }}</p>
           </div>
-          <div class="rounded-[1rem] border border-stone-200 bg-stone-50 p-3.5">
+          <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3.5">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Berulang</p>
             <p class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">{{ invoiceSummary.recurring_invoices }}</p>
           </div>
         </div>
       </section>
 
-      <section class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+      <section class="rounded-4xl border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
         <div class="filter-panel-head mb-5">
           <div>
             <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Filter</p>
@@ -155,7 +155,7 @@
       </section>
 
       <section class="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-        <article class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+        <article class="rounded-4xl border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
           <div class="flex items-center justify-between gap-3 border-b border-stone-200 pb-5">
             <div>
               <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Daftar Tagihan</p>
@@ -244,7 +244,7 @@
           </div>
         </article>
 
-        <article class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+        <article class="rounded-4xl border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
           <template v-if="selectedInvoice">
             <div class="flex flex-wrap items-start justify-between gap-4 border-b border-stone-200 pb-5">
               <div>
@@ -291,7 +291,7 @@
                   <div class="flex flex-wrap items-start justify-between gap-4">
                     <div>
                       <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/70">{{ brand.workspace_name }}</p>
-                      <h3 class="mt-3 text-3xl font-semibold tracking-[-0.05em]">Pratinjau Tagihan Bermerek</h3>
+                      <h3 class="mt-3 text-3xl font-semibold tracking-tighter">Pratinjau Tagihan Bermerek</h3>
                       <p class="mt-2 max-w-lg text-sm leading-6 text-white/80">
                         Templat ringkas untuk keuangan dan klien: nomor tagihan, jatuh tempo, rincian item, tautan pembayaran, dan catatan persetujuan.
                       </p>
@@ -340,7 +340,7 @@
                     </div>
                   </div>
 
-                  <div class="w-full max-w-xs rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
+                  <div class="w-full max-w-xs rounded-3xl border border-stone-200 bg-stone-50 p-4">
                     <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-400">Ringkasan</p>
                     <div class="mt-4 space-y-3">
                       <div class="flex items-center justify-between gap-3 text-sm text-stone-600">
@@ -560,7 +560,7 @@
 
     <Transition name="modal">
       <div v-if="showInvoiceModal" class="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/60 px-4 py-8 backdrop-blur-sm">
-        <div class="max-h-[92vh] w-full max-w-6xl overflow-y-auto rounded-[2rem] border border-white/20 bg-white p-6 shadow-2xl">
+        <div class="max-h-[92vh] w-full max-w-6xl overflow-y-auto rounded-4xl border border-white/20 bg-white p-6 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
               <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Formulir Tagihan</p>
@@ -763,7 +763,7 @@
 
     <Transition name="modal">
       <div v-if="showPaymentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/60 px-4 py-8 backdrop-blur-sm">
-        <div class="w-full max-w-xl rounded-[2rem] border border-white/20 bg-white p-6 shadow-2xl">
+        <div class="w-full max-w-xl rounded-4xl border border-white/20 bg-white p-6 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
               <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Konfirmasi Pembayaran</p>
@@ -1011,12 +1011,14 @@ onMounted(() => {
   const query = new URLSearchParams(window.location.search)
   const openModal = query.get('open_modal')
   const clientId = query.get('client_id')
+  const projectId = query.get('project_id')
+  const fromContract = query.get('from_contract')
 
   if (openModal === 'invoice') {
     openInvoiceModal()
-    if (clientId) {
-      invoiceForm.client_id = clientId
-    }
+    if (clientId) invoiceForm.client_id = clientId
+    if (projectId) invoiceForm.project_id = projectId
+    if (fromContract) invoiceForm.contract_id = fromContract
   }
 })
 

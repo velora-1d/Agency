@@ -25,6 +25,25 @@
 
         <button
           type="button"
+          @click="sendWA"
+          class="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700"
+        >
+          <MessageCircle class="h-4 w-4" />
+          <span>Kirim ke WA</span>
+        </button>
+
+        <button
+          v-if="contract.status === 'signed'"
+          type="button"
+          @click="createInvoiceFromContract"
+          class="inline-flex items-center gap-2 rounded-2xl bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-amber-600"
+        >
+          <Receipt class="h-4 w-4" />
+          <span>Buat Invoice</span>
+        </button>
+
+        <button
+          type="button"
           @click="downloadPdf"
           class="inline-flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition-all hover:border-stone-300 hover:text-stone-950"
         >
@@ -46,7 +65,7 @@
     <ProjectLayout :workspace="workspace">
       <div class="space-y-6">
         <section class="grid gap-6 xl:grid-cols-[1fr_380px]">
-          <article class="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+          <article class="rounded-4xl border border-stone-200 bg-white p-8 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
           <div class="flex flex-wrap items-start justify-between gap-6">
             <div class="space-y-4">
               <div class="flex flex-wrap items-center gap-2">
@@ -68,17 +87,17 @@
           </div>
 
           <div class="mt-8 grid gap-4 md:grid-cols-3">
-            <div class="rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
+            <div class="rounded-3xl border border-stone-200 bg-stone-50 p-4">
               <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Klien</p>
               <p class="mt-3 text-sm font-semibold text-stone-950">{{ contract.client?.name || 'Belum ada klien' }}</p>
               <p class="mt-2 text-xs text-stone-500">Pihak utama yang terhubung ke dokumen ini.</p>
             </div>
-            <div class="rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
+            <div class="rounded-3xl border border-stone-200 bg-stone-50 p-4">
               <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Project Terkait</p>
               <p class="mt-3 text-sm font-semibold text-stone-950">{{ contract.project?.name || 'Belum terhubung ke project' }}</p>
               <p class="mt-2 text-xs text-stone-500">Dipakai untuk sinkron status kerja dan milestone terkait.</p>
             </div>
-            <div class="rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4">
+            <div class="rounded-3xl border border-stone-200 bg-stone-50 p-4">
               <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Status Tanda Tangan</p>
               <p class="mt-3 text-sm font-semibold text-stone-950">{{ contract.signed_at ? 'Sudah Ditandatangani' : 'Menunggu Tanda Tangan' }}</p>
               <p class="mt-2 text-xs text-stone-500">{{ contract.signed_at_label || 'Belum ada waktu tanda tangan tercatat.' }}</p>
@@ -87,7 +106,7 @@
 
           <div class="mt-10 border-t border-stone-100 pt-8">
             <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Dokumen Kontrak (A4 PDF)</p>
-            <div class="mt-4 overflow-hidden rounded-[2rem] border border-stone-200 bg-stone-100 shadow-inner">
+            <div class="mt-4 overflow-hidden rounded-4xl border border-stone-200 bg-stone-100 shadow-inner">
               <iframe 
                 :src="previewPdfUrl" 
                 class="h-[800px] w-full border-none"
@@ -160,7 +179,7 @@
         </article>
 
           <aside class="space-y-6">
-            <div class="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+            <div class="rounded-4xl border border-stone-200 bg-white p-6 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
               <div class="flex items-start justify-between gap-3">
                 <div>
                   <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Ringkasan Siklus</p>
@@ -204,7 +223,7 @@
               </div>
             </div>
 
-            <div class="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+            <div class="rounded-4xl border border-stone-200 bg-white p-6 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
               <div class="flex items-start justify-between gap-3">
                 <div>
                   <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Riwayat Aktivitas</p>
@@ -243,7 +262,7 @@
 
       <Transition name="modal">
       <div v-if="showUploadModal" class="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/60 px-4 py-8 backdrop-blur-sm">
-        <div class="w-full max-w-lg rounded-[2rem] border border-white/20 bg-white p-8 shadow-2xl">
+        <div class="w-full max-w-lg rounded-4xl border border-white/20 bg-white p-8 shadow-2xl">
           <div class="flex items-start justify-between gap-4">
             <div>
               <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Upload Dokumen</p>
@@ -308,7 +327,8 @@ import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { 
   ArrowLeft, Send, FileUp, FileText, CheckCircle2, 
-  Calendar, Clock, Bell, X, ArrowUpRight, LinkIcon, FileDown
+  Calendar, Clock, Bell, X, ArrowUpRight, LinkIcon, FileDown,
+  MessageCircle, Receipt
 } from 'lucide-vue-next'
 import WorkspaceLayout from '../../../Layouts/WorkspaceLayout.vue'
 import ProjectLayout from '../../../Layouts/ProjectLayout.vue'
@@ -333,6 +353,23 @@ function downloadPdf() {
 
 function goBack() {
   router.get(contractsBaseUrl)
+}
+
+function sendWA() {
+  if (!confirm('Kirim kontrak ini ke klien via WhatsApp?')) return
+  router.post(`${contractsBaseUrl}/${encodeURIComponent(props.contract.id)}/send-wa`, {}, {
+    preserveScroll: true,
+  })
+}
+
+function createInvoiceFromContract() {
+  const invoicesBaseUrl = `${workspaceBaseUrl}/finance/invoices`
+  router.get(invoicesBaseUrl, {
+    from_contract: props.contract.id,
+    client_id: props.contract.client_id,
+    project_id: props.contract.project_id,
+    open_modal: 'invoice',
+  })
 }
 
 function copyEsignUrl() {

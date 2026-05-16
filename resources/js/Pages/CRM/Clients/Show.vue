@@ -20,19 +20,19 @@
       <section class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-[1.6rem] border border-stone-200 bg-white p-5 shadow-sm">
           <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Total Proyek</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ client.counts.projects }}</p>
+          <p class="mt-3 text-3xl font-semibold tracking-tighter text-stone-950">{{ client.counts.projects }}</p>
         </div>
         <div class="rounded-[1.6rem] border border-stone-200 bg-white p-5 shadow-sm">
           <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Total Tagihan</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ client.counts.invoices }}</p>
+          <p class="mt-3 text-3xl font-semibold tracking-tighter text-stone-950">{{ client.counts.invoices }}</p>
         </div>
         <div class="rounded-[1.6rem] border border-stone-200 bg-white p-5 shadow-sm">
           <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Total Kontrak</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ client.counts.contracts }}</p>
+          <p class="mt-3 text-3xl font-semibold tracking-tighter text-stone-950">{{ client.counts.contracts }}</p>
         </div>
         <div class="rounded-[1.6rem] border border-stone-200 bg-white p-5 shadow-sm">
           <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Tiket Dukungan</p>
-          <p class="mt-3 text-3xl font-semibold tracking-[-0.05em] text-stone-950">{{ client.counts.tickets }}</p>
+          <p class="mt-3 text-3xl font-semibold tracking-tighter text-stone-950">{{ client.counts.tickets }}</p>
         </div>
       </section>
 
@@ -142,7 +142,7 @@
 
                 <!-- Tab 3: Infrastruktur -->
                 <div v-else-if="activeTab === 'digital_services'" class="space-y-6">
-                    <div v-for="site in tabs.digital_services" :key="site.id" class="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm">
+                    <div v-for="site in tabs.digital_services" :key="site.id" class="rounded-4xl border border-stone-200 bg-white p-6 shadow-sm">
                         <div class="flex items-start justify-between gap-4">
                         <div class="space-y-1">
                             <h4 class="text-lg font-bold text-stone-950">{{ site.name }}</h4>
@@ -197,22 +197,33 @@
                                     <th class="px-4 py-3">Nomor Tagihan</th>
                                     <th class="px-4 py-3">Jatuh Tempo</th>
                                     <th class="px-4 py-3">Total</th>
-                                    <th class="px-4 py-3 text-right">Status Pakasir</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-stone-100">
-                                <tr v-for="invoice in tabs.invoices" :key="invoice.id" class="hover:bg-stone-50 transition-colors">
+                                <tr v-for="invoice in tabs.invoices" :key="invoice.id" class="hover:bg-stone-50 transition-colors group/row">
                                     <td class="px-4 py-4 font-bold text-stone-900">{{ invoice.number }}</td>
                                     <td class="px-4 py-4 text-stone-600">{{ invoice.due_date_label || '-' }}</td>
                                     <td class="px-4 py-4 font-bold text-stone-900">{{ invoice.total_label }}</td>
-                                    <td class="px-4 py-4 text-right">
-                                    <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em]" :class="invoiceStatusClass(invoice.status)">
+                                    <td class="px-4 py-4">
+                                      <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em]" :class="invoiceStatusClass(invoice.status)">
                                         {{ translateInvoiceStatus(invoice.status) }}
-                                    </span>
+                                      </span>
+                                    </td>
+                                    <td class="px-4 py-4 text-right">
+                                      <div class="flex items-center justify-end gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                        <button @click="sendInvoiceWA(invoice)" class="inline-flex items-center gap-1 rounded-xl bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 hover:bg-emerald-100 transition">
+                                          <Send class="h-3 w-3" /> WA
+                                        </button>
+                                        <a :href="`${invoicesBaseUrl}/${invoice.id}`" class="inline-flex items-center gap-1 rounded-xl bg-stone-100 px-3 py-1.5 text-xs font-bold text-stone-600 hover:bg-stone-200 transition">
+                                          <ExternalLink class="h-3 w-3" /> Detail
+                                        </a>
+                                      </div>
                                     </td>
                                 </tr>
                                 <tr v-if="tabs.invoices.length === 0">
-                                    <td colspan="4" class="px-4 py-14 text-center text-stone-500 italic">Belum ada riwayat tagihan.</td>
+                                    <td colspan="5" class="px-4 py-14 text-center text-stone-500 italic">Belum ada riwayat tagihan.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -417,13 +428,12 @@ const showContractModal = ref(false)
 const editingContractData = ref(null)
 
 const tabOptions = computed(() => [
-  { id: 'overview', label: 'Ringkasan' },
+  { id: 'overview', label: 'Info' },
   { id: 'projects', label: `Proyek (${props.tabs.projects.length})` },
-  { id: 'digital_services', label: `Infrastruktur (${props.tabs.digital_services.length})` },
-  { id: 'invoices', label: `Keuangan (${props.tabs.invoices.length})` },
+  { id: 'invoices', label: `Invoice (${props.tabs.invoices.length})` },
   { id: 'contracts', label: `Kontrak (${props.tabs.contracts.length})` },
   { id: 'tickets', label: `Tiket (${props.tabs.tickets?.length || 0})` },
-  { id: 'activity', label: `Aktivitas (${props.activities.length})` },
+  { id: 'activity', label: 'Aktivitas' },
 ])
 
 const activityForm = useForm({
@@ -508,6 +518,13 @@ function sendContractWA(contract) {
 
 function downloadContractPdf(contract) {
     window.open(`${contractUrl(contract.id)}?print=true`, '_blank')
+}
+
+function sendInvoiceWA(invoice) {
+    if (!confirm(`Kirim tagihan ${invoice.number} ke klien via WhatsApp?`)) return
+    router.post(`${invoicesBaseUrl}/${invoice.id}/send-wa`, {}, {
+        preserveScroll: true,
+    })
 }
 
 function activityBadgeClass(action) {

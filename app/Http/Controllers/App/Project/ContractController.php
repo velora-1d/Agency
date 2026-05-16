@@ -135,7 +135,8 @@ class ContractController extends Controller
 
         $message = "Halo *{$client->pic_name}*,\n\nBerikut draf kontrak untuk proyek *{$contract->title}*.\nSilakan tinjau dan informasikan jika ada perubahan.\n\nSalam,\n*{$workspace->name}*";
         
-        $success = $wa->sendMessage('default', $client->phone, $message);
+        $waInstance = data_get($workspace->settings, 'wa_instance', 'default');
+        $success = $wa->sendMessage($waInstance, $client->phone, $message);
 
         if ($success) {
             $contract->update(['status' => 'sent']);
