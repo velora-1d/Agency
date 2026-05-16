@@ -6,6 +6,8 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=3">
+
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
         @inertiaHead
