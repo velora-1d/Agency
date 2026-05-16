@@ -16,7 +16,7 @@ class CreateUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-user {email : Alamat email pengguna} {--password= : Kata sandi pengguna} {--name= : Nama lengkap pengguna} {--workspace= : Slug workspace (opsional, all untuk semua)} {--role=owner : Slug role di workspace}';
+    protected $signature = 'app:create-user {email : Alamat email pengguna} {--password= : Kata sandi pengguna} {--pin= : PIN 6 angka pengaman (opsional)} {--name= : Nama lengkap pengguna} {--workspace= : Slug workspace (opsional, all untuk semua)} {--role=owner : Slug role di workspace}';
 
     /**
      * The console command description.
@@ -32,6 +32,7 @@ class CreateUserCommand extends Command
     {
         $email = $this->argument('email');
         $password = $this->option('password') ?: $this->secret('Masukkan kata sandi untuk ' . $email);
+        $pin = $this->option('pin');
         $name = $this->option('name') ?: $this->ask('Masukkan nama lengkap', 'Administrator');
         $workspaceSlug = $this->option('workspace');
         $roleSlug = $this->option('role');
@@ -46,10 +47,25 @@ class CreateUserCommand extends Command
             [
                 'name' => $name,
                 'password' => Hash::make($password),
+                'pin' => $pin ? Hash::make($pin) : null,
                 'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );
+
+        // Jika user sudah ada, perbarui password dan pin jika diberikan
+        if (! $user->wasRecentlyCreated) {
+            $updates = [];
+            if ($this->option('password')) {
+                $updates['password'] = Hash::make($password);
+            }
+            if ($pin) {
+                $updates['pin'] = Hash::make($pin);
+            }
+            if (! empty($updates)) {
+                $user->update($updates);
+            }
+        }
 
         $this->info("Akun {$email} berhasil dipastikan/dibuat.");
 
