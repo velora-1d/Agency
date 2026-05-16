@@ -27,6 +27,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy configuration files
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Copy application files
 COPY . .
@@ -40,5 +42,5 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 # Expose port 80
 EXPOSE 80
 
-# Start Supervisor
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Start via entrypoint (runs migrate then supervisord)
+ENTRYPOINT ["/entrypoint.sh"]
