@@ -16,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        if (request()->header('X-Forwarded-Proto') === 'https' || env('FORCE_HTTPS', true)) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         Event::listen(LeadCreated::class, [TriggerN8nAutomation::class, 'handle']);
         Event::listen(InvoicePaid::class, [TriggerN8nAutomation::class, 'handle']);
         Event::listen(SupportTicketCreated::class, [TriggerN8nAutomation::class, 'handle']);
