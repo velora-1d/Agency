@@ -3,6 +3,7 @@
 namespace App\Services\Finance;
 
 use App\Integrations\Pakasir\PakasirService;
+use App\Jobs\Finance\GenerateInvoicePdf;
 use App\Models\ActivityFeed;
 use App\Models\Client;
 use App\Models\Contract;
@@ -55,6 +56,7 @@ class InvoiceService
 
             $invoice = $invoice->refresh()->load($this->detailRelations());
             $this->syncPakasirLink($invoice);
+            GenerateInvoicePdf::dispatch($invoice)->afterCommit();
 
             return $invoice->refresh()->load($this->detailRelations());
         });
@@ -93,6 +95,7 @@ class InvoiceService
 
             $invoice = $invoice->refresh()->load($this->detailRelations());
             $this->syncPakasirLink($invoice);
+            GenerateInvoicePdf::dispatch($invoice)->afterCommit();
 
             return $invoice->refresh()->load($this->detailRelations());
         });
@@ -128,6 +131,7 @@ class InvoiceService
         return DB::transaction(function () use ($workspace, $invoice, $status): Invoice {
             $this->applyStatusSideEffects($invoice, $status);
             $this->logActivity($workspace, $invoice, sprintf('Status invoice %s diubah ke %s.', $invoice->number, $status), 'status', 'sky');
+            GenerateInvoicePdf::dispatch($invoice)->afterCommit();
 
             return $invoice->refresh()->load($this->detailRelations());
         });
@@ -191,6 +195,7 @@ class InvoiceService
             ]);
 
             $this->logActivity($workspace, $invoice, sprintf('Pembayaran untuk invoice %s dikonfirmasi.', $invoice->number), 'payment', 'emerald');
+            GenerateInvoicePdf::dispatch($invoice)->afterCommit();
 
             return $invoice->refresh()->load($this->detailRelations());
         });

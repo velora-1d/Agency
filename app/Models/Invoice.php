@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Invoice extends Model
 {
@@ -37,6 +38,7 @@ class Invoice extends Model
         'payment_method',
         'pakasir_order_id',
         'pakasir_payment_url',
+        'pdf_path',
         'internal_approved_at',
         'internal_approved_by',
         'sent_at',
@@ -58,6 +60,15 @@ class Invoice extends Model
         'sent_at' => 'datetime',
         'paid_at' => 'datetime',
     ];
+
+    protected $appends = [
+        'pdf_url',
+    ];
+
+    public function getPdfUrlAttribute(): ?string
+    {
+        return $this->pdf_path ? Storage::disk('public')->url($this->pdf_path) : null;
+    }
 
     protected $dispatchesEvents = [
         'updated' => \App\Events\InvoicePaid::class,

@@ -9,8 +9,10 @@ use App\Models\Project;
 use App\Models\Quotation;
 use App\Models\User;
 use App\Models\Workspace;
+use App\Jobs\Finance\GenerateInvoicePdf;
 use App\Support\Tenancy\WorkspaceContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
@@ -108,6 +110,7 @@ class InvoicePageTest extends TestCase
     public function test_invoice_can_be_created_updated_approved_sent_paid_and_deleted(): void
     {
         $this->seed();
+        Queue::fake();
 
         [$owner, $workspace] = $this->invoiceContext();
         $client = $this->createClient($workspace, 'PT Collection Studio');
@@ -136,6 +139,7 @@ class InvoicePageTest extends TestCase
         $create->assertRedirect();
 
         $invoice = Invoice::query()->where('quotation_id', $quotation->getKey())->firstOrFail();
+        Queue::assertPushed(GenerateInvoicePdf::class, fn ($job) => $job->invoice->id === $invoice->id);
 
         $this->assertDatabaseHas('invoices', [
             'id' => $invoice->getKey(),
@@ -172,6 +176,7 @@ class InvoicePageTest extends TestCase
         $update->assertRedirect();
 
         $invoice = $invoice->fresh();
+        Queue::assertPushed(GenerateInvoicePdf::class, fn ($job) => $job->invoice->id === $invoice->id);
 
         $this->assertSame('Updated invoice notes.', $invoice->notes);
         $this->assertSame('15000.00', $invoice->discount_amount);
@@ -201,6 +206,7 @@ class InvoicePageTest extends TestCase
         $send->assertRedirect();
 
         $invoice = $invoice->fresh();
+        Queue::assertPushed(GenerateInvoicePdf::class, fn ($job) => $job->invoice->id === $invoice->id);
         $this->assertSame('sent', $invoice->status);
         $this->assertNotNull($invoice->sent_at);
 
@@ -219,6 +225,7 @@ class InvoicePageTest extends TestCase
         $payment->assertRedirect();
 
         $invoice = $invoice->fresh();
+        Queue::assertPushed(GenerateInvoicePdf::class, fn ($job) => $job->invoice->id === $invoice->id);
         $this->assertSame('paid', $invoice->status);
         $this->assertSame($invoice->total, $invoice->paid_amount);
         $this->assertNotNull($invoice->paid_at);

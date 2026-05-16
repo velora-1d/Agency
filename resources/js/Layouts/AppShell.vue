@@ -40,7 +40,7 @@
                 leave-from-class="transform scale-100 opacity-100 translate-y-0"
                 leave-to-class="transform scale-95 opacity-0 -translate-y-2"
             >
-                <div v-if="showWorkspaceDropdown" class="absolute left-0 top-full mt-2 w-full origin-top rounded-2xl border border-stone-800 bg-[#2a2420] p-2 shadow-2xl z-[100]">
+                <div v-if="showWorkspaceDropdown" class="absolute left-0 top-full z-100 mt-2 w-full origin-top rounded-2xl border border-stone-800 bg-[#2a2420] p-2 shadow-2xl">
                     <div class="px-3 py-2 border-b border-white/5 mb-1">
                         <p class="text-[9px] font-bold uppercase tracking-widest text-stone-500">Pindah Kantor</p>
                     </div>
@@ -66,8 +66,8 @@
             v-for="group in navigation"
             :key="group.section"
             :class="group.layout === 'tabs'
-              ? 'rounded-[1.4rem] border border-white/8 bg-white/[0.04] p-2.5'
-              : 'rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-2.5'"
+              ? 'rounded-[1.4rem] border border-white/8 bg-white/4 p-2.5'
+              : 'rounded-[1.4rem] border border-white/8 bg-white/3 p-2.5'"
           >
             <p class="px-2 py-1 text-[10px] font-medium uppercase tracking-[0.3em] text-stone-500">
               {{ group.section }}
@@ -81,7 +81,7 @@
                 :class="[
                   'transition-all duration-300 active:scale-[0.98]',
                   group.layout === 'tabs'
-                    ? 'flex w-full items-center justify-between gap-3 rounded-[1rem] px-4 py-3 text-sm'
+                    ? 'flex w-full items-center justify-between gap-3 rounded-2xl px-4 py-3 text-sm'
                     : 'flex items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-sm',
                   group.layout === 'tabs'
                     ? (item.active ? 'bg-amber-200 text-stone-950 shadow-lg shadow-amber-900/20' : 'text-stone-400 hover:bg-white/5 hover:text-stone-100')

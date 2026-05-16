@@ -9,7 +9,9 @@ storage/framework/views/*.php
 bootstrap/cache/*.php
 Dockerfile
 docker-compose.yml
-docker
+docker/*
+!docker/nginx.conf
+!docker/supervisord.conf
 .gitignore
 .editorconfig
 README.md

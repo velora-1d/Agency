@@ -4,8 +4,10 @@ namespace App\Services\Project;
 
 use App\Models\ActivityFeed;
 use App\Models\Contract;
+use App\Models\ContractTemplate;
 use App\Models\Workspace;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -17,6 +19,7 @@ class ContractService
             'workspace_id' => $workspace->getKey(),
             'client_id' => $data['client_id'] ?? null,
             'project_id' => $data['project_id'] ?? null,
+            'quotation_id' => $data['quotation_id'] ?? null,
             'title' => $data['title'],
             'status' => 'draft',
             'content' => $data['content'] ?? null,
@@ -29,6 +32,25 @@ class ContractService
         ]);
 
         $this->logActivity($workspace, $contract, sprintf('Kontrak %s berhasil dibuat sebagai Draft.', $contract->title), 'create', 'emerald');
+
+        return $contract;
+    }
+
+    public function createFromTemplate(Workspace $workspace, ContractTemplate $template, array $data): Contract
+    {
+        $contract = $this->create($workspace, $data);
+        
+        $contract->load(['client', 'project', 'quotation.items']);
+        
+        $renderedContent = Blade::render($template->content, [
+            'contract' => $contract,
+            'workspace' => $workspace,
+            'client' => $contract->client,
+            'project' => $contract->project,
+            'quotation' => $contract->quotation,
+        ]);
+
+        $contract->updateQuietly(['content' => $renderedContent]);
 
         return $contract;
     }

@@ -107,7 +107,7 @@
         <article
           v-for="metric in visibleMetrics"
           :key="metric.key"
-          class="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-[0_18px_55px_rgba(77,58,35,0.06)] transition-all duration-300 hover:shadow-[0_25px_70px_rgba(77,58,35,0.12)] hover:-translate-y-1"
+          class="rounded-4xl border border-stone-200 bg-white p-6 shadow-[0_18px_55px_rgba(77,58,35,0.06)] transition-all duration-300 hover:shadow-[0_25px_70px_rgba(77,58,35,0.12)] hover:-translate-y-1"
         >
           <div class="flex items-start justify-between gap-3">
             <div>
@@ -120,7 +120,7 @@
           </div>
 
           <div class="mt-6 flex items-center justify-between gap-3">
-            <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em]" :class="trendClass(metric.trend.tone)">
+            <span class="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest" :class="trendClass(metric.trend.tone)">
               {{ metric.trend.value }}
             </span>
             <span class="text-right text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">{{ trendWord(metric.trend.tone) }}</span>
@@ -208,7 +208,7 @@
             </div>
           </div>
 
-          <div v-else class="mt-10 rounded-[2rem] border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
+          <div v-else class="mt-10 rounded-4xl border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
             <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-stone-300 shadow-sm mb-4">
                 <Banknote class="h-6 w-6" />
             </div>
@@ -262,7 +262,7 @@
             </div>
           </div>
 
-          <div v-else class="mt-10 rounded-[2rem] border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
+          <div v-else class="mt-10 rounded-4xl border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
             <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-stone-300 shadow-sm mb-4">
                 <Filter class="h-6 w-6" />
             </div>
@@ -307,7 +307,7 @@
             </div>
           </div>
 
-          <div v-else class="mt-10 rounded-[2rem] border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
+          <div v-else class="mt-10 rounded-4xl border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
             <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-stone-300 shadow-sm mb-4">
                 <Briefcase class="h-6 w-6" />
             </div>
@@ -374,7 +374,7 @@
             </div>
           </div>
 
-          <div v-else class="mt-10 rounded-[2rem] border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
+          <div v-else class="mt-10 rounded-4xl border-2 border-dashed border-stone-100 bg-stone-50/50 p-10 text-center">
             <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-stone-300 shadow-sm mb-4">
                 <Activity class="h-6 w-6" />
             </div>
@@ -489,7 +489,7 @@
               </div>
             </div>
 
-            <div class="rounded-[2rem] bg-stone-50 p-6 shadow-inner border border-stone-100">
+            <div class="rounded-4xl bg-stone-50 p-6 shadow-inner border border-stone-100">
               <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-stone-400">Acara: {{ selectedDate }}</p>
               <div class="mt-6 space-y-4">
                 <article
@@ -639,7 +639,7 @@
           <article
             v-for="activity in dashboard.recentActivity"
             :key="activity.id"
-            class="group grid gap-6 rounded-[2rem] border border-stone-100 bg-stone-50/30 p-6 transition-all hover:bg-white hover:border-amber-200 hover:shadow-lg lg:grid-cols-[80px_minmax(0,1fr)_220px]"
+            class="group grid gap-6 rounded-4xl border border-stone-100 bg-stone-50/30 p-6 transition-all hover:bg-white hover:border-amber-200 hover:shadow-lg lg:grid-cols-[80px_minmax(0,1fr)_220px]"
           >
             <div class="flex items-start">
               <div class="rounded-2xl p-4 shadow-sm group-hover:scale-110 transition-transform" :class="trendClass(activity.tone)">
@@ -662,7 +662,7 @@
           </article>
         </div>
 
-        <div v-else class="mt-10 rounded-[2rem] border-2 border-dashed border-stone-100 bg-stone-50/50 p-16 text-center">
+        <div v-else class="mt-10 rounded-4xl border-2 border-dashed border-stone-100 bg-stone-50/50 p-16 text-center">
           <p class="text-sm font-medium text-stone-500">Belum ada aktivitas operasional yang tercatat hari ini.</p>
         </div>
       </section>

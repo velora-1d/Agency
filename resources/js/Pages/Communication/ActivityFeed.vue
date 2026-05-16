@@ -31,7 +31,7 @@
               </p>
             </div>
 
-            <div class="compact-stat-grid min-w-full gap-3 sm:min-w-[22rem] sm:grid-cols-4 xl:w-[34rem]">
+            <div class="compact-stat-grid min-w-full gap-3 sm:min-w-88 sm:grid-cols-4 xl:w-136">
               <div class="compact-stat-card">
                 <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Tampil</p>
                 <p class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-stone-950">{{ visibleActivities }}</p>
@@ -118,7 +118,7 @@
         </section>
 
         <section class="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-          <article class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+          <article class="rounded-4xl border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
             <div class="flex items-center justify-between gap-3 border-b border-stone-200 pb-5">
               <div>
                 <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Arus Aktivitas</p>
@@ -169,7 +169,7 @@
             </div>
           </article>
 
-          <article class="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
+          <article class="rounded-4xl border border-stone-200 bg-white p-5 shadow-[0_20px_60px_rgba(28,25,23,0.06)]">
             <div class="border-b border-stone-200 pb-5">
               <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-stone-400">Sinyal Feed</p>
               <h2 class="mt-2 text-xl font-semibold tracking-[-0.04em] text-stone-950">Baca distribusi stream dan arahkan review ke titik yang paling padat.</h2>

@@ -34,6 +34,13 @@ class Contract extends Model
         'created_by',
     ];
 
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'signed_at' => 'datetime',
+        'value' => 'decimal:2',
+    ];
+
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
