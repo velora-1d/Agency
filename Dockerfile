@@ -1,4 +1,12 @@
-# build stage
+# Stage 1: Build frontend assets
+FROM node:22-alpine AS frontend
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Stage 2: Build PHP backend
 FROM php:8.4-fpm-alpine
 
 # Set working directory
@@ -32,12 +40,13 @@ RUN chmod +x /entrypoint.sh
 
 # Copy application files
 COPY . .
+COPY --from=frontend /app/public/build public/build
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache public/build
 
 # Expose port 80
 EXPOSE 80
