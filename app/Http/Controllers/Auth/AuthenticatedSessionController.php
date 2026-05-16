@@ -15,18 +15,7 @@ class AuthenticatedSessionController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
-            'demoAccounts' => [
-                [
-                    'label' => 'Owner Workspace',
-                    'email' => env('DEV_ADMIN_EMAIL', 'owner@kantordigital.test'),
-                ],
-                [
-                    'label' => 'Client Portal',
-                    'email' => env('DEV_CLIENT_EMAIL', 'client@kantordigital.test'),
-                ],
-            ],
-        ]);
+        return Inertia::render('Auth/Login');
     }
 
     public function store(Request $request): RedirectResponse

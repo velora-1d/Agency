@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             PipelineSeeder::class,
+            OfficialAccountsSeeder::class,
         ]);
 
         if ($this->command?->getOutput() !== null && (app()->isLocal() || app()->environment('testing'))) {
