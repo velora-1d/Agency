@@ -108,7 +108,29 @@
           </section>
         </div>
 
-        <!-- Optional: Footer sidebar for user profile or settings could go here -->
+        <!-- User Profile & Logout Footer -->
+        <div class="mt-auto border-t border-white/10 p-4 bg-black/20">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400 font-bold text-sm">
+                {{ page.props.auth?.user?.name ? page.props.auth.user.name.charAt(0).toUpperCase() : 'U' }}
+              </div>
+              <div class="min-w-0">
+                <p class="truncate text-xs font-bold text-white">{{ page.props.auth?.user?.name || 'Administrator' }}</p>
+                <p class="truncate text-[10px] text-stone-400">{{ page.props.auth?.user?.email || '' }}</p>
+              </div>
+            </div>
+            <Link 
+              href="/logout" 
+              method="post" 
+              as="button"
+              class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all shadow-lg hover:shadow-red-500/20"
+              title="Keluar (Logout)"
+            >
+              <LogOut class="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
       </aside>
 
       <!-- Main Content Area -->
@@ -168,6 +190,7 @@ import {
   WalletCards,
   Workflow,
   ChevronDown,
+  LogOut,
 } from 'lucide-vue-next'
 import { ref, onMounted } from 'vue'
 import SecurityVerificationModal from '../Components/domain/system/SecurityVerificationModal.vue'
